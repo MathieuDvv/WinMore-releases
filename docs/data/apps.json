@@ -1,0 +1,106 @@
+{
+ "updated": "2026-11-10",
+ "apps": [
+  {
+   "id": "browser",
+   "name": "Browser",
+   "shortName": "Web",
+   "version": "2.0.1",
+   "description": "Drive a PC browser window from your phone using screenshots.",
+   "icon": "apps/browser.svg",
+   "platforms": null,
+   "size": 11672,
+   "files": 5
+  },
+  {
+   "id": "clipboard",
+   "name": "Clipboard",
+   "shortName": "Clipboard",
+   "version": "2.0.0",
+   "description": "Share text and images with your PC.",
+   "icon": "apps/clipboard.svg",
+   "platforms": null,
+   "size": 7613,
+   "files": 4
+  },
+  {
+   "id": "clock",
+   "name": "Clock",
+   "shortName": "Clock",
+   "version": "2.0.0",
+   "description": "A customizable bedside clock. Notification mirroring requires a future Bluetooth bridge.",
+   "icon": "apps/clock.svg",
+   "platforms": null,
+   "size": 4327,
+   "files": 4
+  },
+  {
+   "id": "discord",
+   "name": "Discord",
+   "shortName": "Calls",
+   "version": "2.1.0",
+   "description": "Voice call controls and the soundboard through the Discord app on your PC.",
+   "icon": "apps/discord.svg",
+   "platforms": null,
+   "size": 51247,
+   "files": 6
+  },
+  {
+   "id": "mixer",
+   "name": "Audio Mixer",
+   "shortName": "Mixer",
+   "version": "2.0.1",
+   "description": "Per-app volume for the PC's default playback device.",
+   "icon": "apps/mixer.svg",
+   "platforms": [
+    "win32"
+   ],
+   "size": 26711,
+   "files": 7
+  },
+  {
+   "id": "music",
+   "name": "YouTube Music",
+   "shortName": "Music",
+   "version": "2.0.1",
+   "description": "Browse, play and queue YouTube Music running on your PC, with synced lyrics.",
+   "icon": "apps/music.svg",
+   "platforms": null,
+   "size": 121099,
+   "files": 8
+  },
+  {
+   "id": "pc",
+   "name": "PC Monitor",
+   "shortName": "PC",
+   "version": "2.0.0",
+   "description": "PC master volume, processor and memory load, hardware temperatures, and network transfer rates across three pages.",
+   "icon": "apps/pc.svg",
+   "platforms": null,
+   "size": 32010,
+   "files": 10
+  },
+  {
+   "id": "reddit",
+   "name": "Reddit",
+   "shortName": "Reddit",
+   "version": "2.0.0",
+   "description": "A landscape Reddit reader backed by your signed-in Reddit session on the PC.",
+   "icon": "apps/reddit.svg",
+   "platforms": null,
+   "size": 55881,
+   "files": 7
+  },
+  {
+   "id": "twitch",
+   "name": "Twitch",
+   "shortName": "Chat",
+   "version": "2.0.0",
+   "description": "Read a Twitch channel's chat, anonymously.",
+   "icon": "apps/twitch.svg",
+   "platforms": null,
+   "size": 5602,
+   "files": 5
+  }
+ ]
+}

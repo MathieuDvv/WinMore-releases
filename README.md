@@ -3,6 +3,7 @@
 Downloads for WinMore. The source code is private; this repository only holds what installed copies fetch:
 
 - `index.json` and `apps/<id>/`: the app catalog shown in WinMore's **Settings → Apps**. Each app is a plain folder; `bundles/` holds single-file copies for older WinMore versions.
+- `docs/`: the website, https://mathieudvv.github.io/WinMore-releases/, served by GitHub Pages.
 - [Releases](https://github.com/MathieuDvv/WinMore-releases/releases): the Windows installer, and the iPhone build when there is one. WinMore checks the latest release and offers it in the app.
 
 Apps and updates run on your PC with WinMore's access. Only the owner of this repository publishes them.
