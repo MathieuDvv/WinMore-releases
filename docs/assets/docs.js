@@ -1,9 +1,7 @@
 (()=>{
-const {GHOST}=window.WinMoreIcons;
 const {render,run,symbol}=window.KitRender;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>`&#${c.charCodeAt(0)};`);
 const $=id=>document.getElementById(id);
-$('flow-logo').innerHTML=GHOST;
 
 // ── code blocks: light highlighting and a copy button ──
 for(const pre of document.querySelectorAll('pre[data-lang]')){
@@ -37,7 +35,6 @@ const NOTES={
 fetch('data/apps.json').then(r=>r.json()).then(({apps})=>{
   $('app-docs').innerHTML=apps.map(app=>`<div class="app-doc" id="app-${esc(app.id)}"><span class="glyph">${app.icon?`<img src="${esc(app.icon)}" alt="">`:''}</span>
     <div><h3>${esc(app.name)} <small>v${esc(app.version)}</small></h3><p>${NOTES[app.id]||esc(app.description)}</p></div></div>`).join('');
-  $('flow-apps').innerHTML='apps/ '+apps.map(a=>a.icon?`<img src="${esc(a.icon)}" alt="${esc(a.name)}" title="${esc(a.name)}">`:'').join('');
 }).catch(()=>{$('app-docs').textContent='The app list could not be loaded.';});
 
 // ── explorer ──────────────────────────────────────────
@@ -127,18 +124,12 @@ function side(type){
   const spec=KIT.COMPONENTS[type];
   const props=Object.entries(spec.props);
   $('ex-side').innerHTML=`<h4>About</h4><p>${esc(spec.doc)}</p>
-    <h4>Accent</h4><div class="accent-pick">${['blue','teal','green','orange','pink','purple'].map(c=>`<button type="button" style="background:${{blue:'#0a84ff',teal:'#40c8e0',green:'#30d158',orange:'#ff9f0a',pink:'#ff375f',purple:'#bf5af2'}[c]}" aria-label="${c} accent" data-accent="${c}" aria-pressed="${($('ex-screen').dataset.accent||'blue')===c}"></button>`).join('')}</div>
     <h4>Props${props.length?` · ${props.length}`:''}</h4>
     ${props.length?props.map(([name,p])=>`<div class="prop"><header><code>${esc(name)}</code>${p.required?'<span class="req">required</span>':''}<span class="type">${esc(typeLabel(p))}</span></header>${p.doc?`<p>${esc(p.doc)}</p>`:''}${p.type==='enum'?`<div class="vals">${p.values.map(v=>`<button type="button" data-prop="${esc(name)}" data-val="${esc(v)}" title="Set ${esc(name)} to ${esc(v)}">${esc(v)}</button>`).join('')}</div>`:''}</div>`).join(''):'<p>No props of its own.</p>'}
-    <h4 style="margin-top:20px">Also accepts</h4><p style="font-size:12.5px;color:var(--ink-2)">${Object.keys(KIT.COMMON).map(k=>`<code>${esc(k)}</code>`).join(' ')}</p>`;
+    <h4 class="also">Also accepts</h4><p class="also">${Object.keys(KIT.COMMON).map(k=>`<code>${esc(k)}</code>`).join(' ')}</p>`;
 }
 $('ex-side').addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;
-  if(b.dataset.accent){
-    const hex={blue:'#0a84ff',teal:'#40c8e0',green:'#30d158',orange:'#ff9f0a',pink:'#ff375f',purple:'#bf5af2'}[b.dataset.accent];
-    $('ex-screen').style.setProperty('--k-accent',hex);$('ex-screen').dataset.accent=b.dataset.accent;
-    b.parentNode.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));draw();return;
-  }
   if(b.dataset.prop){
     // Set an enum value on the first component of this type in the example.
     const find=node=>{if(!node||typeof node!=='object')return null;if(node.type===current)return node;for(const v of Object.values(node)){const f=Array.isArray(v)?v.map(find).find(Boolean):typeof v==='object'?find(v):null;if(f)return f;}return null;};
@@ -191,7 +182,7 @@ function reference(){
     Operators:`<table><thead><tr><th>Operator</th><th>Meaning</th></tr></thead><tbody>${Object.entries(KIT.OPERATORS).map(([k,d])=>`<tr><td><code>{"${esc(k)}": …}</code></td><td>${esc(typeof d==='string'?d:d.doc||'')}</td></tr>`).join('')}</tbody></table>`,
     Filters:`<p>Use them in templates: <code>"{{size|bytes}}"</code>.</p><div class="swatches">${KIT.FILTERS.map(f=>`<span class="swatch" style="padding-left:10px">|${esc(f)}</span>`).join('')}</div>`,
     Colors:`<p>Any prop typed <em>color</em> takes one of these names or a hex value like <code>#FF8800</code>.</p><div class="swatches">${KIT.COLORS.map(c=>`<span class="swatch"><i style="background:${C[c]||c}"></i>${esc(c)}</span>`).join('')}</div>`,
-    Screen:`<table><thead><tr><th>Prop</th><th>Meaning</th></tr></thead><tbody>${Object.entries(KIT.SCREEN).map(([k,p])=>`<tr><td><code>${esc(k)}</code>${p.required?' <span class="req" style="font-size:10px;color:#ff8a80">required</span>':''}</td><td>${esc(p.doc||p.type)}</td></tr>`).join('')}</tbody></table>`,
+    Screen:`<table><thead><tr><th>Prop</th><th>Meaning</th></tr></thead><tbody>${Object.entries(KIT.SCREEN).map(([k,p])=>`<tr><td><code>${esc(k)}</code>${p.required?' <span class="req">required</span>':''}</td><td>${esc(p.doc||p.type)}</td></tr>`).join('')}</tbody></table>`,
     'Common props':`<table><thead><tr><th>Prop</th><th>Meaning</th></tr></thead><tbody>${Object.entries(KIT.COMMON).map(([k,p])=>`<tr><td><code>${esc(k)}</code></td><td>${esc(p.doc||p.type)}</td></tr>`).join('')}</tbody></table>`,
   };
   const names=Object.keys(tabs);

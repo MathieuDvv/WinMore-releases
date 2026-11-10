@@ -4,52 +4,48 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>WinMore</title>
-<meta name="description" content="WinMore turns your iPhone into a landscape control surface for your Windows PC: music, chat, audio mixer, browser and apps anyone can build.">
+<meta name="description" content="WinMore turns your iPhone into a landscape remote for your Windows PC: music, voice calls, volume, a browser, and apps anyone can build.">
 <meta name="theme-color" content="#000000">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
 </head>
 <body data-page="home">
-<div class="glow" aria-hidden="true"></div>
 
 <div class="hero">
   <div class="hero-copy" id="hero-copy">
-    <h1>Your PC, <em>in your hand.</em></h1>
-    <p>A tiny island on your Windows desktop. A landscape remote on your iPhone. Apps in between.</p>
-    <span class="hint" aria-hidden="true"><svg class="mouse" viewBox="0 0 24 36" width="22" height="33"><rect x="1.5" y="1.5" width="21" height="33" rx="10.5" fill="none" stroke="currentColor" stroke-width="2"/><rect class="wheel" x="10.5" y="8" width="3" height="7" rx="1.5" fill="currentColor"/></svg><svg class="swipe" viewBox="0 0 24 24" width="26" height="26"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+    <h1>Your PC, from your iPhone.</h1>
+    <p>A small island on your Windows desktop, and a landscape remote on your phone.</p>
+    <span class="hint" aria-hidden="true"><svg class="mouse" viewBox="0 0 24 36" width="20" height="30"><rect x="1.5" y="1.5" width="21" height="33" rx="10.5" fill="none" stroke="currentColor" stroke-width="2"/><rect class="wheel" x="10.5" y="8" width="3" height="7" rx="1.5" fill="currentColor"/></svg><svg class="swipe" viewBox="0 0 24 24" width="24" height="24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
   </div>
 </div>
 
-<main class="landing">
-  <div class="trio">
-    <div><b>On the PC</b><h3>The island</h3><p>An OLED-black pill that floats over everything, snaps to any edge, and expands when you need it.</p></div>
-    <div><b>On the iPhone</b><h3>The remote</h3><p>A native app in landscape. Pair once with a six-digit code, then it just reconnects.</p></div>
-    <div><b>In between</b><h3>Apps</h3><p>Every feature is an app: a folder with a little JavaScript and a JSON screen. Install them in a click.</p></div>
+<main class="page">
+  <div class="facts">
+    <div><h3>On the PC</h3><p>The island stays on top of your windows, snaps to any edge of any screen, and expands when you hover it.</p></div>
+    <div><h3>On the iPhone</h3><p>A native app made for landscape. Pair it once with a six-digit code and it reconnects by itself.</p></div>
+    <div><h3>Apps</h3><p>Music, Discord, the mixer and the rest are apps you install from the island. They update on their own.</p></div>
   </div>
 
   <section id="apps">
-    <div class="shelf-head">
-      <div><h2>App library</h2><p>Everything in the catalog today. Install from the island: Settings → Apps. Installed apps update themselves.</p></div>
+    <div class="section-head">
+      <div><h2>Apps</h2><p>Install them from the island: Settings → Apps.</p></div>
       <span class="count" id="count"></span>
     </div>
     <div class="library" id="library"></div>
+    <p class="library-foot">An app is a folder with some JavaScript and a JSON screen. <a href="docs.html#build">Make your own</a>.</p>
   </section>
 
-  <section class="cta">
-    <h2>Get WinMore</h2>
-    <p>The Windows installer is on the releases page. WinMore keeps itself and its apps up to date.</p>
+  <section class="get">
+    <div><h2>Download</h2><p>WinMore for Windows 10 and 11. The iPhone app is built from source with Xcode for now.</p></div>
     <div class="buttons">
-      <a class="btn primary" href="https://github.com/MathieuDvv/WinMore-releases/releases/latest" id="download"></a>
-      <a class="btn" href="docs.html">Read the docs</a>
+      <a class="btn primary" href="https://github.com/MathieuDvv/WinMore-releases/releases/latest">Download for Windows</a>
+      <a class="btn" href="docs.html">Documentation</a>
     </div>
   </section>
 </main>
 
 <footer class="site-foot">
-  <span>WinMore · Windows companion + iPhone app</span>
+  <span>WinMore</span>
   <span><a href="docs.html">Docs</a> · <a href="docs.html#explorer">Components</a> · <a href="https://github.com/MathieuDvv/WinMore-releases">GitHub</a></span>
 </footer>
 

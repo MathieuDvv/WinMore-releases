@@ -7,25 +7,14 @@
 <meta name="description" content="How WinMore works, how each app works, how to build your own, and an explorer for every Kit component.">
 <meta name="theme-color" content="#000000">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/site.css">
 <link rel="stylesheet" href="assets/docs.css">
 </head>
 <body data-page="docs">
 
 <header class="docs-head">
-  <div>
-    <h1>WinMore,<br><span>explained.</span></h1>
-    <p>How the island and the iPhone app work together, what each app in the catalog does, and everything you need to build your own: folder, backend, screen and every component.</p>
-  </div>
-  <div class="flow" aria-label="The PC runs WinMore and its apps; the iPhone talks to it over your local network">
-    <div class="node"><div class="shape"><span class="mini-island"><span class="logo" id="flow-logo"></span><i></i></span></div><b>Windows PC</b><small>Runs the island, the apps and every service</small></div>
-    <div class="wire"><span></span>local network<span></span></div>
-    <div class="node"><div class="shape"><span class="mini-phone"><i></i><i></i></span></div><b>iPhone</b><small>Draws each app's screen and sends commands</small></div>
-    <div class="apps-chip" id="flow-apps">apps/</div>
-  </div>
+  <h1>Documentation</h1>
+  <p>How WinMore and its apps work, and how to build your own.</p>
 </header>
 
 <div class="docs">
@@ -52,15 +41,15 @@
 
   <article class="prose">
     <section id="how">
-      <h2><span class="num">01</span>How it works</h2>
+      <h2>How it works</h2>
       <p>WinMore is two programs. On Windows, a small companion owns everything: it plays your music, holds your logins, talks to Discord and Windows audio, and runs the apps. On the iPhone, a native app turns sideways into a control surface for it.</p>
       <p>The phone never runs an app's logic. Each app sends the phone a <strong>screen</strong> described in JSON, the phone draws it with native components, and taps come back to the PC as commands: <code>{module, action, value}</code>. That is why installing or updating an app never needs a new iPhone build.</p>
-      <div class="callout"><span>💡</span><span><b>One rule of thumb:</b> the PC does the work, the phone shows it. Close the phone app and your music keeps playing on the PC.</span></div>
+      <p>The PC does the work and the phone shows it. Close the phone app and the music keeps playing on the PC.</p>
     </section>
 
     <section id="install">
-      <h2><span class="num">02</span>Install on Windows</h2>
-      <ol class="steps-list">
+      <h2>Install on Windows</h2>
+      <ol>
         <li>Download <code>WinMore-Setup-&lt;version&gt;.exe</code> from the <a href="https://github.com/MathieuDvv/WinMore-releases/releases/latest">latest release</a>. The installer is not signed yet, so Windows SmartScreen may ask you to confirm.</li>
         <li>Run it. WinMore installs for your user (no admin needed), adds desktop and Start menu shortcuts, and starts.</li>
         <li>The island appears as a black pill at the top right of your main screen. Allow WinMore through the firewall on <strong>private</strong> networks when Windows asks: the phone reaches it over your network.</li>
@@ -69,8 +58,8 @@
     </section>
 
     <section id="pair">
-      <h2><span class="num">03</span>Pair your iPhone</h2>
-      <ol class="steps-list">
+      <h2>Pair your iPhone</h2>
+      <ol>
         <li>Put the iPhone and the PC on the same trusted Wi-Fi or LAN, and open WinMore on the phone. Allow local network access.</li>
         <li>In the phone's Settings, pick your PC under <strong>Nearby PCs</strong> and request pairing.</li>
         <li>The island opens with a <strong>six-digit code</strong>. Type it on the phone within two minutes (five tries). Decline on the island if you didn't ask for it.</li>
@@ -80,13 +69,8 @@
     </section>
 
     <section id="island">
-      <h2><span class="num">04</span>The island</h2>
-      <p>The island is WinMore's face on the PC: always on top, OLED black, and out of the way until you need it. This site's navigation is one, too.</p>
-      <div class="states">
-        <div><span class="demo"><i style="width:96px;height:22px;border-radius:11px"></i></span><b>Resting</b>A pill with the album cover, the song and a small waveform in the cover's colour.</div>
-        <div><span class="demo"><i style="width:120px;height:44px;border-radius:14px"></i></span><b>Expanded</b>Hover or click: now playing, volume, the phone connection and the gear.</div>
-        <div><span class="demo"><i style="width:150px;height:48px;border-radius:12px"></i></span><b>Settings</b>Categories on the left: General, Apps, and one per app that has settings.</div>
-      </div>
+      <h2>The island</h2>
+      <p>The island is WinMore's face on the PC: always on top, OLED black, and out of the way until you need it. The menu at the top of this site is a copy of it.</p>
       <ul>
         <li><strong>Move it:</strong> drag the pill (or the expanded header). It snaps to one of eight docks, the corners and edge midpoints, on any monitor, and remembers where you left it.</li>
         <li><strong>Hide it:</strong> the × button dismisses it while music and the phone keep working. Bring it back with <code>Ctrl</code>+<code>Alt</code>+<code>W</code> or the tray icon.</li>
@@ -96,13 +80,13 @@
     </section>
 
     <section id="iphone">
-      <h2><span class="num">05</span>The iPhone app</h2>
+      <h2>The iPhone app</h2>
       <p>A native SwiftUI app with a rail of your apps on the side, built for landscape (portrait works too). On iOS 26 and later its floating controls use Liquid Glass; content sits on flat system surfaces. It keeps the screen awake while open and follows the system's light or dark appearance.</p>
       <p>Pick which apps sit in the rail in the phone's Settings → Navigation. Every screen in the app, the built-in ones included, is drawn from the JSON its app sends, so new apps show up on the phone as soon as they're installed on the PC.</p>
     </section>
 
     <section id="updates">
-      <h2><span class="num">06</span>Updates</h2>
+      <h2>Updates</h2>
       <ul>
         <li><strong>WinMore for Windows</strong> checks a few seconds after launch and every six hours. When there's a new release, the island shows <em>Update to &lt;version&gt;</em>: one click downloads it, installs it silently and restarts.</li>
         <li><strong>Apps</strong> update themselves from the catalog (Settings → Apps → <em>Update apps automatically</em>), or one by one with <em>Update</em> and <em>Check now</em>.</li>
@@ -111,7 +95,7 @@
     </section>
 
     <section id="privacy">
-      <h2><span class="num">07</span>Network and privacy</h2>
+      <h2>Network and privacy</h2>
       <ul>
         <li>Everything stays on your network. The PC listens on port <code>4317</code> and announces itself over Bonjour as <code>_winmore._tcp</code>.</li>
         <li>The pairing key is random and stored encrypted with your Windows account. Logins (YouTube Music, Reddit) live in WinMore's own browser profile on the PC; secrets like Discord's never reach the phone.</li>
@@ -120,13 +104,13 @@
     </section>
 
     <section id="apps">
-      <h2><span class="num">08</span>The catalog</h2>
+      <h2>The catalog</h2>
       <p>Every feature in WinMore is an app, installed from <strong>Settings → Apps</strong> on the island. Here's what each one does and what it needs.</p>
       <div class="app-docs" id="app-docs"></div>
     </section>
 
     <section id="build">
-      <h2><span class="num">09</span>Build an app</h2>
+      <h2>Build an app</h2>
       <p>An app is a <strong>folder</strong>. It runs on the PC; its iPhone screen is JSON the phone draws natively. Copy this, change the names, and you have an app.</p>
 <pre class="tree">hello/                     <span class="c">the folder name must equal the app id</span>
 ├── manifest.json          <span class="c">id, name, version, entry, "ui": "kit"</span>
@@ -176,7 +160,7 @@ module.exports = { activate };</pre>
     </section>
 
     <section id="screen">
-      <h2><span class="num">10</span>The screen</h2>
+      <h2>The screen</h2>
       <p><code>ui/screen.json</code> describes the iPhone screen from <a href="#explorer">Kit components</a>. Here's a complete one:</p>
 <pre data-lang="json">{
   "type": "screen",
@@ -206,7 +190,7 @@ module.exports = { activate };</pre>
     </section>
 
     <section id="bindings">
-      <h2><span class="num">11</span>Bindings and actions</h2>
+      <h2>Bindings and actions</h2>
       <h3>Bindings read data</h3>
       <p>Any value can come from your backend's <code>data()</code>: <code>"$items"</code>, <code>"$item.title"</code>, or a template like <code>"{{count}} hellos"</code> with filters such as <code>{{size|bytes}}</code>. Logic uses operator objects: <code>{"if": [{"gt": ["$count", 0]}, "Some", "None"]}</code>.</p>
       <h3>Screen variables</h3>
@@ -223,7 +207,7 @@ module.exports = { activate };</pre>
     </section>
 
     <section id="web">
-      <h2><span class="num">12</span>Web blocks</h2>
+      <h2>Web blocks</h2>
       <p>When the components aren't enough, drop in your own HTML: <code>{"type": "web", "src": "ui/chart.html", "props": {"title": "Last hellos"}, "fill": "both"}</code>. The page loads from your package and talks to the app:</p>
 <pre data-lang="js">winmore.onData(({ data, ui, props, params, env }) => render(data));  // now and on every change
 const result = await winmore.command('add', 5);                       // like a command action
@@ -234,8 +218,8 @@ winmore.open('https://example.com');                                  // Safari 
     </section>
 
     <section id="develop">
-      <h2><span class="num">13</span>Develop and publish</h2>
-      <ol class="steps-list">
+      <h2>Develop and publish</h2>
+      <ol>
         <li>Open your apps folder from the island: Settings → Apps → <em>Open folder</em> (<code>%APPDATA%\WinMore\apps</code>) and drop your folder in. WinMore loads it right away and the phone adds it to its rail.</li>
         <li>Edit any file. WinMore reloads the app within a second and the phone reloads its screen. No restart.</li>
         <li>If the screen has a mistake, the phone says exactly what to fix. Add <code>"$schema"</code> pointing to <code>screen.schema.json</code> for autocomplete in your editor.</li>
@@ -247,7 +231,7 @@ winmore.open('https://example.com');                                  // Safari 
 
 <section class="explorer-wrap" id="explorer">
   <header>
-    <div><h2>Component explorer</h2><p>Every Kit component, drawn in a landscape iPhone. Edit the JSON and the preview follows; tap the controls to see what they'd send. It's an approximation in the browser: the real thing is native SwiftUI.</p></div>
+    <div><h2>Components</h2><p>Every Kit component with an example you can edit. The preview is a rough browser version; on the iPhone they are drawn natively with SwiftUI.</p></div>
     <span class="count" id="kit-count"></span>
   </header>
   <div class="explorer">
@@ -269,8 +253,8 @@ winmore.open('https://example.com');                                  // Safari 
 <div class="docs" id="reference" style="scroll-margin-top:96px">
   <div></div>
   <article class="prose">
-    <h2><span class="num">14</span>Reference</h2>
-    <p>Generated from the same library the PC uses to check screens, so it's always current.</p>
+    <h2>Reference</h2>
+    <p>Generated from <code>companion/kit.cjs</code>, the same definitions the PC uses to check screens.</p>
     <div class="ref-tabs" role="tablist" id="ref-tabs"></div>
     <div id="ref-body"></div>
   </article>
