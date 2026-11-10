@@ -6,7 +6,7 @@
     {
       "id": "browser",
       "name": "Browser",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "description": "Drive a PC browser window from your phone using screenshots.",
       "icon": "apps/browser/icon.svg",
       "folder": "apps/browser/",
@@ -23,21 +23,88 @@
         },
         {
           "path": "index.cjs",
-          "size": 2032,
-          "sha256": "cb5e845b62c71d9f0341c9913e8411047c002f98cbe9747e2042302e9ec1d308"
+          "size": 2706,
+          "sha256": "4b4053291cf94b854f7f7d19a6a078cef9fa8d17b02e4253da85256bf2d481ea"
         },
         {
           "path": "manifest.json",
-          "size": 298,
-          "sha256": "57e3cf2d666456afc9deb7ef503e0966583f89599acc2f92b1f71becc8f3a2a6"
+          "size": 287,
+          "sha256": "3b006c4d16e5ad4a52deaa1cd3361c0767ceb6a5bd97dcc3c0b2e695f9e00405"
+        },
+        {
+          "path": "ui/screen.json",
+          "size": 3689,
+          "sha256": "1d137897ac1f23bb9fdd9ac76cccfdd71ab38d7ac620ade47ad957010c03b66e"
         }
       ],
       "bundle": "bundles/browser.wmapp"
     },
     {
+      "id": "clipboard",
+      "name": "Clipboard",
+      "version": "2.0.0",
+      "description": "Share text and images with your PC.",
+      "icon": "apps/clipboard/icon.svg",
+      "folder": "apps/clipboard/",
+      "files": [
+        {
+          "path": "icon.svg",
+          "size": 207,
+          "sha256": "e87e1a20549fa358001a8c16b1d3736617056007df210780e84b2235e7beeeee"
+        },
+        {
+          "path": "index.cjs",
+          "size": 2575,
+          "sha256": "2f9cd5bf6385a448df216de8046db6843cf404caa7187c037ca48b97979256be"
+        },
+        {
+          "path": "manifest.json",
+          "size": 257,
+          "sha256": "b45fc84e6243b2c9dc57128986a432b848727e41155f62033e736bfb3a980786"
+        },
+        {
+          "path": "ui/screen.json",
+          "size": 4574,
+          "sha256": "c771b43208fccb0649ba70c4cc5b35f9570fe60f635f12b566e31d0f3b12f5dd"
+        }
+      ],
+      "bundle": "bundles/clipboard.wmapp"
+    },
+    {
+      "id": "clock",
+      "name": "Clock",
+      "version": "2.0.0",
+      "description": "A customizable bedside clock. Notification mirroring requires a future Bluetooth bridge.",
+      "icon": "apps/clock/icon.svg",
+      "folder": "apps/clock/",
+      "files": [
+        {
+          "path": "icon.svg",
+          "size": 165,
+          "sha256": "571b07d9c135669c61311f18f9c6f52956d20cecc7c624a574368b2bbda88725"
+        },
+        {
+          "path": "index.cjs",
+          "size": 154,
+          "sha256": "8327efc43ca96277f7b15c845b545156cee0e51d1318c3995758425b16bd4dbe"
+        },
+        {
+          "path": "manifest.json",
+          "size": 287,
+          "sha256": "02583fedceda39b4db369ed44981e5a09a80febd4285ed9c1e53256adc06dd64"
+        },
+        {
+          "path": "ui/screen.json",
+          "size": 3721,
+          "sha256": "4df27b5781435c3033b8db249227f6a017e705a5a19dcab36f89b554fbb664e3"
+        }
+      ],
+      "bundle": "bundles/clock.wmapp"
+    },
+    {
       "id": "discord",
       "name": "Discord",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "description": "Voice call controls through the Discord app on your PC.",
       "icon": "apps/discord/icon.svg",
       "folder": "apps/discord/",
@@ -59,13 +126,18 @@
         },
         {
           "path": "index.cjs",
-          "size": 3069,
-          "sha256": "07845116ade333d0efd69b520e60c33d365478b3201298aa92d4b8ed77dfcdd1"
+          "size": 3106,
+          "sha256": "c0d4d0baa54e6785a37c58a2fbbe5c1f6ca7425d102b40574b81ea5a15381678"
         },
         {
           "path": "manifest.json",
-          "size": 300,
-          "sha256": "4f8f999a59d09583b9598dde2638282ff781c30d98666f1578c8cd8c9726fa6e"
+          "size": 289,
+          "sha256": "1d34be1ad91c91cc8fbaef3fda5b9a12502c8a9e242f522dc92a6c2a81366bb9"
+        },
+        {
+          "path": "ui/screen.json",
+          "size": 14493,
+          "sha256": "af1162f1734fc77eab20b386db81e8c5591d8c4bc3eed772f4bce3750c62f05d"
         }
       ],
       "bundle": "bundles/discord.wmapp"
@@ -73,7 +145,7 @@
     {
       "id": "mixer",
       "name": "Audio Mixer",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "description": "Per-app volume for the PC's default playback device.",
       "icon": "apps/mixer/icon.svg",
       "folder": "apps/mixer/",
@@ -90,13 +162,13 @@
         },
         {
           "path": "index.cjs",
-          "size": 450,
-          "sha256": "1445dcae8b3fab8df11abbd395b762dea646e417cf155866ee7730013cf27ee5"
+          "size": 494,
+          "sha256": "a0ea0b50a3ec24e430e51b14485aae1f9479d503fcf27287d25bde817f26abe1"
         },
         {
           "path": "manifest.json",
-          "size": 341,
-          "sha256": "cf1b7bd1f421d74f56fc0112c24e4a2f75507c1362058f195f7970572dd4b5fa"
+          "size": 332,
+          "sha256": "65d0617740bb414242ea31391dd5d7dacf6333bc8ca9569dc3a376f8630a83ec"
         },
         {
           "path": "mixer.cjs",
@@ -107,6 +179,11 @@
           "path": "mixer.ps1",
           "size": 12451,
           "sha256": "a4c66d1123701293ad5932482e3b607f076e1ba6684bdba27c569d3a71be8809"
+        },
+        {
+          "path": "ui/screen.json",
+          "size": 7477,
+          "sha256": "ca797fc5aae0d291785aa16600973786fa4214df649fb787f3ee465bbfe5dbae"
         }
       ],
       "bundle": "bundles/mixer.wmapp"
@@ -114,11 +191,16 @@
     {
       "id": "music",
       "name": "YouTube Music",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "description": "Browse, play and queue YouTube Music running on your PC, with synced lyrics.",
       "icon": "apps/music/icon.svg",
       "folder": "apps/music/",
       "files": [
+        {
+          "path": "browse.cjs",
+          "size": 3261,
+          "sha256": "f47b4d72b2df54d52dc1ef4a4cd35a2f56e6650fac219478a980eb4431a5f8cb"
+        },
         {
           "path": "icon.png",
           "size": 4206,
@@ -131,8 +213,8 @@
         },
         {
           "path": "index.cjs",
-          "size": 4375,
-          "sha256": "b82da7d52063f34b4652fae2d109a69e9d15fb3add2cbba0fbb5dbd9a9f737f0"
+          "size": 5968,
+          "sha256": "df222c76ce019bdd25e7d84bd081f14649199e34dabca829f5569e71ca14ba45"
         },
         {
           "path": "lyrics.cjs",
@@ -141,13 +223,18 @@
         },
         {
           "path": "manifest.json",
-          "size": 358,
-          "sha256": "15bad48bcc165551db1edaf53e4ae3f9556f2593bd9454be5aa8ef65e0dd9cc8"
+          "size": 364,
+          "sha256": "cee3f13c91a8286c5012a827fb835446edc038c33c8bd2735ba6e506ea1d2515"
         },
         {
           "path": "music.cjs",
           "size": 13035,
           "sha256": "3000c3e675fbd0f721d9ef9067cf2f12b53d064eb62f4dfe7e52ec2958073fd5"
+        },
+        {
+          "path": "ui/screen.json",
+          "size": 86356,
+          "sha256": "28f961ff2a28b9704098b9ba275bff519714ed2ccb6ef2d0fe821b69fce3cea8"
         }
       ],
       "bundle": "bundles/music.wmapp"
@@ -155,7 +242,7 @@
     {
       "id": "pc",
       "name": "PC Monitor",
-      "version": "1.1.0",
+      "version": "2.0.0",
       "description": "PC master volume, processor and memory load, hardware temperatures, and network transfer rates across three pages.",
       "icon": "apps/pc/icon.svg",
       "folder": "apps/pc/",
@@ -172,13 +259,13 @@
         },
         {
           "path": "index.cjs",
-          "size": 5043,
-          "sha256": "8baa947c491eeff4d8203d18892bcc96138b2f07f1a441e0773e9cdcd7598a8d"
+          "size": 3321,
+          "sha256": "0a3a4751efbd6421665718fd386a91d733bcc3787c013b0e79b51f40c6f94b36"
         },
         {
           "path": "manifest.json",
-          "size": 351,
-          "sha256": "98d60dcb5cd3c11afa0fad8727c4861d157a9083b75a07321797c7410ab55066"
+          "size": 348,
+          "sha256": "e82cc53283c9abed5c5626a90e00d3d2c8692369a12d3c99327c2b382d1b732c"
         },
         {
           "path": "mixer.cjs",
@@ -204,6 +291,11 @@
           "path": "telemetry.ps1",
           "size": 1407,
           "sha256": "d4fd9860cec616a0186a5ec66dbca22d6c90a3df26b31775b668b8ed83085641"
+        },
+        {
+          "path": "ui/screen.json",
+          "size": 5580,
+          "sha256": "c1d9239679d2da47f39bf7d6163b4b0edfb8c9e9785e69438ce7f9f9abb0770a"
         }
       ],
       "bundle": "bundles/pc.wmapp"
@@ -228,18 +320,18 @@
         },
         {
           "path": "index.cjs",
-          "size": 689,
-          "sha256": "6cc50240cd196a0f27d99417cf5a147df0902a726e62ceeb41089aa41c1120b9"
+          "size": 703,
+          "sha256": "d07f7b79db6ab24b28cb40f86c0c34c4fd775b829b66a331d9b5691d8c0bf0e5"
         },
         {
           "path": "manifest.json",
-          "size": 328,
-          "sha256": "79e9e4fb6550f9428e6d86f337af510fec194b879cb9c081c0aca7d2357cb40d"
+          "size": 341,
+          "sha256": "5ac17d18cdf71aa460bc93728f5063a627e4626b47828afa2298a43fcc97977e"
         },
         {
           "path": "reddit.cjs",
-          "size": 25966,
-          "sha256": "75bfdd15f32a9b73720911c7406d4f549c09761d0a69736aeceb8c3d413e62cf"
+          "size": 26369,
+          "sha256": "a45f515152d5b95f92c7ca602e1fd771cd614c38d2e4690fc3dec390383209fb"
         },
         {
           "path": "redgifs.cjs",
@@ -257,7 +349,7 @@
     {
       "id": "twitch",
       "name": "Twitch",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "description": "Read a Twitch channel's chat, anonymously.",
       "icon": "apps/twitch/icon.svg",
       "folder": "apps/twitch/",
@@ -274,13 +366,18 @@
         },
         {
           "path": "index.cjs",
-          "size": 1279,
-          "sha256": "15079e8304576c6cce601c07b813333ac6745e71b94b0ea800fb1130575d3cff"
+          "size": 1592,
+          "sha256": "8cca3de59dda9013f99e30fedaabb38b1800d9424785b561912fe3914c39d280"
         },
         {
           "path": "manifest.json",
-          "size": 301,
-          "sha256": "a8b56792a411fc09194de32300d3fb6d4f1c5e3004de7a1ae3e0d604d27f2e72"
+          "size": 291,
+          "sha256": "1635eee7b45d4746fbae6bd1903cfc727b5c3cd85a88532ad4d041fde3f7b42e"
+        },
+        {
+          "path": "ui/screen.json",
+          "size": 2370,
+          "sha256": "a7f603e90eef31f12fdd120b362d006adb78466107a3b7bfea1b82464bd93609"
         }
       ],
       "bundle": "bundles/twitch.wmapp"

@@ -2,10 +2,10 @@
   "id": "discord",
   "name": "Discord",
   "shortName": "Calls",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Voice call controls through the Discord app on your PC.",
   "entry": "index.cjs",
-  "ui": "native:discord",
+  "ui": "kit",
   "symbol": "headphones",
   "icon": "icon.svg",
   "iconPNG": "icon.png"

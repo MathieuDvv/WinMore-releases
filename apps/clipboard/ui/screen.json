@@ -1,0 +1,268 @@
+{
+ "$schema": "../../../docs/apps/screen.schema.json",
+ "type": "screen",
+ "title": "Clipboard",
+ "chrome": "fullscreen",
+ "state": {
+  "draft": "",
+  "pasted": null,
+  "sending": false,
+  "notice": ""
+ },
+ "refresh": {
+  "interval": 1.5
+ },
+ "body": {
+  "type": "scroll",
+  "spacing": 18,
+  "padding": 24,
+  "children": [
+   {
+    "type": "label",
+    "text": "Clipboard",
+    "symbol": "doc.on.clipboard",
+    "style": "title",
+    "weight": "bold"
+   },
+   {
+    "type": "text",
+    "text": "From your PC",
+    "style": "headline"
+   },
+   {
+    "type": "if",
+    "test": {
+     "has": "$pc.error"
+    },
+    "then": {
+     "type": "text",
+     "text": "$pc.error",
+     "color": "secondary"
+    },
+    "else": {
+     "type": "if",
+     "test": {
+      "eq": [
+       "$pc.kind",
+       "image"
+      ]
+     },
+     "then": {
+      "type": "image",
+      "src": "$pc.data",
+      "fit": "fit",
+      "maxHeight": 210,
+      "height": 210,
+      "fill": "width"
+     },
+     "else": {
+      "type": "text",
+      "text": {
+       "if": [
+        {
+         "has": "$pc.data"
+        },
+        "$pc.data",
+        "Copy text or an image on your PC to see it here."
+       ]
+      },
+      "selectable": true,
+      "fill": "width"
+     }
+    }
+   },
+   {
+    "type": "button",
+    "label": "Copy to iPhone",
+    "symbol": "doc.on.doc",
+    "disabled": {
+     "not": {
+      "has": "$pc.data"
+     }
+    },
+    "action": [
+     {
+      "copy": "$pc"
+     },
+     {
+      "set": "notice",
+      "value": "Copied to iPhone"
+     },
+     {
+      "haptic": "success"
+     }
+    ]
+   },
+   {
+    "type": "divider"
+   },
+   {
+    "type": "text",
+    "text": "Send to PC",
+    "style": "headline"
+   },
+   {
+    "type": "field",
+    "bind": "draft",
+    "placeholder": "Text to send to PC",
+    "multiline": true,
+    "pcKeyboard": false,
+    "padding": 8,
+    "background": "#FFFFFF14",
+    "corner": 12,
+    "minHeight": 100,
+    "align": "topLeading",
+    "when": {
+     "not": "$ui.pasted"
+    }
+   },
+   {
+    "type": "stack",
+    "children": [
+     {
+      "type": "image",
+      "src": "$ui.pasted.data",
+      "fit": "fit",
+      "height": 100,
+      "fill": "width"
+     },
+     {
+      "type": "button",
+      "label": "Remove image",
+      "variant": "link",
+      "action": {
+       "set": "pasted",
+       "value": null
+      }
+     }
+    ],
+    "spacing": 8,
+    "when": "$ui.pasted"
+   },
+   {
+    "type": "stack",
+    "axis": "horizontal",
+    "children": [
+     {
+      "type": "button",
+      "label": "Paste",
+      "symbol": "doc.on.clipboard",
+      "action": [
+       {
+        "paste": "pasted"
+       },
+       {
+        "if": {
+         "eq": [
+          "$ui.pasted.kind",
+          "text"
+         ]
+        },
+        "then": [
+         {
+          "set": "draft",
+          "value": "$ui.pasted.data"
+         },
+         {
+          "set": "pasted",
+          "value": null
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "type": "button",
+      "label": {
+       "if": [
+        "$ui.sending",
+        "Sending…",
+        "Send to PC"
+       ]
+      },
+      "symbol": "arrow.up.right",
+      "variant": "prominent",
+      "disabled": {
+       "or": [
+        "$ui.sending",
+        {
+         "and": [
+          {
+           "not": {
+            "has": "$ui.draft"
+           }
+          },
+          {
+           "not": "$ui.pasted"
+          }
+         ]
+        }
+       ]
+      },
+      "action": [
+       {
+        "set": "sending",
+        "value": true
+       },
+       {
+        "set": "notice",
+        "value": ""
+       },
+       {
+        "command": "send",
+        "value": {
+         "if": [
+          "$ui.pasted",
+          "$ui.pasted",
+          {
+           "kind": "text",
+           "data": "$ui.draft"
+          }
+         ]
+        },
+        "onError": {
+         "set": "sending",
+         "value": false
+        }
+       },
+       {
+        "set": "sending",
+        "value": false
+       },
+       {
+        "set": "notice",
+        "value": "Sent to PC"
+       },
+       {
+        "set": "draft",
+        "value": ""
+       },
+       {
+        "set": "pasted",
+        "value": null
+       },
+       {
+        "haptic": "success"
+       }
+      ]
+     }
+    ],
+    "spacing": 12
+   },
+   {
+    "type": "text",
+    "text": "Appears on your PC island for 30 seconds. Choose Copy there to put it on the PC clipboard.",
+    "style": "footnote",
+    "color": "secondary"
+   },
+   {
+    "type": "text",
+    "text": "$ui.notice",
+    "style": "footnote",
+    "when": {
+     "has": "$ui.notice"
+    }
+   }
+  ]
+ }
+}

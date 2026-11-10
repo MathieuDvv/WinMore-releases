@@ -1,0 +1,348 @@
+{
+ "$schema": "../../../docs/apps/screen.schema.json",
+ "type": "screen",
+ "title": "Audio Mixer",
+ "chrome": "fullscreen",
+ "refresh": {
+  "interval": 1
+ },
+ "body": {
+  "type": "if",
+  "test": {
+   "or": [
+    "$available",
+    {
+     "has": "$apps"
+    }
+   ]
+  },
+  "then": {
+   "type": "layers",
+   "alignment": "bottom",
+   "fill": "both",
+   "children": [
+    {
+     "type": "stack",
+     "axis": "horizontal",
+     "children": [
+      {
+       "type": "stack",
+       "children": [
+        {
+         "type": "symbol",
+         "name": "hifispeaker.fill",
+         "size": 20,
+         "color": "accent",
+         "width": 32,
+         "height": 32
+        },
+        {
+         "type": "text",
+         "text": "$device",
+         "style": "caption2",
+         "weight": "medium",
+         "lines": 2,
+         "textAlign": "center",
+         "height": 28,
+         "color": "primary"
+        },
+        {
+         "type": "slider",
+         "axis": "vertical",
+         "min": 0,
+         "max": 100,
+         "live": true,
+         "fill": "height",
+         "value": "$volume",
+         "accessibility": "{{device}} volume",
+         "tint": {
+          "if": [
+           "$muted",
+           "#8E8E9380",
+           "accent"
+          ]
+         },
+         "action": {
+          "command": "volume",
+          "value": {
+           "id": "master",
+           "value": "$value"
+          }
+         }
+        },
+        {
+         "type": "text",
+         "text": {
+          "if": [
+           "$muted",
+           "Muted",
+           {
+            "round": "$volume"
+           }
+          ]
+         },
+         "style": "caption",
+         "monospaced": true,
+         "color": "secondary"
+        },
+        {
+         "type": "button",
+         "variant": "glass",
+         "width": 40,
+         "height": 32,
+         "symbol": {
+          "if": [
+           "$muted",
+           "speaker.slash.fill",
+           "speaker.wave.2.fill"
+          ]
+         },
+         "tint": {
+          "if": [
+           "$muted",
+           "red",
+           null
+          ]
+         },
+         "accessibility": {
+          "if": [
+           "$muted",
+           "Unmute {{device}}",
+           "Mute {{device}}"
+          ]
+         },
+         "action": {
+          "command": "mute",
+          "value": {
+           "id": "master",
+           "muted": {
+            "not": "$muted"
+           }
+          }
+         }
+        }
+       ],
+       "spacing": 8,
+       "alignment": "center",
+       "padding": [
+        12,
+        8
+       ],
+       "background": "black",
+       "corner": 22,
+       "width": 112,
+       "fill": "height"
+      },
+      {
+       "type": "scroll",
+       "axis": "horizontal",
+       "spacing": 10,
+       "fill": "both",
+       "children": [
+        {
+         "type": "each",
+         "items": "$apps",
+         "as": "app",
+         "template": {
+          "type": "stack",
+          "children": [
+           {
+            "type": "if",
+            "test": {
+             "has": "$app.icon"
+            },
+            "then": {
+             "type": "image",
+             "src": "$app.icon",
+             "fit": "fit",
+             "width": 32,
+             "height": 32
+            },
+            "else": {
+             "type": "symbol",
+             "name": {
+              "if": [
+               "$app.system",
+               "bell.fill",
+               "app.fill"
+              ]
+             },
+             "size": 17,
+             "color": "secondary",
+             "width": 32,
+             "height": 32
+            }
+           },
+           {
+            "type": "text",
+            "text": "$app.name",
+            "style": "caption2",
+            "weight": "medium",
+            "lines": 2,
+            "textAlign": "center",
+            "height": 28,
+            "color": {
+             "if": [
+              "$app.active",
+              "primary",
+              "secondary"
+             ]
+            }
+           },
+           {
+            "type": "slider",
+            "axis": "vertical",
+            "min": 0,
+            "max": 100,
+            "live": true,
+            "fill": "height",
+            "value": "$app.volume",
+            "accessibility": "{{app.name}} volume",
+            "tint": {
+             "if": [
+              "$app.muted",
+              "#8E8E9380",
+              "#FFFFFFBF"
+             ]
+            },
+            "action": {
+             "command": "volume",
+             "value": {
+              "id": "$app.id",
+              "value": "$value"
+             }
+            }
+           },
+           {
+            "type": "text",
+            "text": {
+             "if": [
+              "$app.muted",
+              "Muted",
+              {
+               "round": "$app.volume"
+              }
+             ]
+            },
+            "style": "caption",
+            "monospaced": true,
+            "color": "secondary"
+           },
+           {
+            "type": "button",
+            "variant": "glass",
+            "width": 40,
+            "height": 32,
+            "symbol": {
+             "if": [
+              "$app.muted",
+              "speaker.slash.fill",
+              "speaker.wave.2.fill"
+             ]
+            },
+            "tint": {
+             "if": [
+              "$app.muted",
+              "red",
+              null
+             ]
+            },
+            "accessibility": {
+             "if": [
+              "$app.muted",
+              "Unmute {{app.name}}",
+              "Mute {{app.name}}"
+             ]
+            },
+            "action": {
+             "command": "mute",
+             "value": {
+              "id": "$app.id",
+              "muted": {
+               "not": "$app.muted"
+              }
+             }
+            }
+           }
+          ],
+          "spacing": 8,
+          "alignment": "center",
+          "padding": [
+           12,
+           8
+          ],
+          "background": "black",
+          "corner": 22,
+          "width": 92,
+          "fill": "height"
+         },
+         "empty": {
+          "type": "stack",
+          "children": [
+           {
+            "type": "symbol",
+            "name": "speaker.zzz",
+            "size": 24,
+            "color": "secondary"
+           },
+           {
+            "type": "text",
+            "text": "Quiet for now.",
+            "style": "subheadline",
+            "weight": "medium"
+           },
+           {
+            "type": "text",
+            "text": "Apps appear here when they play sound on your PC.",
+            "style": "caption",
+            "color": "secondary",
+            "textAlign": "center"
+           }
+          ],
+          "spacing": 8,
+          "alignment": "center",
+          "width": 240,
+          "fill": "height",
+          "align": "center"
+         }
+        }
+       ]
+      }
+     ],
+     "spacing": 12,
+     "fill": "both"
+    },
+    {
+     "type": "label",
+     "text": "$error",
+     "symbol": "exclamationmark.triangle",
+     "style": "caption2",
+     "color": "secondary",
+     "padding": [
+      6,
+      12
+     ],
+     "glass": true,
+     "shape": "capsule",
+     "when": {
+      "has": "$error"
+     }
+    }
+   ]
+  },
+  "else": {
+   "type": "empty",
+   "symbol": "slider.vertical.3",
+   "title": "Every sound, in reach.",
+   "message": {
+    "coalesce": [
+     "$error",
+     "Connect to your PC to adjust the volume of each app."
+    ]
+   },
+   "background": "black",
+   "corner": 22,
+   "fill": "both"
+  }
+ }
+}

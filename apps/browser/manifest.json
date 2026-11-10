@@ -2,10 +2,10 @@
   "id": "browser",
   "name": "Browser",
   "shortName": "Web",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Drive a PC browser window from your phone using screenshots.",
   "entry": "index.cjs",
-  "ui": "native:browser",
+  "ui": "kit",
   "symbol": "globe",
   "icon": "icon.svg",
   "iconPNG": "icon.png"

@@ -1,0 +1,139 @@
+{
+ "$schema": "../../../docs/apps/screen.schema.json",
+ "type": "screen",
+ "title": "Twitch",
+ "state": {
+  "channel": ""
+ },
+ "refresh": {
+  "interval": 1
+ },
+ "body": {
+  "type": "stack",
+  "children": [
+   {
+    "type": "stack",
+    "axis": "horizontal",
+    "children": [
+     {
+      "type": "field",
+      "bind": "channel",
+      "placeholder": "Twitch channel",
+      "symbol": "bubble.left.and.bubble.right",
+      "keyboard": "url",
+      "fill": "width",
+      "submit": [
+       {
+        "keyboard": "hide"
+       },
+       {
+        "command": "join",
+        "value": "$value"
+       }
+      ]
+     },
+     {
+      "type": "button",
+      "label": "Join",
+      "variant": "plain",
+      "tint": "accent",
+      "disabled": {
+       "not": {
+        "has": "$ui.channel"
+       }
+      },
+      "action": [
+       {
+        "keyboard": "hide"
+       },
+       {
+        "command": "join",
+        "value": "$ui.channel"
+       }
+      ]
+     }
+    ],
+    "spacing": 10,
+    "padding": 12,
+    "background": "black",
+    "corner": 14
+   },
+   {
+    "type": "stack",
+    "axis": "horizontal",
+    "children": [
+     {
+      "type": "text",
+      "text": {
+       "if": [
+        {
+         "has": "$channel"
+        },
+        {
+         "concat": [
+          "#",
+          "$channel"
+         ]
+        },
+        "Stream chat"
+       ]
+      },
+      "style": "headline"
+     },
+     {
+      "type": "spacer"
+     },
+     {
+      "type": "text",
+      "text": {
+       "if": [
+        "$connected",
+        "Live · Read only",
+        "Choose a channel"
+       ]
+      },
+      "style": "caption",
+      "color": "secondary"
+     }
+    ]
+   },
+   {
+    "type": "scroll",
+    "stick": "bottom",
+    "spacing": 14,
+    "padding": 16,
+    "background": "black",
+    "corner": 20,
+    "fill": "both",
+    "children": [
+     {
+      "type": "each",
+      "items": "$chat",
+      "as": "message",
+      "template": {
+       "type": "text",
+       "text": "$message.line",
+       "style": "subheadline",
+       "markdown": true,
+       "fill": "width"
+      },
+      "empty": {
+       "type": "text",
+       "text": "A front row seat to the conversation.",
+       "style": "subheadline",
+       "color": "secondary",
+       "padding": [
+        20,
+        0,
+        0,
+        0
+       ]
+      }
+     }
+    ]
+   }
+  ],
+  "spacing": 12,
+  "fill": "both"
+ }
+}

@@ -26,7 +26,8 @@ function activate(ctx){
     return {status:{label:LABELS[d.status]||d.status,tone:TONES[d.status]||null},items};
   }
   return {
-    state:()=>({discord:discord.state()}),
+    // The phone's call screen (ui/screen.json).
+    data:()=>discord.state(),
     command:(action,value)=>discord.command(action,value),
     // Island-only settings: secrets are typed on the PC and never come from the phone.
     settings:{

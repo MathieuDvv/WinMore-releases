@@ -1,0 +1,200 @@
+{
+ "$schema": "../../../docs/apps/screen.schema.json",
+ "type": "screen",
+ "title": "Browser",
+ "state": {
+  "address": "",
+  "text": ""
+ },
+ "refresh": {
+  "interval": 1.2
+ },
+ "body": {
+  "type": "stack",
+  "children": [
+   {
+    "type": "field",
+    "bind": "address",
+    "placeholder": "Search or enter a website",
+    "keyboard": "url",
+    "padding": [
+     3,
+     10
+    ],
+    "glass": true,
+    "shape": "capsule",
+    "leading": {
+     "type": "button",
+     "variant": "plain",
+     "symbol": "chevron.left",
+     "width": 30,
+     "height": 32,
+     "accessibility": "Go back",
+     "disabled": {
+      "not": "$canGoBack"
+     },
+     "action": {
+      "command": "back"
+     }
+    },
+    "submit": [
+     {
+      "keyboard": "hide"
+     },
+     {
+      "command": "navigate",
+      "value": "$value"
+     }
+    ]
+   },
+   {
+    "type": "scroll",
+    "background": "black",
+    "corner": 18,
+    "clip": true,
+    "fill": "both",
+    "children": [
+     {
+      "type": "if",
+      "test": "$image",
+      "then": {
+       "type": "image",
+       "src": "$image",
+       "fit": "fit",
+       "aspect": {
+        "div": [
+         1000,
+         625
+        ]
+       },
+       "fill": "width",
+       "accessibility": "PC browser view. Tap a page control to use it.",
+       "tap": {
+        "command": "click",
+        "value": "$value"
+       }
+      },
+      "else": {
+       "type": "stack",
+       "children": [
+        {
+         "type": "symbol",
+         "name": "globe",
+         "size": 34,
+         "color": "secondary"
+        },
+        {
+         "type": "text",
+         "text": "A window into your PC.",
+         "style": "headline"
+        },
+        {
+         "type": "text",
+         "text": "Enter a website above to begin.",
+         "style": "subheadline",
+         "color": "secondary"
+        }
+       ],
+       "spacing": 12,
+       "alignment": "center",
+       "fill": "width",
+       "padding": [
+        40,
+        0
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "type": "stack",
+    "axis": "horizontal",
+    "children": [
+     {
+      "type": "field",
+      "bind": "text",
+      "placeholder": "Tap a field above, then type",
+      "fill": "width",
+      "padding": [
+       6,
+       10
+      ],
+      "background": "#FFFFFF14",
+      "corner": 10,
+      "submit": [
+       {
+        "command": "type",
+        "value": "$value"
+       },
+       {
+        "set": "text",
+        "value": ""
+       }
+      ]
+     },
+     {
+      "type": "button",
+      "variant": "plain",
+      "symbol": "paperplane",
+      "width": 30,
+      "height": 32,
+      "accessibility": "Send text to PC browser",
+      "disabled": {
+       "not": {
+        "has": "$ui.text"
+       }
+      },
+      "action": [
+       {
+        "command": "type",
+        "value": "$ui.text"
+       },
+       {
+        "set": "text",
+        "value": ""
+       }
+      ]
+     },
+     {
+      "type": "button",
+      "variant": "plain",
+      "symbol": "arrow.up",
+      "width": 28,
+      "height": 32,
+      "accessibility": "Scroll up",
+      "action": {
+       "command": "scroll",
+       "value": "up"
+      }
+     },
+     {
+      "type": "button",
+      "variant": "plain",
+      "symbol": "arrow.down",
+      "width": 28,
+      "height": 32,
+      "accessibility": "Scroll down",
+      "action": {
+       "command": "scroll",
+       "value": "down"
+      }
+     },
+     {
+      "type": "button",
+      "variant": "plain",
+      "symbol": "desktopcomputer",
+      "width": 28,
+      "height": 32,
+      "accessibility": "Open browser on PC",
+      "action": {
+       "command": "setup"
+      }
+     }
+    ],
+    "spacing": 10
+   }
+  ],
+  "spacing": 10,
+  "fill": "both"
+ }
+}

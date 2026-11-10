@@ -2,10 +2,10 @@
   "id": "twitch",
   "name": "Twitch",
   "shortName": "Chat",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Read a Twitch channel's chat, anonymously.",
   "entry": "index.cjs",
-  "ui": "native:twitch",
+  "ui": "kit",
   "symbol": "bubble.left.and.bubble.right",
   "icon": "icon.svg",
   "iconPNG": "icon.png"

@@ -1,0 +1,3546 @@
+{
+ "$schema": "../../../docs/apps/screen.schema.json",
+ "type": "screen",
+ "title": "Music",
+ "chrome": "fullscreen",
+ "accent": "white",
+ "background": "black",
+ "backdrop": "$artwork",
+ "state": {
+  "browsing": false,
+  "page": "home",
+  "showSearch": false,
+  "query": "",
+  "searching": false,
+  "cover": 1,
+  "dial": 0
+ },
+ "refresh": {
+  "interval": 1,
+  "fast": 0.45,
+  "fastWhen": "$loading"
+ },
+ "timelines": {
+  "main": {
+   "track": "$track",
+   "position": "$current",
+   "duration": "$duration",
+   "playing": "$playing"
+  }
+ },
+ "let": {
+  "coverSide": {
+   "if": [
+    "$env.landscape",
+    {
+     "min": [
+      {
+       "sub": [
+        "$env.height",
+        16
+       ]
+      },
+      {
+       "mul": [
+        "$env.width",
+        0.43
+       ]
+      }
+     ]
+    },
+    {
+     "min": [
+      {
+       "sub": [
+        "$env.width",
+        20
+       ]
+      },
+      {
+       "mul": [
+        "$env.height",
+        0.47
+       ]
+      },
+      360
+     ]
+    }
+   ]
+  },
+  "queueFit": {
+   "max": [
+    1,
+    {
+     "floor": {
+      "div": [
+       {
+        "sub": [
+         "$coverSide",
+         92
+        ]
+       },
+       50
+      ]
+     }
+    }
+   ]
+  },
+  "queueShown": {
+   "if": [
+    {
+     "gt": [
+      {
+       "count": "$queue"
+      },
+      "$queueFit"
+     ]
+    },
+    {
+     "max": [
+      1,
+      {
+       "sub": [
+        "$queueFit",
+        1
+       ]
+      }
+     ]
+    },
+    {
+     "count": "$queue"
+    }
+   ]
+  },
+  "queueMore": {
+   "sub": [
+    {
+     "count": "$queue"
+    },
+    "$queueShown"
+   ]
+  },
+  "hasLyrics": {
+   "and": [
+    {
+     "eq": [
+      "$lyrics.status",
+      "ready"
+     ]
+    },
+    {
+     "has": "$lyrics.lines"
+    }
+   ]
+  },
+  "speedDial": {
+   "and": [
+    {
+     "eq": [
+      "$ui.page",
+      "home"
+     ]
+    },
+    {
+     "not": "$ui.searching"
+    },
+    {
+     "not": "$collection"
+    }
+   ]
+  },
+  "browseItems": {
+   "if": [
+    "$speedDial",
+    "$home",
+    "$items"
+   ]
+  },
+  "cols": {
+   "if": [
+    "$env.landscape",
+    4,
+    3
+   ]
+  },
+  "pageSize": {
+   "mul": [
+    "$cols",
+    3
+   ]
+  },
+  "miniWidth": {
+   "max": [
+    200,
+    {
+     "min": [
+      {
+       "mul": [
+        "$env.width",
+        0.42
+       ]
+      },
+      {
+       "sub": [
+        "$env.height",
+        160
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "miniArt": {
+   "if": [
+    "$env.landscape",
+    {
+     "min": [
+      {
+       "sub": [
+        "$miniWidth",
+        32
+       ]
+      },
+      {
+       "max": [
+        72,
+        {
+         "sub": [
+          "$env.height",
+          230
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    110
+   ]
+  },
+  "browserWidth": {
+   "if": [
+    "$env.landscape",
+    {
+     "sub": [
+      "$env.width",
+      {
+       "add": [
+        "$miniWidth",
+        18
+       ]
+      }
+     ]
+    },
+    "$env.width"
+   ]
+  },
+  "browserHeight": {
+   "sub": [
+    {
+     "if": [
+      "$env.landscape",
+      "$env.height",
+      {
+       "sub": [
+        "$env.height",
+        336
+       ]
+      }
+     ]
+    },
+    {
+     "if": [
+      "$ui.showSearch",
+      110,
+      60
+     ]
+    }
+   ]
+  },
+  "tileSide": {
+   "max": [
+    28,
+    {
+     "min": [
+      {
+       "div": [
+        {
+         "sub": [
+          "$browserWidth",
+          {
+           "mul": [
+            {
+             "sub": [
+              "$cols",
+              1
+             ]
+            },
+            6
+           ]
+          }
+         ]
+        },
+        "$cols"
+       ]
+      },
+      {
+       "div": [
+        {
+         "sub": [
+          "$browserHeight",
+          28
+         ]
+        },
+        3
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "body": {
+  "type": "if",
+  "test": "$ui.browsing",
+  "then": {
+   "type": "if",
+   "test": "$env.landscape",
+   "then": {
+    "type": "stack",
+    "axis": "horizontal",
+    "children": [
+     {
+      "type": "stack",
+      "children": [
+       {
+        "type": "stack",
+        "axis": "horizontal",
+        "children": [
+         {
+          "type": "picker",
+          "value": "$ui.page",
+          "fill": "width",
+          "options": [
+           {
+            "value": "home",
+            "label": "Home"
+           },
+           {
+            "value": "explore",
+            "label": "Explore"
+           },
+           {
+            "value": "library",
+            "label": "Library"
+           }
+          ],
+          "action": [
+           {
+            "set": "page",
+            "value": "$value"
+           },
+           {
+            "set": "searching",
+            "value": false
+           },
+           {
+            "set": "dial",
+            "value": 0
+           },
+           {
+            "command": "page",
+            "value": "$value"
+           }
+          ]
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": "magnifyingglass",
+          "width": 44,
+          "height": 44,
+          "accessibility": "Search music",
+          "action": {
+           "toggle": "showSearch"
+          }
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": "arrow.clockwise",
+          "width": 44,
+          "height": 44,
+          "accessibility": "Refresh Home",
+          "when": "$speedDial",
+          "action": {
+           "command": "refreshHome"
+          }
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": "chevron.left",
+          "width": 44,
+          "height": 44,
+          "accessibility": "Previous music page",
+          "when": {
+           "or": [
+            "$collection",
+            "$ui.searching"
+           ]
+          },
+          "action": [
+           {
+            "set": "searching",
+            "value": false
+           },
+           {
+            "command": "back"
+           }
+          ]
+         }
+        ],
+        "spacing": 8
+       },
+       {
+        "type": "field",
+        "bind": "query",
+        "placeholder": "Songs, artists, albums",
+        "symbol": "magnifyingglass",
+        "keyboard": "search",
+        "when": "$ui.showSearch",
+        "padding": [
+         0,
+         6,
+         0,
+         14
+        ],
+        "minHeight": 50,
+        "background": "#FFFFFF1A",
+        "shape": "capsule",
+        "submit": [
+         {
+          "set": "searching",
+          "value": true
+         },
+         {
+          "keyboard": "hide"
+         },
+         {
+          "command": "search",
+          "value": "$value"
+         }
+        ]
+       },
+       {
+        "type": "stack",
+        "axis": "horizontal",
+        "children": [
+         {
+          "type": "text",
+          "text": "Results for “{{ui.query}}”",
+          "style": "headline",
+          "lines": 1
+         },
+         {
+          "type": "spacer"
+         },
+         {
+          "type": "progress",
+          "when": "$loading"
+         }
+        ],
+        "when": "$ui.searching"
+       },
+       {
+        "type": "if",
+        "test": "$collection",
+        "then": {
+         "type": "scroll",
+         "spacing": 16,
+         "children": [
+          {
+           "type": "stack",
+           "axis": "horizontal",
+           "children": [
+            {
+             "type": "image",
+             "src": "$collection.image",
+             "placeholder": "music.note.list",
+             "width": 88,
+             "height": 88,
+             "clip": true,
+             "corner": 18
+            },
+            {
+             "type": "stack",
+             "children": [
+              {
+               "type": "text",
+               "text": "$collection.title",
+               "style": "title2",
+               "weight": "bold",
+               "lines": 2
+              },
+              {
+               "type": "text",
+               "text": {
+                "if": [
+                 {
+                  "has": "$collection.subtitle"
+                 },
+                 "$collection.subtitle",
+                 {
+                  "if": [
+                   "$collection.playlist",
+                   "Playlist",
+                   "Collection"
+                  ]
+                 }
+                ]
+               },
+               "style": "subheadline",
+               "color": "secondary",
+               "lines": 1
+              },
+              {
+               "type": "text",
+               "text": {
+                "concat": [
+                 {
+                  "count": "$collection.songs"
+                 },
+                 " loaded songs"
+                ]
+               },
+               "style": "caption",
+               "color": "secondary"
+              }
+             ],
+             "spacing": 6,
+             "fill": "width"
+            }
+           ],
+           "spacing": 16
+          },
+          {
+           "type": "stack",
+           "axis": "horizontal",
+           "children": [
+            {
+             "type": "button",
+             "label": "Play",
+             "symbol": "play.fill",
+             "fill": "width",
+             "disabled": {
+              "or": [
+               {
+                "not": {
+                 "has": "$collection.songs"
+                }
+               },
+               "$loading"
+              ]
+             },
+             "action": {
+              "command": "playCollection",
+              "value": "first"
+             }
+            },
+            {
+             "type": "button",
+             "label": "Random song",
+             "symbol": "shuffle",
+             "fill": "width",
+             "disabled": {
+              "or": [
+               {
+                "not": {
+                 "has": "$collection.songs"
+                }
+               },
+               "$loading"
+              ]
+             },
+             "action": {
+              "command": "playCollection",
+              "value": "random"
+             }
+            }
+           ],
+           "spacing": 12
+          },
+          {
+           "type": "text",
+           "text": "Waiting for this collection’s songs. You can also open it on your PC.",
+           "style": "subheadline",
+           "color": "secondary",
+           "when": {
+            "not": {
+             "has": "$collection.songs"
+            }
+           }
+          },
+          {
+           "type": "stack",
+           "children": [
+            {
+             "type": "each",
+             "items": "$collection.songs",
+             "as": "song",
+             "index": "i",
+             "template": {
+              "type": "stack",
+              "children": [
+               {
+                "type": "stack",
+                "axis": "horizontal",
+                "children": [
+                 {
+                  "type": "text",
+                  "text": {
+                   "add": [
+                    "$i",
+                    1
+                   ]
+                  },
+                  "style": "caption",
+                  "monospaced": true,
+                  "color": "secondary",
+                  "width": 24,
+                  "textAlign": "center"
+                 },
+                 {
+                  "type": "image",
+                  "src": "$song.image",
+                  "placeholder": "music.note",
+                  "width": 42,
+                  "height": 42,
+                  "clip": true,
+                  "corner": 8
+                 },
+                 {
+                  "type": "stack",
+                  "children": [
+                   {
+                    "type": "text",
+                    "text": "$song.title",
+                    "style": "subheadline",
+                    "weight": "medium",
+                    "lines": 1
+                   },
+                   {
+                    "type": "text",
+                    "text": "$song.subtitle",
+                    "style": "caption",
+                    "color": "secondary",
+                    "lines": 1
+                   }
+                  ],
+                  "spacing": 3,
+                  "fill": "width"
+                 },
+                 {
+                  "type": "symbol",
+                  "name": "play.fill",
+                  "size": 12
+                 }
+                ],
+                "spacing": 12,
+                "padding": [
+                 9,
+                 0
+                ],
+                "action": {
+                 "command": "play",
+                 "value": "$song.id"
+                }
+               },
+               {
+                "type": "divider",
+                "opacity": 0.2
+               }
+              ],
+              "spacing": 0
+             }
+            }
+           ],
+           "spacing": 0
+          }
+         ],
+         "padding": [
+          8,
+          0
+         ]
+        },
+        "else": {
+         "type": "if",
+         "test": {
+          "not": {
+           "has": "$browseItems"
+          }
+         },
+         "then": {
+          "type": "empty",
+          "title": "Find your next favorite",
+          "loading": "$loading",
+          "children": [
+           {
+            "type": "button",
+            "label": "Open music on PC",
+            "action": {
+             "command": "setup"
+            }
+           }
+          ]
+         },
+         "else": {
+          "type": "if",
+          "test": "$speedDial",
+          "then": {
+           "type": "pager",
+           "bind": "dial",
+           "indicator": "auto",
+           "fill": "both",
+           "children": [
+            {
+             "type": "each",
+             "items": {
+              "range": 3
+             },
+             "as": "p",
+             "template": {
+              "type": "stack",
+              "children": [
+               {
+                "type": "grid",
+                "columns": "$cols",
+                "spacing": 6,
+                "children": [
+                 {
+                  "type": "each",
+                  "items": {
+                   "slice": [
+                    "$home",
+                    {
+                     "mul": [
+                      "$p",
+                      "$pageSize"
+                     ]
+                    },
+                    "$pageSize"
+                   ]
+                  },
+                  "as": "item",
+                  "template": {
+                   "type": "layers",
+                   "alignment": "bottomTrailing",
+                   "width": "$tileSide",
+                   "height": "$tileSide",
+                   "accessibility": "{{item.title}}, {{item.kind}}",
+                   "action": {
+                    "command": "open",
+                    "value": "$item"
+                   },
+                   "children": [
+                    {
+                     "type": "image",
+                     "src": "$item.image",
+                     "placeholder": "music.note",
+                     "fill": "both",
+                     "clip": true,
+                     "corner": {
+                      "if": [
+                       "$item.playlist",
+                       18,
+                       {
+                        "if": [
+                         "$item.song",
+                         10,
+                         200
+                        ]
+                       }
+                      ]
+                     }
+                    },
+                    {
+                     "type": "stack",
+                     "padding": 5,
+                     "when": "$item.playlist",
+                     "children": [
+                      {
+                       "type": "symbol",
+                       "name": "music.note.list",
+                       "size": 12,
+                       "weight": "bold",
+                       "padding": 7,
+                       "glass": true,
+                       "shape": "circle"
+                      }
+                     ]
+                    }
+                   ]
+                  }
+                 }
+                ]
+               }
+              ],
+              "fill": "both",
+              "align": "topLeading"
+             }
+            }
+           ],
+           "accessibility": "Speed dial"
+          },
+          "else": {
+           "type": "if",
+           "test": "$ui.searching",
+           "then": {
+            "type": "scroll",
+            "spacing": 0,
+            "children": [
+             {
+              "type": "each",
+              "items": "$items",
+              "as": "item",
+              "index": "i",
+              "template": {
+               "type": "if",
+               "test": {
+                "eq": [
+                 "$i",
+                 0
+                ]
+               },
+               "then": {
+                "type": "stack",
+                "axis": "horizontal",
+                "children": [
+                 {
+                  "type": "image",
+                  "src": "$item.image",
+                  "placeholder": "music.note",
+                  "width": 96,
+                  "height": 96,
+                  "clip": true,
+                  "corner": {
+                   "if": [
+                    {
+                     "or": [
+                      "$item.song",
+                      "$item.playlist"
+                     ]
+                    },
+                    14,
+                    48
+                   ]
+                  }
+                 },
+                 {
+                  "type": "stack",
+                  "children": [
+                   {
+                    "type": "text",
+                    "text": "TOP RESULT",
+                    "style": "caption",
+                    "weight": "semibold",
+                    "color": "#FFFFFF8C"
+                   },
+                   {
+                    "type": "text",
+                    "text": "$item.title",
+                    "style": "title3",
+                    "weight": "bold",
+                    "lines": 2
+                   },
+                   {
+                    "type": "text",
+                    "text": {
+                     "if": [
+                      {
+                       "has": "$item.subtitle"
+                      },
+                      "$item.subtitle",
+                      {
+                       "coalesce": [
+                        "$item.kind",
+                        "Music"
+                       ]
+                      }
+                     ]
+                    },
+                    "style": "subheadline",
+                    "color": "#FFFFFF99",
+                    "lines": 1
+                   }
+                  ],
+                  "spacing": 5,
+                  "fill": "width"
+                 },
+                 {
+                  "type": "symbol",
+                  "name": {
+                   "if": [
+                    "$item.song",
+                    "play.fill",
+                    "chevron.right"
+                   ]
+                  },
+                  "size": {
+                   "if": [
+                    "$item.song",
+                    18,
+                    15
+                   ]
+                  },
+                  "weight": "semibold",
+                  "color": {
+                   "if": [
+                    "$item.song",
+                    "black",
+                    "white"
+                   ]
+                  },
+                  "width": 44,
+                  "height": 44,
+                  "background": {
+                   "if": [
+                    "$item.song",
+                    "#FFFFFFE6",
+                    "#FFFFFF1F"
+                   ]
+                  },
+                  "shape": "circle"
+                 }
+                ],
+                "spacing": 16,
+                "padding": [
+                 14,
+                 14,
+                 14,
+                 14
+                ],
+                "background": "#FFFFFF1A",
+                "corner": 22,
+                "action": {
+                 "command": "open",
+                 "value": "$item"
+                },
+                "accessibility": "Top result: {{item.title}}"
+               },
+               "else": {
+                "type": "stack",
+                "children": [
+                 {
+                  "type": "stack",
+                  "axis": "horizontal",
+                  "children": [
+                   {
+                    "type": "image",
+                    "src": "$item.image",
+                    "placeholder": "music.note",
+                    "width": 48,
+                    "height": 48,
+                    "clip": true,
+                    "corner": {
+                     "if": [
+                      {
+                       "or": [
+                        "$item.song",
+                        "$item.playlist"
+                       ]
+                      },
+                      8,
+                      24
+                     ]
+                    }
+                   },
+                   {
+                    "type": "stack",
+                    "children": [
+                     {
+                      "type": "text",
+                      "text": "$item.title",
+                      "style": "subheadline",
+                      "weight": "medium",
+                      "lines": 1
+                     },
+                     {
+                      "type": "text",
+                      "text": {
+                       "if": [
+                        {
+                         "has": "$item.subtitle"
+                        },
+                        "$item.subtitle",
+                        {
+                         "coalesce": [
+                          "$item.kind",
+                          "Music"
+                         ]
+                        }
+                       ]
+                      },
+                      "style": "caption",
+                      "color": "#FFFFFF8C",
+                      "lines": 1
+                     }
+                    ],
+                    "spacing": 3,
+                    "fill": "width"
+                   },
+                   {
+                    "type": "symbol",
+                    "name": {
+                     "if": [
+                      "$item.song",
+                      "play.fill",
+                      "chevron.right"
+                     ]
+                    },
+                    "size": 12,
+                    "color": "#FFFFFF99"
+                   }
+                  ],
+                  "spacing": 12,
+                  "padding": [
+                   8,
+                   0
+                  ],
+                  "action": {
+                   "command": "open",
+                   "value": "$item"
+                  }
+                 },
+                 {
+                  "type": "divider",
+                  "opacity": 0.2
+                 }
+                ],
+                "spacing": 0
+               }
+              }
+             }
+            ],
+            "footer": {
+             "type": "button",
+             "label": "Load more",
+             "variant": "plain",
+             "padding": 12,
+             "action": {
+              "command": "more"
+             }
+            }
+           },
+           "else": {
+            "type": "scroll",
+            "children": [
+             {
+              "type": "grid",
+              "columns": 3,
+              "spacing": 6,
+              "children": [
+               {
+                "type": "each",
+                "items": "$items",
+                "as": "item",
+                "template": {
+                 "type": "layers",
+                 "alignment": "bottomTrailing",
+                 "aspect": 1,
+                 "fill": "width",
+                 "accessibility": "{{item.title}}, {{item.kind}}",
+                 "action": {
+                  "command": "open",
+                  "value": "$item"
+                 },
+                 "children": [
+                  {
+                   "type": "image",
+                   "src": "$item.image",
+                   "placeholder": "music.note",
+                   "fill": "both",
+                   "clip": true,
+                   "corner": {
+                    "if": [
+                     "$item.playlist",
+                     18,
+                     {
+                      "if": [
+                       "$item.song",
+                       10,
+                       200
+                      ]
+                     }
+                    ]
+                   }
+                  },
+                  {
+                   "type": "stack",
+                   "padding": 5,
+                   "when": "$item.playlist",
+                   "children": [
+                    {
+                     "type": "symbol",
+                     "name": "music.note.list",
+                     "size": 12,
+                     "weight": "bold",
+                     "padding": 7,
+                     "glass": true,
+                     "shape": "circle"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               }
+              ]
+             }
+            ],
+            "footer": {
+             "type": "button",
+             "label": "Load more",
+             "variant": "plain",
+             "padding": 12,
+             "action": {
+              "command": "more"
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      ],
+      "spacing": 8,
+      "fill": "both"
+     },
+     {
+      "type": "stack",
+      "children": [
+       {
+        "type": "stack",
+        "axis": "horizontal",
+        "children": [
+         {
+          "type": "spacer"
+         },
+         {
+          "type": "layers",
+          "alignment": "topTrailing",
+          "children": [
+           {
+            "type": "image",
+            "src": "$artwork",
+            "placeholder": "music.note",
+            "width": "$miniArt",
+            "height": "$miniArt",
+            "clip": true,
+            "corner": 16,
+            "key": "$track"
+           },
+           {
+            "type": "button",
+            "variant": "plain",
+            "symbol": "arrow.up.left.and.arrow.down.right",
+            "width": 44,
+            "height": 44,
+            "background": "#FFFFFF1A",
+            "shape": "circle",
+            "accessibility": "Focus player",
+            "action": {
+             "set": "browsing",
+             "value": false
+            },
+            "padding": 5
+           }
+          ]
+         },
+         {
+          "type": "spacer"
+         }
+        ],
+        "fill": "width"
+       },
+       {
+        "type": "stack",
+        "children": [
+         {
+          "type": "text",
+          "text": "$title",
+          "style": "headline",
+          "weight": "bold",
+          "lines": 2
+         },
+         {
+          "type": "text",
+          "text": "$artist",
+          "style": "caption",
+          "color": "#FFFFFF99",
+          "lines": 1
+         }
+        ],
+        "spacing": 5,
+        "fill": "width",
+        "key": "$track"
+       },
+       {
+        "type": "scrubber",
+        "compact": true,
+        "action": {
+         "command": "seek",
+         "value": "$value"
+        }
+       },
+       {
+        "type": "stack",
+        "axis": "horizontal",
+        "children": [
+         {
+          "type": "spacer"
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": "backward.end.fill",
+          "symbolSize": 20,
+          "width": 48,
+          "height": 48,
+          "accessibility": "Previous track",
+          "action": {
+           "command": "previous"
+          }
+         },
+         {
+          "type": "spacer"
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": {
+           "if": [
+            "$playing",
+            "pause.fill",
+            "play.fill"
+           ]
+          },
+          "symbolSize": 28,
+          "width": 54,
+          "height": 44,
+          "accessibility": {
+           "if": [
+            "$playing",
+            "Pause",
+            "Play"
+           ]
+          },
+          "action": {
+           "command": "toggle"
+          }
+         },
+         {
+          "type": "spacer"
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": "forward.end.fill",
+          "symbolSize": 20,
+          "width": 48,
+          "height": 48,
+          "accessibility": "Next track",
+          "action": {
+           "command": "next"
+          }
+         },
+         {
+          "type": "spacer"
+         }
+        ],
+        "foreground": "white"
+       }
+      ],
+      "spacing": 10,
+      "padding": 16,
+      "background": "#00000038",
+      "corner": 26,
+      "width": "$miniWidth",
+      "fill": "height"
+     }
+    ],
+    "spacing": 18,
+    "fill": "both"
+   },
+   "else": {
+    "type": "stack",
+    "children": [
+     {
+      "type": "stack",
+      "children": [
+       {
+        "type": "stack",
+        "axis": "horizontal",
+        "children": [
+         {
+          "type": "picker",
+          "value": "$ui.page",
+          "fill": "width",
+          "options": [
+           {
+            "value": "home",
+            "label": "Home"
+           },
+           {
+            "value": "explore",
+            "label": "Explore"
+           },
+           {
+            "value": "library",
+            "label": "Library"
+           }
+          ],
+          "action": [
+           {
+            "set": "page",
+            "value": "$value"
+           },
+           {
+            "set": "searching",
+            "value": false
+           },
+           {
+            "set": "dial",
+            "value": 0
+           },
+           {
+            "command": "page",
+            "value": "$value"
+           }
+          ]
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": "magnifyingglass",
+          "width": 44,
+          "height": 44,
+          "accessibility": "Search music",
+          "action": {
+           "toggle": "showSearch"
+          }
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": "arrow.clockwise",
+          "width": 44,
+          "height": 44,
+          "accessibility": "Refresh Home",
+          "when": "$speedDial",
+          "action": {
+           "command": "refreshHome"
+          }
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": "chevron.left",
+          "width": 44,
+          "height": 44,
+          "accessibility": "Previous music page",
+          "when": {
+           "or": [
+            "$collection",
+            "$ui.searching"
+           ]
+          },
+          "action": [
+           {
+            "set": "searching",
+            "value": false
+           },
+           {
+            "command": "back"
+           }
+          ]
+         }
+        ],
+        "spacing": 8
+       },
+       {
+        "type": "field",
+        "bind": "query",
+        "placeholder": "Songs, artists, albums",
+        "symbol": "magnifyingglass",
+        "keyboard": "search",
+        "when": "$ui.showSearch",
+        "padding": [
+         0,
+         6,
+         0,
+         14
+        ],
+        "minHeight": 50,
+        "background": "#FFFFFF1A",
+        "shape": "capsule",
+        "submit": [
+         {
+          "set": "searching",
+          "value": true
+         },
+         {
+          "keyboard": "hide"
+         },
+         {
+          "command": "search",
+          "value": "$value"
+         }
+        ]
+       },
+       {
+        "type": "stack",
+        "axis": "horizontal",
+        "children": [
+         {
+          "type": "text",
+          "text": "Results for “{{ui.query}}”",
+          "style": "headline",
+          "lines": 1
+         },
+         {
+          "type": "spacer"
+         },
+         {
+          "type": "progress",
+          "when": "$loading"
+         }
+        ],
+        "when": "$ui.searching"
+       },
+       {
+        "type": "if",
+        "test": "$collection",
+        "then": {
+         "type": "scroll",
+         "spacing": 16,
+         "children": [
+          {
+           "type": "stack",
+           "axis": "horizontal",
+           "children": [
+            {
+             "type": "image",
+             "src": "$collection.image",
+             "placeholder": "music.note.list",
+             "width": 88,
+             "height": 88,
+             "clip": true,
+             "corner": 18
+            },
+            {
+             "type": "stack",
+             "children": [
+              {
+               "type": "text",
+               "text": "$collection.title",
+               "style": "title2",
+               "weight": "bold",
+               "lines": 2
+              },
+              {
+               "type": "text",
+               "text": {
+                "if": [
+                 {
+                  "has": "$collection.subtitle"
+                 },
+                 "$collection.subtitle",
+                 {
+                  "if": [
+                   "$collection.playlist",
+                   "Playlist",
+                   "Collection"
+                  ]
+                 }
+                ]
+               },
+               "style": "subheadline",
+               "color": "secondary",
+               "lines": 1
+              },
+              {
+               "type": "text",
+               "text": {
+                "concat": [
+                 {
+                  "count": "$collection.songs"
+                 },
+                 " loaded songs"
+                ]
+               },
+               "style": "caption",
+               "color": "secondary"
+              }
+             ],
+             "spacing": 6,
+             "fill": "width"
+            }
+           ],
+           "spacing": 16
+          },
+          {
+           "type": "stack",
+           "axis": "horizontal",
+           "children": [
+            {
+             "type": "button",
+             "label": "Play",
+             "symbol": "play.fill",
+             "fill": "width",
+             "disabled": {
+              "or": [
+               {
+                "not": {
+                 "has": "$collection.songs"
+                }
+               },
+               "$loading"
+              ]
+             },
+             "action": {
+              "command": "playCollection",
+              "value": "first"
+             }
+            },
+            {
+             "type": "button",
+             "label": "Random song",
+             "symbol": "shuffle",
+             "fill": "width",
+             "disabled": {
+              "or": [
+               {
+                "not": {
+                 "has": "$collection.songs"
+                }
+               },
+               "$loading"
+              ]
+             },
+             "action": {
+              "command": "playCollection",
+              "value": "random"
+             }
+            }
+           ],
+           "spacing": 12
+          },
+          {
+           "type": "text",
+           "text": "Waiting for this collection’s songs. You can also open it on your PC.",
+           "style": "subheadline",
+           "color": "secondary",
+           "when": {
+            "not": {
+             "has": "$collection.songs"
+            }
+           }
+          },
+          {
+           "type": "stack",
+           "children": [
+            {
+             "type": "each",
+             "items": "$collection.songs",
+             "as": "song",
+             "index": "i",
+             "template": {
+              "type": "stack",
+              "children": [
+               {
+                "type": "stack",
+                "axis": "horizontal",
+                "children": [
+                 {
+                  "type": "text",
+                  "text": {
+                   "add": [
+                    "$i",
+                    1
+                   ]
+                  },
+                  "style": "caption",
+                  "monospaced": true,
+                  "color": "secondary",
+                  "width": 24,
+                  "textAlign": "center"
+                 },
+                 {
+                  "type": "image",
+                  "src": "$song.image",
+                  "placeholder": "music.note",
+                  "width": 42,
+                  "height": 42,
+                  "clip": true,
+                  "corner": 8
+                 },
+                 {
+                  "type": "stack",
+                  "children": [
+                   {
+                    "type": "text",
+                    "text": "$song.title",
+                    "style": "subheadline",
+                    "weight": "medium",
+                    "lines": 1
+                   },
+                   {
+                    "type": "text",
+                    "text": "$song.subtitle",
+                    "style": "caption",
+                    "color": "secondary",
+                    "lines": 1
+                   }
+                  ],
+                  "spacing": 3,
+                  "fill": "width"
+                 },
+                 {
+                  "type": "symbol",
+                  "name": "play.fill",
+                  "size": 12
+                 }
+                ],
+                "spacing": 12,
+                "padding": [
+                 9,
+                 0
+                ],
+                "action": {
+                 "command": "play",
+                 "value": "$song.id"
+                }
+               },
+               {
+                "type": "divider",
+                "opacity": 0.2
+               }
+              ],
+              "spacing": 0
+             }
+            }
+           ],
+           "spacing": 0
+          }
+         ],
+         "padding": [
+          8,
+          0
+         ]
+        },
+        "else": {
+         "type": "if",
+         "test": {
+          "not": {
+           "has": "$browseItems"
+          }
+         },
+         "then": {
+          "type": "empty",
+          "title": "Find your next favorite",
+          "loading": "$loading",
+          "children": [
+           {
+            "type": "button",
+            "label": "Open music on PC",
+            "action": {
+             "command": "setup"
+            }
+           }
+          ]
+         },
+         "else": {
+          "type": "if",
+          "test": "$speedDial",
+          "then": {
+           "type": "pager",
+           "bind": "dial",
+           "indicator": "auto",
+           "fill": "both",
+           "children": [
+            {
+             "type": "each",
+             "items": {
+              "range": 3
+             },
+             "as": "p",
+             "template": {
+              "type": "stack",
+              "children": [
+               {
+                "type": "grid",
+                "columns": "$cols",
+                "spacing": 6,
+                "children": [
+                 {
+                  "type": "each",
+                  "items": {
+                   "slice": [
+                    "$home",
+                    {
+                     "mul": [
+                      "$p",
+                      "$pageSize"
+                     ]
+                    },
+                    "$pageSize"
+                   ]
+                  },
+                  "as": "item",
+                  "template": {
+                   "type": "layers",
+                   "alignment": "bottomTrailing",
+                   "width": "$tileSide",
+                   "height": "$tileSide",
+                   "accessibility": "{{item.title}}, {{item.kind}}",
+                   "action": {
+                    "command": "open",
+                    "value": "$item"
+                   },
+                   "children": [
+                    {
+                     "type": "image",
+                     "src": "$item.image",
+                     "placeholder": "music.note",
+                     "fill": "both",
+                     "clip": true,
+                     "corner": {
+                      "if": [
+                       "$item.playlist",
+                       18,
+                       {
+                        "if": [
+                         "$item.song",
+                         10,
+                         200
+                        ]
+                       }
+                      ]
+                     }
+                    },
+                    {
+                     "type": "stack",
+                     "padding": 5,
+                     "when": "$item.playlist",
+                     "children": [
+                      {
+                       "type": "symbol",
+                       "name": "music.note.list",
+                       "size": 12,
+                       "weight": "bold",
+                       "padding": 7,
+                       "glass": true,
+                       "shape": "circle"
+                      }
+                     ]
+                    }
+                   ]
+                  }
+                 }
+                ]
+               }
+              ],
+              "fill": "both",
+              "align": "topLeading"
+             }
+            }
+           ],
+           "accessibility": "Speed dial"
+          },
+          "else": {
+           "type": "if",
+           "test": "$ui.searching",
+           "then": {
+            "type": "scroll",
+            "spacing": 0,
+            "children": [
+             {
+              "type": "each",
+              "items": "$items",
+              "as": "item",
+              "index": "i",
+              "template": {
+               "type": "if",
+               "test": {
+                "eq": [
+                 "$i",
+                 0
+                ]
+               },
+               "then": {
+                "type": "stack",
+                "axis": "horizontal",
+                "children": [
+                 {
+                  "type": "image",
+                  "src": "$item.image",
+                  "placeholder": "music.note",
+                  "width": 96,
+                  "height": 96,
+                  "clip": true,
+                  "corner": {
+                   "if": [
+                    {
+                     "or": [
+                      "$item.song",
+                      "$item.playlist"
+                     ]
+                    },
+                    14,
+                    48
+                   ]
+                  }
+                 },
+                 {
+                  "type": "stack",
+                  "children": [
+                   {
+                    "type": "text",
+                    "text": "TOP RESULT",
+                    "style": "caption",
+                    "weight": "semibold",
+                    "color": "#FFFFFF8C"
+                   },
+                   {
+                    "type": "text",
+                    "text": "$item.title",
+                    "style": "title3",
+                    "weight": "bold",
+                    "lines": 2
+                   },
+                   {
+                    "type": "text",
+                    "text": {
+                     "if": [
+                      {
+                       "has": "$item.subtitle"
+                      },
+                      "$item.subtitle",
+                      {
+                       "coalesce": [
+                        "$item.kind",
+                        "Music"
+                       ]
+                      }
+                     ]
+                    },
+                    "style": "subheadline",
+                    "color": "#FFFFFF99",
+                    "lines": 1
+                   }
+                  ],
+                  "spacing": 5,
+                  "fill": "width"
+                 },
+                 {
+                  "type": "symbol",
+                  "name": {
+                   "if": [
+                    "$item.song",
+                    "play.fill",
+                    "chevron.right"
+                   ]
+                  },
+                  "size": {
+                   "if": [
+                    "$item.song",
+                    18,
+                    15
+                   ]
+                  },
+                  "weight": "semibold",
+                  "color": {
+                   "if": [
+                    "$item.song",
+                    "black",
+                    "white"
+                   ]
+                  },
+                  "width": 44,
+                  "height": 44,
+                  "background": {
+                   "if": [
+                    "$item.song",
+                    "#FFFFFFE6",
+                    "#FFFFFF1F"
+                   ]
+                  },
+                  "shape": "circle"
+                 }
+                ],
+                "spacing": 16,
+                "padding": [
+                 14,
+                 14,
+                 14,
+                 14
+                ],
+                "background": "#FFFFFF1A",
+                "corner": 22,
+                "action": {
+                 "command": "open",
+                 "value": "$item"
+                },
+                "accessibility": "Top result: {{item.title}}"
+               },
+               "else": {
+                "type": "stack",
+                "children": [
+                 {
+                  "type": "stack",
+                  "axis": "horizontal",
+                  "children": [
+                   {
+                    "type": "image",
+                    "src": "$item.image",
+                    "placeholder": "music.note",
+                    "width": 48,
+                    "height": 48,
+                    "clip": true,
+                    "corner": {
+                     "if": [
+                      {
+                       "or": [
+                        "$item.song",
+                        "$item.playlist"
+                       ]
+                      },
+                      8,
+                      24
+                     ]
+                    }
+                   },
+                   {
+                    "type": "stack",
+                    "children": [
+                     {
+                      "type": "text",
+                      "text": "$item.title",
+                      "style": "subheadline",
+                      "weight": "medium",
+                      "lines": 1
+                     },
+                     {
+                      "type": "text",
+                      "text": {
+                       "if": [
+                        {
+                         "has": "$item.subtitle"
+                        },
+                        "$item.subtitle",
+                        {
+                         "coalesce": [
+                          "$item.kind",
+                          "Music"
+                         ]
+                        }
+                       ]
+                      },
+                      "style": "caption",
+                      "color": "#FFFFFF8C",
+                      "lines": 1
+                     }
+                    ],
+                    "spacing": 3,
+                    "fill": "width"
+                   },
+                   {
+                    "type": "symbol",
+                    "name": {
+                     "if": [
+                      "$item.song",
+                      "play.fill",
+                      "chevron.right"
+                     ]
+                    },
+                    "size": 12,
+                    "color": "#FFFFFF99"
+                   }
+                  ],
+                  "spacing": 12,
+                  "padding": [
+                   8,
+                   0
+                  ],
+                  "action": {
+                   "command": "open",
+                   "value": "$item"
+                  }
+                 },
+                 {
+                  "type": "divider",
+                  "opacity": 0.2
+                 }
+                ],
+                "spacing": 0
+               }
+              }
+             }
+            ],
+            "footer": {
+             "type": "button",
+             "label": "Load more",
+             "variant": "plain",
+             "padding": 12,
+             "action": {
+              "command": "more"
+             }
+            }
+           },
+           "else": {
+            "type": "scroll",
+            "children": [
+             {
+              "type": "grid",
+              "columns": 3,
+              "spacing": 6,
+              "children": [
+               {
+                "type": "each",
+                "items": "$items",
+                "as": "item",
+                "template": {
+                 "type": "layers",
+                 "alignment": "bottomTrailing",
+                 "aspect": 1,
+                 "fill": "width",
+                 "accessibility": "{{item.title}}, {{item.kind}}",
+                 "action": {
+                  "command": "open",
+                  "value": "$item"
+                 },
+                 "children": [
+                  {
+                   "type": "image",
+                   "src": "$item.image",
+                   "placeholder": "music.note",
+                   "fill": "both",
+                   "clip": true,
+                   "corner": {
+                    "if": [
+                     "$item.playlist",
+                     18,
+                     {
+                      "if": [
+                       "$item.song",
+                       10,
+                       200
+                      ]
+                     }
+                    ]
+                   }
+                  },
+                  {
+                   "type": "stack",
+                   "padding": 5,
+                   "when": "$item.playlist",
+                   "children": [
+                    {
+                     "type": "symbol",
+                     "name": "music.note.list",
+                     "size": 12,
+                     "weight": "bold",
+                     "padding": 7,
+                     "glass": true,
+                     "shape": "circle"
+                    }
+                   ]
+                  }
+                 ]
+                }
+               }
+              ]
+             }
+            ],
+            "footer": {
+             "type": "button",
+             "label": "Load more",
+             "variant": "plain",
+             "padding": 12,
+             "action": {
+              "command": "more"
+             }
+            }
+           }
+          }
+         }
+        }
+       }
+      ],
+      "spacing": 8,
+      "fill": "both"
+     },
+     {
+      "type": "stack",
+      "children": [
+       {
+        "type": "stack",
+        "axis": "horizontal",
+        "children": [
+         {
+          "type": "spacer"
+         },
+         {
+          "type": "layers",
+          "alignment": "topTrailing",
+          "children": [
+           {
+            "type": "image",
+            "src": "$artwork",
+            "placeholder": "music.note",
+            "width": "$miniArt",
+            "height": "$miniArt",
+            "clip": true,
+            "corner": 16,
+            "key": "$track"
+           },
+           {
+            "type": "button",
+            "variant": "plain",
+            "symbol": "arrow.up.left.and.arrow.down.right",
+            "width": 44,
+            "height": 44,
+            "background": "#FFFFFF1A",
+            "shape": "circle",
+            "accessibility": "Focus player",
+            "action": {
+             "set": "browsing",
+             "value": false
+            },
+            "padding": 5
+           }
+          ]
+         },
+         {
+          "type": "spacer"
+         }
+        ],
+        "fill": "width"
+       },
+       {
+        "type": "stack",
+        "children": [
+         {
+          "type": "text",
+          "text": "$title",
+          "style": "headline",
+          "weight": "bold",
+          "lines": 2
+         },
+         {
+          "type": "text",
+          "text": "$artist",
+          "style": "caption",
+          "color": "#FFFFFF99",
+          "lines": 1
+         }
+        ],
+        "spacing": 5,
+        "fill": "width",
+        "key": "$track"
+       },
+       {
+        "type": "scrubber",
+        "compact": true,
+        "action": {
+         "command": "seek",
+         "value": "$value"
+        }
+       },
+       {
+        "type": "stack",
+        "axis": "horizontal",
+        "children": [
+         {
+          "type": "spacer"
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": "backward.end.fill",
+          "symbolSize": 20,
+          "width": 48,
+          "height": 48,
+          "accessibility": "Previous track",
+          "action": {
+           "command": "previous"
+          }
+         },
+         {
+          "type": "spacer"
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": {
+           "if": [
+            "$playing",
+            "pause.fill",
+            "play.fill"
+           ]
+          },
+          "symbolSize": 28,
+          "width": 54,
+          "height": 44,
+          "accessibility": {
+           "if": [
+            "$playing",
+            "Pause",
+            "Play"
+           ]
+          },
+          "action": {
+           "command": "toggle"
+          }
+         },
+         {
+          "type": "spacer"
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": "forward.end.fill",
+          "symbolSize": 20,
+          "width": 48,
+          "height": 48,
+          "accessibility": "Next track",
+          "action": {
+           "command": "next"
+          }
+         },
+         {
+          "type": "spacer"
+         }
+        ],
+        "foreground": "white"
+       }
+      ],
+      "spacing": 10,
+      "padding": 16,
+      "background": "#00000038",
+      "corner": 26,
+      "height": 320,
+      "fill": "width"
+     }
+    ],
+    "spacing": 16,
+    "fill": "both"
+   }
+  },
+  "else": {
+   "type": "if",
+   "test": "$env.landscape",
+   "then": {
+    "type": "stack",
+    "axis": "horizontal",
+    "children": [
+     {
+      "type": "pager",
+      "axis": "vertical",
+      "bind": "cover",
+      "start": 1,
+      "indicator": "none",
+      "locked": false,
+      "width": "$coverSide",
+      "height": "$coverSide",
+      "clip": true,
+      "corner": 20,
+      "shadow": 24,
+      "scale": {
+       "if": [
+        {
+         "or": [
+          "$playing",
+          {
+           "ne": [
+            "$ui.cover",
+            1
+           ]
+          }
+         ]
+        },
+        1,
+        0.95
+       ]
+      },
+      "children": [
+       {
+        "type": "stack",
+        "children": [
+         {
+          "type": "label",
+          "text": "LYRICS",
+          "symbol": "quote.bubble",
+          "style": "caption",
+          "weight": "semibold",
+          "color": "#FFFFFF99"
+         },
+         {
+          "type": "if",
+          "test": "$hasLyrics",
+          "then": {
+           "type": "stack",
+           "children": [
+            {
+             "type": "lyrics",
+             "lines": "$lyrics.lines",
+             "synced": "$lyrics.synced",
+             "fill": "both",
+             "action": {
+              "command": "seek",
+              "value": "$value"
+             }
+            },
+            {
+             "type": "text",
+             "text": {
+              "if": [
+               {
+                "startsWith": [
+                 {
+                  "lower": "$lyrics.source"
+                 },
+                 "source"
+                ]
+               },
+               "$lyrics.source",
+               {
+                "concat": [
+                 "Lyrics from ",
+                 "$lyrics.source"
+                ]
+               }
+              ]
+             },
+             "style": "caption2",
+             "color": "#FFFFFF66",
+             "lines": 1,
+             "when": {
+              "has": "$lyrics.source"
+             }
+            }
+           ],
+           "spacing": 6,
+           "fill": "both"
+          },
+          "else": {
+           "type": "if",
+           "test": {
+            "eq": [
+             "$lyrics.status",
+             "loading"
+            ]
+           },
+           "then": {
+            "type": "stack",
+            "children": [
+             {
+              "type": "progress"
+             },
+             {
+              "type": "text",
+              "text": "Finding lyrics…",
+              "style": "footnote",
+              "color": "#FFFFFF99"
+             }
+            ],
+            "alignment": "center",
+            "spacing": 10,
+            "fill": "both",
+            "align": "center"
+           },
+           "else": {
+            "type": "if",
+            "test": {
+             "eq": [
+              "$lyrics.status",
+              "instrumental"
+             ]
+            },
+            "then": {
+             "type": "stack",
+             "children": [
+              {
+               "type": "text",
+               "text": "Instrumental",
+               "style": "title3",
+               "weight": "bold",
+               "textAlign": "center"
+              },
+              {
+               "type": "text",
+               "text": "This song has no lyrics.",
+               "style": "footnote",
+               "color": "#FFFFFF99",
+               "textAlign": "center"
+              }
+             ],
+             "alignment": "center",
+             "spacing": 8,
+             "fill": "both",
+             "align": "center"
+            },
+            "else": {
+             "type": "if",
+             "test": {
+              "eq": [
+               "$lyrics.status",
+               "error"
+              ]
+             },
+             "then": {
+              "type": "stack",
+              "children": [
+               {
+                "type": "text",
+                "text": "Lyrics couldn’t load",
+                "style": "title3",
+                "weight": "bold",
+                "textAlign": "center"
+               },
+               {
+                "type": "text",
+                "text": "Your PC couldn’t reach the lyrics service. It will try again in a minute.",
+                "style": "footnote",
+                "color": "#FFFFFF99",
+                "textAlign": "center"
+               }
+              ],
+              "alignment": "center",
+              "spacing": 8,
+              "fill": "both",
+              "align": "center"
+             },
+             "else": {
+              "type": "if",
+              "test": {
+               "has": "$lyrics"
+              },
+              "then": {
+               "type": "stack",
+               "children": [
+                {
+                 "type": "text",
+                 "text": "No lyrics for this song",
+                 "style": "title3",
+                 "weight": "bold",
+                 "textAlign": "center"
+                },
+                {
+                 "type": "text",
+                 "text": "Lyrics for this song aren’t available.",
+                 "style": "footnote",
+                 "color": "#FFFFFF99",
+                 "textAlign": "center"
+                }
+               ],
+               "alignment": "center",
+               "spacing": 8,
+               "fill": "both",
+               "align": "center"
+              },
+              "else": {
+               "type": "stack",
+               "children": [
+                {
+                 "type": "text",
+                 "text": "Nothing playing",
+                 "style": "title3",
+                 "weight": "bold",
+                 "textAlign": "center"
+                },
+                {
+                 "type": "text",
+                 "text": "Play a song on your PC to see its lyrics.",
+                 "style": "footnote",
+                 "color": "#FFFFFF99",
+                 "textAlign": "center"
+                }
+               ],
+               "alignment": "center",
+               "spacing": 8,
+               "fill": "both",
+               "align": "center"
+              }
+             }
+            }
+           }
+          },
+          "fill": "both"
+         },
+         {
+          "type": "stack",
+          "axis": "horizontal",
+          "children": [
+           {
+            "type": "spacer"
+           },
+           {
+            "type": "symbol",
+            "name": "chevron.compact.down",
+            "size": 20,
+            "color": "#FFFFFF59"
+           },
+           {
+            "type": "spacer"
+           }
+          ],
+          "fill": "width"
+         }
+        ],
+        "spacing": 10,
+        "padding": 16,
+        "background": "#FFFFFF14",
+        "shape": "rect",
+        "fill": "both",
+        "foreground": "white",
+        "action": {
+         "set": "cover",
+         "value": 1
+        }
+       },
+       {
+        "type": "image",
+        "src": "$artwork",
+        "placeholder": "music.note",
+        "key": "$track",
+        "accessibility": "Album artwork. Swipe up for next songs, down for lyrics."
+       },
+       {
+        "type": "stack",
+        "children": [
+         {
+          "type": "label",
+          "text": "UP NEXT",
+          "symbol": "list.bullet",
+          "style": "caption",
+          "weight": "semibold",
+          "color": "#FFFFFF99"
+         },
+         {
+          "type": "if",
+          "test": {
+           "has": "$queue"
+          },
+          "then": {
+           "type": "stack",
+           "children": [
+            {
+             "type": "each",
+             "items": {
+              "slice": [
+               "$queue",
+               0,
+               "$queueShown"
+              ]
+             },
+             "as": "song",
+             "id": "id",
+             "template": {
+              "type": "stack",
+              "axis": "horizontal",
+              "children": [
+               {
+                "type": "image",
+                "src": "$song.image",
+                "placeholder": "music.note",
+                "width": 38,
+                "height": 38,
+                "clip": true,
+                "corner": 7
+               },
+               {
+                "type": "stack",
+                "children": [
+                 {
+                  "type": "text",
+                  "text": "$song.title",
+                  "style": "subheadline",
+                  "weight": "semibold",
+                  "lines": 1
+                 },
+                 {
+                  "type": "text",
+                  "text": {
+                   "concat": [
+                    "$song.artist",
+                    {
+                     "if": [
+                      {
+                       "and": [
+                        "$song.artist",
+                        "$song.duration"
+                       ]
+                      },
+                      " · ",
+                      ""
+                     ]
+                    },
+                    "$song.duration"
+                   ]
+                  },
+                  "style": "caption",
+                  "color": "#FFFFFF8C",
+                  "lines": 1
+                 }
+                ],
+                "spacing": 2,
+                "fill": "width"
+               },
+               {
+                "type": "symbol",
+                "name": "infinity",
+                "size": 11,
+                "color": "#FFFFFF66",
+                "when": "$song.automix",
+                "accessibility": "Autoplay"
+               }
+              ],
+              "spacing": 10,
+              "height": 50,
+              "action": {
+               "command": "queue",
+               "value": "$song.id"
+              }
+             }
+            },
+            {
+             "type": "text",
+             "text": {
+              "concat": [
+               "$queueMore",
+               " more"
+              ]
+             },
+             "style": "caption",
+             "color": "#FFFFFF80",
+             "height": 50,
+             "when": {
+              "gt": [
+               "$queueMore",
+               0
+              ]
+             }
+            }
+           ],
+           "spacing": 0,
+           "fill": "both"
+          },
+          "else": {
+           "type": "stack",
+           "children": [
+            {
+             "type": "text",
+             "text": "Nothing up next",
+             "style": "title3",
+             "weight": "bold",
+             "textAlign": "center"
+            },
+            {
+             "type": "text",
+             "text": "Play a song, album or playlist on your PC.",
+             "style": "footnote",
+             "color": "#FFFFFF99",
+             "textAlign": "center"
+            }
+           ],
+           "alignment": "center",
+           "spacing": 8,
+           "fill": "both",
+           "align": "center"
+          },
+          "fill": "both"
+         },
+         {
+          "type": "stack",
+          "axis": "horizontal",
+          "children": [
+           {
+            "type": "spacer"
+           },
+           {
+            "type": "symbol",
+            "name": "chevron.compact.up",
+            "size": 20,
+            "color": "#FFFFFF59"
+           },
+           {
+            "type": "spacer"
+           }
+          ],
+          "fill": "width"
+         }
+        ],
+        "spacing": 10,
+        "padding": 16,
+        "background": "#FFFFFF14",
+        "shape": "rect",
+        "fill": "both",
+        "foreground": "white",
+        "action": {
+         "set": "cover",
+         "value": 1
+        }
+       }
+      ]
+     },
+     {
+      "type": "stack",
+      "children": [
+       {
+        "type": "stack",
+        "axis": "horizontal",
+        "children": [
+         {
+          "type": "stack",
+          "children": [
+           {
+            "type": "text",
+            "text": "$title",
+            "style": "title2",
+            "weight": "bold",
+            "lines": 2
+           },
+           {
+            "type": "text",
+            "text": "$artist",
+            "style": "body",
+            "color": "#FFFFFF99",
+            "lines": 1
+           }
+          ],
+          "spacing": 5,
+          "fill": "width",
+          "key": "$track"
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": "square.grid.3x3.fill",
+          "width": 44,
+          "height": 44,
+          "background": "#FFFFFF1A",
+          "shape": "circle",
+          "accessibility": "Browse music",
+          "action": [
+           {
+            "set": "browsing",
+            "value": true
+           },
+           {
+            "set": "cover",
+            "value": 1
+           }
+          ]
+         }
+        ],
+        "spacing": 12
+       },
+       {
+        "type": "stack",
+        "children": [
+         {
+          "type": "scrubber",
+          "compact": false,
+          "action": {
+           "command": "seek",
+           "value": "$value"
+          }
+         },
+         {
+          "type": "stack",
+          "axis": "horizontal",
+          "children": [
+           {
+            "type": "spacer"
+           },
+           {
+            "type": "button",
+            "variant": "plain",
+            "symbol": "backward.end.fill",
+            "symbolSize": 25,
+            "width": 48,
+            "height": 48,
+            "accessibility": "Previous track",
+            "action": {
+             "command": "previous"
+            }
+           },
+           {
+            "type": "spacer"
+           },
+           {
+            "type": "button",
+            "variant": "plain",
+            "symbol": {
+             "if": [
+              "$playing",
+              "pause.fill",
+              "play.fill"
+             ]
+            },
+            "symbolSize": 38,
+            "width": 54,
+            "height": 58,
+            "accessibility": {
+             "if": [
+              "$playing",
+              "Pause",
+              "Play"
+             ]
+            },
+            "action": {
+             "command": "toggle"
+            }
+           },
+           {
+            "type": "spacer"
+           },
+           {
+            "type": "button",
+            "variant": "plain",
+            "symbol": "forward.end.fill",
+            "symbolSize": 25,
+            "width": 48,
+            "height": 48,
+            "accessibility": "Next track",
+            "action": {
+             "command": "next"
+            }
+           },
+           {
+            "type": "spacer"
+           }
+          ],
+          "foreground": "white"
+         },
+         {
+          "type": "stack",
+          "axis": "horizontal",
+          "children": [
+           {
+            "type": "symbol",
+            "name": {
+             "if": [
+              "$volume.muted",
+              "speaker.slash.fill",
+              "speaker.fill"
+             ]
+            },
+            "size": 12
+           },
+           {
+            "type": "slider",
+            "value": "$volume.value",
+            "min": 0,
+            "max": 100,
+            "tint": "white",
+            "disabled": {
+             "not": "$volume.available"
+            },
+            "accessibility": "Music volume",
+            "fill": "width",
+            "action": {
+             "command": "volume",
+             "value": "$value"
+            }
+           },
+           {
+            "type": "symbol",
+            "name": "speaker.wave.3.fill",
+            "size": 12
+           }
+          ],
+          "spacing": 14,
+          "foreground": "#FFFFFF8C"
+         }
+        ],
+        "spacing": 18
+       }
+      ],
+      "spacing": {
+       "if": [
+        "$env.landscape",
+        14,
+        22
+       ]
+      },
+      "fill": "width",
+      "maxWidth": 430
+     }
+    ],
+    "spacing": 36,
+    "fill": "both",
+    "align": "center"
+   },
+   "else": {
+    "type": "stack",
+    "children": [
+     {
+      "type": "spacer"
+     },
+     {
+      "type": "stack",
+      "axis": "horizontal",
+      "children": [
+       {
+        "type": "spacer"
+       },
+       {
+        "type": "pager",
+        "axis": "vertical",
+        "bind": "cover",
+        "start": 1,
+        "indicator": "none",
+        "locked": false,
+        "width": "$coverSide",
+        "height": "$coverSide",
+        "clip": true,
+        "corner": 20,
+        "shadow": 24,
+        "scale": {
+         "if": [
+          {
+           "or": [
+            "$playing",
+            {
+             "ne": [
+              "$ui.cover",
+              1
+             ]
+            }
+           ]
+          },
+          1,
+          0.95
+         ]
+        },
+        "children": [
+         {
+          "type": "stack",
+          "children": [
+           {
+            "type": "label",
+            "text": "LYRICS",
+            "symbol": "quote.bubble",
+            "style": "caption",
+            "weight": "semibold",
+            "color": "#FFFFFF99"
+           },
+           {
+            "type": "if",
+            "test": "$hasLyrics",
+            "then": {
+             "type": "stack",
+             "children": [
+              {
+               "type": "lyrics",
+               "lines": "$lyrics.lines",
+               "synced": "$lyrics.synced",
+               "fill": "both",
+               "action": {
+                "command": "seek",
+                "value": "$value"
+               }
+              },
+              {
+               "type": "text",
+               "text": {
+                "if": [
+                 {
+                  "startsWith": [
+                   {
+                    "lower": "$lyrics.source"
+                   },
+                   "source"
+                  ]
+                 },
+                 "$lyrics.source",
+                 {
+                  "concat": [
+                   "Lyrics from ",
+                   "$lyrics.source"
+                  ]
+                 }
+                ]
+               },
+               "style": "caption2",
+               "color": "#FFFFFF66",
+               "lines": 1,
+               "when": {
+                "has": "$lyrics.source"
+               }
+              }
+             ],
+             "spacing": 6,
+             "fill": "both"
+            },
+            "else": {
+             "type": "if",
+             "test": {
+              "eq": [
+               "$lyrics.status",
+               "loading"
+              ]
+             },
+             "then": {
+              "type": "stack",
+              "children": [
+               {
+                "type": "progress"
+               },
+               {
+                "type": "text",
+                "text": "Finding lyrics…",
+                "style": "footnote",
+                "color": "#FFFFFF99"
+               }
+              ],
+              "alignment": "center",
+              "spacing": 10,
+              "fill": "both",
+              "align": "center"
+             },
+             "else": {
+              "type": "if",
+              "test": {
+               "eq": [
+                "$lyrics.status",
+                "instrumental"
+               ]
+              },
+              "then": {
+               "type": "stack",
+               "children": [
+                {
+                 "type": "text",
+                 "text": "Instrumental",
+                 "style": "title3",
+                 "weight": "bold",
+                 "textAlign": "center"
+                },
+                {
+                 "type": "text",
+                 "text": "This song has no lyrics.",
+                 "style": "footnote",
+                 "color": "#FFFFFF99",
+                 "textAlign": "center"
+                }
+               ],
+               "alignment": "center",
+               "spacing": 8,
+               "fill": "both",
+               "align": "center"
+              },
+              "else": {
+               "type": "if",
+               "test": {
+                "eq": [
+                 "$lyrics.status",
+                 "error"
+                ]
+               },
+               "then": {
+                "type": "stack",
+                "children": [
+                 {
+                  "type": "text",
+                  "text": "Lyrics couldn’t load",
+                  "style": "title3",
+                  "weight": "bold",
+                  "textAlign": "center"
+                 },
+                 {
+                  "type": "text",
+                  "text": "Your PC couldn’t reach the lyrics service. It will try again in a minute.",
+                  "style": "footnote",
+                  "color": "#FFFFFF99",
+                  "textAlign": "center"
+                 }
+                ],
+                "alignment": "center",
+                "spacing": 8,
+                "fill": "both",
+                "align": "center"
+               },
+               "else": {
+                "type": "if",
+                "test": {
+                 "has": "$lyrics"
+                },
+                "then": {
+                 "type": "stack",
+                 "children": [
+                  {
+                   "type": "text",
+                   "text": "No lyrics for this song",
+                   "style": "title3",
+                   "weight": "bold",
+                   "textAlign": "center"
+                  },
+                  {
+                   "type": "text",
+                   "text": "Lyrics for this song aren’t available.",
+                   "style": "footnote",
+                   "color": "#FFFFFF99",
+                   "textAlign": "center"
+                  }
+                 ],
+                 "alignment": "center",
+                 "spacing": 8,
+                 "fill": "both",
+                 "align": "center"
+                },
+                "else": {
+                 "type": "stack",
+                 "children": [
+                  {
+                   "type": "text",
+                   "text": "Nothing playing",
+                   "style": "title3",
+                   "weight": "bold",
+                   "textAlign": "center"
+                  },
+                  {
+                   "type": "text",
+                   "text": "Play a song on your PC to see its lyrics.",
+                   "style": "footnote",
+                   "color": "#FFFFFF99",
+                   "textAlign": "center"
+                  }
+                 ],
+                 "alignment": "center",
+                 "spacing": 8,
+                 "fill": "both",
+                 "align": "center"
+                }
+               }
+              }
+             }
+            },
+            "fill": "both"
+           },
+           {
+            "type": "stack",
+            "axis": "horizontal",
+            "children": [
+             {
+              "type": "spacer"
+             },
+             {
+              "type": "symbol",
+              "name": "chevron.compact.down",
+              "size": 20,
+              "color": "#FFFFFF59"
+             },
+             {
+              "type": "spacer"
+             }
+            ],
+            "fill": "width"
+           }
+          ],
+          "spacing": 10,
+          "padding": 16,
+          "background": "#FFFFFF14",
+          "shape": "rect",
+          "fill": "both",
+          "foreground": "white",
+          "action": {
+           "set": "cover",
+           "value": 1
+          }
+         },
+         {
+          "type": "image",
+          "src": "$artwork",
+          "placeholder": "music.note",
+          "key": "$track",
+          "accessibility": "Album artwork. Swipe up for next songs, down for lyrics."
+         },
+         {
+          "type": "stack",
+          "children": [
+           {
+            "type": "label",
+            "text": "UP NEXT",
+            "symbol": "list.bullet",
+            "style": "caption",
+            "weight": "semibold",
+            "color": "#FFFFFF99"
+           },
+           {
+            "type": "if",
+            "test": {
+             "has": "$queue"
+            },
+            "then": {
+             "type": "stack",
+             "children": [
+              {
+               "type": "each",
+               "items": {
+                "slice": [
+                 "$queue",
+                 0,
+                 "$queueShown"
+                ]
+               },
+               "as": "song",
+               "id": "id",
+               "template": {
+                "type": "stack",
+                "axis": "horizontal",
+                "children": [
+                 {
+                  "type": "image",
+                  "src": "$song.image",
+                  "placeholder": "music.note",
+                  "width": 38,
+                  "height": 38,
+                  "clip": true,
+                  "corner": 7
+                 },
+                 {
+                  "type": "stack",
+                  "children": [
+                   {
+                    "type": "text",
+                    "text": "$song.title",
+                    "style": "subheadline",
+                    "weight": "semibold",
+                    "lines": 1
+                   },
+                   {
+                    "type": "text",
+                    "text": {
+                     "concat": [
+                      "$song.artist",
+                      {
+                       "if": [
+                        {
+                         "and": [
+                          "$song.artist",
+                          "$song.duration"
+                         ]
+                        },
+                        " · ",
+                        ""
+                       ]
+                      },
+                      "$song.duration"
+                     ]
+                    },
+                    "style": "caption",
+                    "color": "#FFFFFF8C",
+                    "lines": 1
+                   }
+                  ],
+                  "spacing": 2,
+                  "fill": "width"
+                 },
+                 {
+                  "type": "symbol",
+                  "name": "infinity",
+                  "size": 11,
+                  "color": "#FFFFFF66",
+                  "when": "$song.automix",
+                  "accessibility": "Autoplay"
+                 }
+                ],
+                "spacing": 10,
+                "height": 50,
+                "action": {
+                 "command": "queue",
+                 "value": "$song.id"
+                }
+               }
+              },
+              {
+               "type": "text",
+               "text": {
+                "concat": [
+                 "$queueMore",
+                 " more"
+                ]
+               },
+               "style": "caption",
+               "color": "#FFFFFF80",
+               "height": 50,
+               "when": {
+                "gt": [
+                 "$queueMore",
+                 0
+                ]
+               }
+              }
+             ],
+             "spacing": 0,
+             "fill": "both"
+            },
+            "else": {
+             "type": "stack",
+             "children": [
+              {
+               "type": "text",
+               "text": "Nothing up next",
+               "style": "title3",
+               "weight": "bold",
+               "textAlign": "center"
+              },
+              {
+               "type": "text",
+               "text": "Play a song, album or playlist on your PC.",
+               "style": "footnote",
+               "color": "#FFFFFF99",
+               "textAlign": "center"
+              }
+             ],
+             "alignment": "center",
+             "spacing": 8,
+             "fill": "both",
+             "align": "center"
+            },
+            "fill": "both"
+           },
+           {
+            "type": "stack",
+            "axis": "horizontal",
+            "children": [
+             {
+              "type": "spacer"
+             },
+             {
+              "type": "symbol",
+              "name": "chevron.compact.up",
+              "size": 20,
+              "color": "#FFFFFF59"
+             },
+             {
+              "type": "spacer"
+             }
+            ],
+            "fill": "width"
+           }
+          ],
+          "spacing": 10,
+          "padding": 16,
+          "background": "#FFFFFF14",
+          "shape": "rect",
+          "fill": "both",
+          "foreground": "white",
+          "action": {
+           "set": "cover",
+           "value": 1
+          }
+         }
+        ]
+       },
+       {
+        "type": "spacer"
+       }
+      ],
+      "fill": "width"
+     },
+     {
+      "type": "spacer"
+     },
+     {
+      "type": "stack",
+      "children": [
+       {
+        "type": "stack",
+        "axis": "horizontal",
+        "children": [
+         {
+          "type": "stack",
+          "children": [
+           {
+            "type": "text",
+            "text": "$title",
+            "style": "title2",
+            "weight": "bold",
+            "lines": 2
+           },
+           {
+            "type": "text",
+            "text": "$artist",
+            "style": "body",
+            "color": "#FFFFFF99",
+            "lines": 1
+           }
+          ],
+          "spacing": 5,
+          "fill": "width",
+          "key": "$track"
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": "square.grid.3x3.fill",
+          "width": 44,
+          "height": 44,
+          "background": "#FFFFFF1A",
+          "shape": "circle",
+          "accessibility": "Browse music",
+          "action": [
+           {
+            "set": "browsing",
+            "value": true
+           },
+           {
+            "set": "cover",
+            "value": 1
+           }
+          ]
+         }
+        ],
+        "spacing": 12
+       },
+       {
+        "type": "stack",
+        "children": [
+         {
+          "type": "scrubber",
+          "compact": false,
+          "action": {
+           "command": "seek",
+           "value": "$value"
+          }
+         },
+         {
+          "type": "stack",
+          "axis": "horizontal",
+          "children": [
+           {
+            "type": "spacer"
+           },
+           {
+            "type": "button",
+            "variant": "plain",
+            "symbol": "backward.end.fill",
+            "symbolSize": 25,
+            "width": 48,
+            "height": 48,
+            "accessibility": "Previous track",
+            "action": {
+             "command": "previous"
+            }
+           },
+           {
+            "type": "spacer"
+           },
+           {
+            "type": "button",
+            "variant": "plain",
+            "symbol": {
+             "if": [
+              "$playing",
+              "pause.fill",
+              "play.fill"
+             ]
+            },
+            "symbolSize": 38,
+            "width": 54,
+            "height": 58,
+            "accessibility": {
+             "if": [
+              "$playing",
+              "Pause",
+              "Play"
+             ]
+            },
+            "action": {
+             "command": "toggle"
+            }
+           },
+           {
+            "type": "spacer"
+           },
+           {
+            "type": "button",
+            "variant": "plain",
+            "symbol": "forward.end.fill",
+            "symbolSize": 25,
+            "width": 48,
+            "height": 48,
+            "accessibility": "Next track",
+            "action": {
+             "command": "next"
+            }
+           },
+           {
+            "type": "spacer"
+           }
+          ],
+          "foreground": "white"
+         },
+         {
+          "type": "stack",
+          "axis": "horizontal",
+          "children": [
+           {
+            "type": "symbol",
+            "name": {
+             "if": [
+              "$volume.muted",
+              "speaker.slash.fill",
+              "speaker.fill"
+             ]
+            },
+            "size": 12
+           },
+           {
+            "type": "slider",
+            "value": "$volume.value",
+            "min": 0,
+            "max": 100,
+            "tint": "white",
+            "disabled": {
+             "not": "$volume.available"
+            },
+            "accessibility": "Music volume",
+            "fill": "width",
+            "action": {
+             "command": "volume",
+             "value": "$value"
+            }
+           },
+           {
+            "type": "symbol",
+            "name": "speaker.wave.3.fill",
+            "size": 12
+           }
+          ],
+          "spacing": 14,
+          "foreground": "#FFFFFF8C"
+         }
+        ],
+        "spacing": 18
+       }
+      ],
+      "spacing": {
+       "if": [
+        "$env.landscape",
+        14,
+        22
+       ]
+      },
+      "fill": "width"
+     }
+    ],
+    "spacing": 24,
+    "fill": "both"
+   }
+  }
+ }
+}

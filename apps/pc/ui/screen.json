@@ -1,0 +1,257 @@
+{
+ "$schema": "../../../docs/apps/screen.schema.json",
+ "type": "screen",
+ "title": "PC Monitor",
+ "state": {
+  "page": "overview"
+ },
+ "refresh": {
+  "interval": 2
+ },
+ "body": {
+  "type": "scroll",
+  "spacing": 22,
+  "maxWidth": 560,
+  "children": [
+   {
+    "type": "picker",
+    "value": "$ui.page",
+    "options": [
+     {
+      "value": "overview",
+      "label": "Overview"
+     },
+     {
+      "value": "temperatures",
+      "label": "Temperatures"
+     },
+     {
+      "value": "network",
+      "label": "Network"
+     }
+    ],
+    "action": {
+     "set": "page",
+     "value": "$value"
+    }
+   },
+   {
+    "type": "if",
+    "test": {
+     "eq": [
+      "$ui.page",
+      "temperatures"
+     ]
+    },
+    "then": {
+     "type": "section",
+     "title": "Temperatures",
+     "children": [
+      {
+       "type": "each",
+       "items": "$temperatures",
+       "as": "t",
+       "template": {
+        "type": "stat",
+        "label": "$t.label",
+        "value": "$t.value",
+        "symbol": "thermometer"
+       },
+       "empty": {
+        "type": "stack",
+        "children": [
+         {
+          "type": "stat",
+          "label": "Hardware sensors",
+          "value": "Unavailable",
+          "symbol": "thermometer"
+         },
+         {
+          "type": "text",
+          "text": "Run Libre Hardware Monitor or Open Hardware Monitor with WMI enabled to expose supported CPU / GPU sensors. Firmware thermal zones are shown when available.",
+          "style": "caption",
+          "color": "secondary"
+         }
+        ],
+        "spacing": 10
+       }
+      }
+     ]
+    },
+    "else": {
+     "type": "if",
+     "test": {
+      "eq": [
+       "$ui.page",
+       "network"
+      ]
+     },
+     "then": {
+      "type": "section",
+      "title": "Network activity",
+      "children": [
+       {
+        "type": "each",
+        "items": "$network",
+        "as": "n",
+        "id": "name",
+        "template": {
+         "type": "stack",
+         "children": [
+          {
+           "type": "text",
+           "text": "{{n.name}} · {{n.link}}",
+           "style": "title3",
+           "weight": "semibold"
+          },
+          {
+           "type": "stat",
+           "label": "Download",
+           "value": "$n.download",
+           "symbol": "arrow.down"
+          },
+          {
+           "type": "stat",
+           "label": "Upload",
+           "value": "$n.upload",
+           "symbol": "arrow.up"
+          },
+          {
+           "type": "stat",
+           "label": "Received since adapter reset",
+           "value": "$n.received",
+           "symbol": "network"
+          },
+          {
+           "type": "stat",
+           "label": "Sent since adapter reset",
+           "value": "$n.sent",
+           "symbol": "network"
+          }
+         ],
+         "spacing": 12
+        },
+        "empty": {
+         "type": "stat",
+         "label": "Connected adapters",
+         "value": {
+          "if": [
+           "$sensorsAvailable",
+           "None detected",
+           "Unavailable"
+          ]
+         },
+         "symbol": "network"
+        }
+       }
+      ]
+     },
+     "else": {
+      "type": "stack",
+      "children": [
+       {
+        "type": "section",
+        "title": "$host",
+        "children": [
+         {
+          "type": "stat",
+          "label": "Processor",
+          "value": "$cpu.text",
+          "symbol": "cpu",
+          "progress": "$cpu.fraction"
+         },
+         {
+          "type": "stat",
+          "label": "Memory",
+          "value": "$memory.text",
+          "symbol": "memorychip",
+          "progress": "$memory.fraction"
+         },
+         {
+          "type": "stat",
+          "label": "Up for",
+          "value": "$uptime",
+          "symbol": "clock"
+         }
+        ]
+       },
+       {
+        "type": "section",
+        "title": "PC volume",
+        "children": [
+         {
+          "type": "if",
+          "test": "$audio.available",
+          "then": {
+           "type": "stack",
+           "children": [
+            {
+             "type": "slider",
+             "label": "$audio.device",
+             "symbol": "speaker.wave.2",
+             "value": "$audio.volume",
+             "min": 0,
+             "max": 100,
+             "step": 1,
+             "action": {
+              "command": "volume",
+              "value": "$value"
+             }
+            },
+            {
+             "type": "toggle",
+             "label": "Mute PC",
+             "symbol": "speaker.slash",
+             "value": "$audio.muted",
+             "action": {
+              "command": "mute",
+              "value": "$value"
+             }
+            }
+           ],
+           "spacing": 14
+          },
+          "else": {
+           "type": "stat",
+           "label": "Master volume",
+           "value": "Unavailable",
+           "symbol": "speaker.slash"
+          }
+         }
+        ]
+       },
+       {
+        "type": "section",
+        "title": "Controls",
+        "children": [
+         {
+          "type": "toggle",
+          "label": "Keep PC awake",
+          "symbol": "cup.and.saucer",
+          "value": "$awake",
+          "action": {
+           "command": "awake",
+           "value": "$value"
+          }
+         },
+         {
+          "type": "button",
+          "label": "Lock PC",
+          "symbol": "lock",
+          "role": "destructive",
+          "variant": "plain",
+          "confirm": "Lock your PC now?",
+          "action": {
+           "command": "lock"
+          }
+         }
+        ]
+       }
+      ],
+      "spacing": 22
+     }
+    }
+   }
+  ]
+ }
+}

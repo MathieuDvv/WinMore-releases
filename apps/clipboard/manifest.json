@@ -1,0 +1,11 @@
+{
+  "id": "clipboard",
+  "name": "Clipboard",
+  "shortName": "Clipboard",
+  "version": "2.0.0",
+  "description": "Share text and images with your PC.",
+  "entry": "index.cjs",
+  "ui": "kit",
+  "symbol": "doc.on.clipboard",
+  "icon": "icon.svg"
+}

@@ -1,0 +1,207 @@
+{
+ "$schema": "../../../docs/apps/screen.schema.json",
+ "type": "screen",
+ "title": "Clock",
+ "chrome": "fullscreen",
+ "state": {
+  "face": "digital",
+  "theme": "midnight",
+  "hours24": true,
+  "background": null
+ },
+ "persist": [
+  "face",
+  "theme",
+  "hours24",
+  "background"
+ ],
+ "refresh": {
+  "interval": 30
+ },
+ "let": {
+  "colors": {
+   "if": [
+    {
+     "eq": [
+      "$ui.theme",
+      "ocean"
+     ]
+    },
+    [
+     "#0A84FFA6",
+     "black"
+    ],
+    {
+     "if": [
+      {
+       "eq": [
+        "$ui.theme",
+        "sunset"
+       ]
+      },
+      [
+       "#FF9F0A99",
+       "#BF5AF280",
+       "black"
+      ],
+      [
+       "black",
+       "black"
+      ]
+     ]
+    }
+   ]
+  }
+ },
+ "body": {
+  "type": "layers",
+  "fill": "both",
+  "clip": true,
+  "shape": "rect",
+  "gradient": "$colors",
+  "alignment": "topTrailing",
+  "children": [
+   {
+    "type": "image",
+    "src": "$ui.background",
+    "fill": "both",
+    "when": "$ui.background"
+   },
+   {
+    "type": "stack",
+    "fill": "both",
+    "background": "#00000073",
+    "shape": "rect",
+    "when": "$ui.background",
+    "children": []
+   },
+   {
+    "type": "clock",
+    "face": "$ui.face",
+    "hours24": "$ui.hours24",
+    "padding": 30,
+    "fill": "both",
+    "align": "center",
+    "foreground": "white"
+   },
+   {
+    "type": "button",
+    "variant": "plain",
+    "symbol": "slider.horizontal.3",
+    "padding": 16,
+    "tint": "white",
+    "accessibility": "Clock appearance",
+    "action": {
+     "sheet": "appearance"
+    }
+   }
+  ]
+ },
+ "sheets": {
+  "appearance": {
+   "title": "Clock appearance",
+   "detents": [
+    "medium",
+    "large"
+   ],
+   "body": {
+    "type": "list",
+    "children": [
+     {
+      "type": "section",
+      "children": [
+       {
+        "type": "picker",
+        "label": "Clock face",
+        "variant": "menu",
+        "value": "$ui.face",
+        "options": [
+         {
+          "value": "digital",
+          "label": "Digital"
+         },
+         {
+          "value": "minimal",
+          "label": "Minimal"
+         },
+         {
+          "value": "analog",
+          "label": "Analog"
+         }
+        ],
+        "action": {
+         "set": "face",
+         "value": "$value"
+        }
+       },
+       {
+        "type": "toggle",
+        "label": "24-hour time",
+        "value": "$ui.hours24",
+        "action": {
+         "set": "hours24",
+         "value": "$value"
+        }
+       },
+       {
+        "type": "picker",
+        "label": "Background",
+        "variant": "menu",
+        "value": "$ui.theme",
+        "options": [
+         {
+          "value": "midnight",
+          "label": "Midnight"
+         },
+         {
+          "value": "ocean",
+          "label": "Ocean"
+         },
+         {
+          "value": "sunset",
+          "label": "Sunset"
+         }
+        ],
+        "action": {
+         "set": "theme",
+         "value": "$value"
+        }
+       },
+       {
+        "type": "row",
+        "title": "Choose background photo",
+        "symbol": "photo",
+        "action": {
+         "photo": "background",
+         "maxSize": 1600
+        }
+       },
+       {
+        "type": "row",
+        "title": "Remove photo",
+        "symbol": "trash",
+        "role": "destructive",
+        "when": "$ui.background",
+        "action": {
+         "set": "background",
+         "value": null
+        }
+       }
+      ]
+     },
+     {
+      "type": "section",
+      "title": "Notifications",
+      "children": [
+       {
+        "type": "text",
+        "text": "iPhone notification mirroring is not connected. A future Windows Bluetooth bridge is needed to display other apps’ notifications.",
+        "color": "secondary"
+       }
+      ]
+     }
+    ]
+   }
+  }
+ }
+}
