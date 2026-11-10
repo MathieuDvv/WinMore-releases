@@ -132,375 +132,421 @@
   "type": "if",
   "test": "$inCall",
   "then": {
-   "type": "stack",
+   "type": "layers",
+   "alignment": "bottom",
+   "background": "black",
+   "corner": 22,
+   "clip": true,
+   "fill": "both",
    "children": [
     {
      "type": "stack",
-     "axis": "horizontal",
+     "height": 200,
+     "fill": "width",
+     "align": "top",
      "children": [
       {
        "type": "stack",
-       "children": [
-        {
-         "type": "label",
-         "text": "$call.name",
-         "symbol": "speaker.wave.2.fill",
-         "style": "headline",
-         "lines": 1
-        },
-        {
-         "type": "text",
-         "text": "$call.guild",
-         "style": "caption",
-         "color": "secondary",
-         "lines": 1,
-         "when": {
-          "has": "$call.guild"
-         }
-        }
-       ],
-       "spacing": 2,
-       "fill": "width"
-      },
-      {
-       "type": "text",
-       "text": "$people",
-       "style": "caption",
-       "color": "secondary"
+       "width": 420,
+       "height": 420,
+       "shape": "circle",
+       "background": "#5865F2",
+       "opacity": 0.55,
+       "blur": 90,
+       "children": []
       }
      ]
     },
     {
-     "type": "scroll",
-     "fill": "both",
+     "type": "stack",
      "children": [
       {
-       "type": "grid",
-       "minWidth": 96,
-       "spacing": 18,
-       "padding": [
-        12,
-        0
-       ],
+       "type": "stack",
+       "axis": "horizontal",
        "children": [
         {
-         "type": "each",
-         "items": "$call.members",
-         "as": "member",
-         "template": {
-          "type": "stack",
-          "children": [
-           {
-            "type": "layers",
-            "alignment": "bottomTrailing",
+         "type": "stack",
+         "children": [
+          {
+           "type": "label",
+           "text": "$call.name",
+           "symbol": "speaker.wave.2.fill",
+           "style": "headline",
+           "lines": 1
+          },
+          {
+           "type": "text",
+           "text": "$call.guild",
+           "style": "caption",
+           "color": "secondary",
+           "lines": 1,
+           "when": {
+            "has": "$call.guild"
+           }
+          }
+         ],
+         "spacing": 2,
+         "fill": "width"
+        },
+        {
+         "type": "text",
+         "text": "$people",
+         "style": "caption",
+         "color": "secondary"
+        }
+       ]
+      },
+      {
+       "type": "scroll",
+       "fill": "both",
+       "children": [
+        {
+         "type": "grid",
+         "minWidth": 96,
+         "spacing": 18,
+         "padding": [
+          12,
+          0
+         ],
+         "children": [
+          {
+           "type": "each",
+           "items": "$call.members",
+           "as": "member",
+           "template": {
+            "type": "stack",
             "children": [
              {
-              "type": "avatar",
-              "image": "$member.avatar",
-              "text": "$member.name",
-              "size": 68,
-              "dimmed": "$member.muted",
-              "ring": {
-               "if": [
-                "$member.speaking",
-                "#24A659",
-                "clear"
-               ]
-              }
-             },
-             {
-              "type": "stack",
-              "padding": 2,
-              "background": "black",
-              "shape": "circle",
-              "when": {
-               "has": {
-                "if": [
-                 "$member.muted",
-                 "speaker.slash.fill",
-                 {
+              "type": "layers",
+              "alignment": "bottomTrailing",
+              "children": [
+               {
+                "type": "avatar",
+                "image": "$member.avatar",
+                "text": "$member.name",
+                "size": 68,
+                "dimmed": "$member.muted",
+                "ring": {
+                 "if": [
+                  "$member.speaking",
+                  "#24A659",
+                  "clear"
+                 ]
+                }
+               },
+               {
+                "type": "stack",
+                "padding": 2,
+                "background": "black",
+                "shape": "circle",
+                "when": {
+                 "has": {
                   "if": [
-                   {
-                    "or": [
-                     "$member.selfDeaf",
-                     "$member.serverDeaf"
-                    ]
-                   },
-                   "headphones",
+                   "$member.muted",
+                   "speaker.slash.fill",
                    {
                     "if": [
                      {
                       "or": [
-                       "$member.selfMute",
-                       "$member.serverMute"
+                       "$member.selfDeaf",
+                       "$member.serverDeaf"
                       ]
                      },
-                     "mic.slash.fill",
-                     null
+                     "headphones",
+                     {
+                      "if": [
+                       {
+                        "or": [
+                         "$member.selfMute",
+                         "$member.serverMute"
+                        ]
+                       },
+                       "mic.slash.fill",
+                       null
+                      ]
+                     }
                     ]
                    }
                   ]
                  }
-                ]
-               }
-              },
-              "children": [
-               {
-                "type": "symbol",
-                "name": {
-                 "if": [
-                  "$member.muted",
-                  "speaker.slash.fill",
-                  {
+                },
+                "children": [
+                 {
+                  "type": "symbol",
+                  "name": {
                    "if": [
+                    "$member.muted",
+                    "speaker.slash.fill",
+                    {
+                     "if": [
+                      {
+                       "or": [
+                        "$member.selfDeaf",
+                        "$member.serverDeaf"
+                       ]
+                      },
+                      "headphones",
+                      {
+                       "if": [
+                        {
+                         "or": [
+                          "$member.selfMute",
+                          "$member.serverMute"
+                         ]
+                        },
+                        "mic.slash.fill",
+                        null
+                       ]
+                      }
+                     ]
+                    }
+                   ]
+                  },
+                  "size": 11,
+                  "weight": "bold",
+                  "color": "white",
+                  "width": 24,
+                  "height": 24,
+                  "background": {
+                   "if": [
+                    "$member.muted",
+                    "red",
+                    "#333333"
+                   ]
+                  },
+                  "shape": "circle",
+                  "slash": {
+                   "and": [
+                    {
+                     "not": "$member.muted"
+                    },
                     {
                      "or": [
                       "$member.selfDeaf",
                       "$member.serverDeaf"
                      ]
-                    },
-                    "headphones",
-                    {
-                     "if": [
-                      {
-                       "or": [
-                        "$member.selfMute",
-                        "$member.serverMute"
-                       ]
-                      },
-                      "mic.slash.fill",
-                      null
-                     ]
                     }
                    ]
                   }
-                 ]
-                },
-                "size": 11,
-                "weight": "bold",
-                "color": "white",
-                "width": 24,
-                "height": 24,
-                "background": {
-                 "if": [
-                  "$member.muted",
-                  "red",
-                  "#333333"
-                 ]
-                },
-                "shape": "circle",
-                "slash": {
-                 "and": [
-                  {
-                   "not": "$member.muted"
-                  },
-                  {
-                   "or": [
-                    "$member.selfDeaf",
-                    "$member.serverDeaf"
-                   ]
-                  }
-                 ]
-                }
-               }
-              ]
-             }
-            ]
-           },
-           {
-            "type": "text",
-            "text": "$member.name",
-            "style": "caption",
-            "weight": "medium",
-            "lines": 1,
-            "color": {
-             "if": [
-              "$member.speaking",
-              "primary",
-              "secondary"
-             ]
-            }
-           },
-           {
-            "type": "if",
-            "test": "$member.streaming",
-            "then": {
-             "type": "badge",
-             "text": "LIVE",
-             "tint": "red",
-             "variant": "tinted"
-            },
-            "else": {
-             "type": "text",
-             "text": {
-              "if": [
-               "$member.you",
-               "You",
-               {
-                "if": [
-                 "$member.muted",
-                 "Muted",
-                 {
-                  "concat": [
-                   {
-                    "round": "$member.volume"
-                   },
-                   "%"
-                  ]
                  }
                 ]
                }
               ]
              },
-             "style": "caption2",
-             "monospaced": true,
-             "color": "secondary",
-             "lines": 1
+             {
+              "type": "text",
+              "text": "$member.name",
+              "style": "caption",
+              "weight": "medium",
+              "lines": 1,
+              "color": {
+               "if": [
+                "$member.speaking",
+                "primary",
+                "secondary"
+               ]
+              }
+             },
+             {
+              "type": "if",
+              "test": "$member.streaming",
+              "then": {
+               "type": "badge",
+               "text": "LIVE",
+               "tint": "red",
+               "variant": "tinted"
+              },
+              "else": {
+               "type": "text",
+               "text": {
+                "if": [
+                 "$member.you",
+                 "You",
+                 {
+                  "if": [
+                   "$member.muted",
+                   "Muted",
+                   {
+                    "concat": [
+                     {
+                      "round": "$member.volume"
+                     },
+                     "%"
+                    ]
+                   }
+                  ]
+                 }
+                ]
+               },
+               "style": "caption2",
+               "monospaced": true,
+               "color": "secondary",
+               "lines": 1
+              }
+             }
+            ],
+            "spacing": 6,
+            "alignment": "center",
+            "fill": "width",
+            "accessibility": {
+             "if": [
+              "$member.you",
+              "{{member.name}}, you",
+              "{{member.name}}"
+             ]
+            },
+            "action": {
+             "if": [
+              "$member.you",
+              null,
+              {
+               "sheet": "member",
+               "params": "$member.id"
+              }
+             ]
             }
            }
-          ],
-          "spacing": 6,
-          "alignment": "center",
-          "fill": "width",
-          "accessibility": {
-           "if": [
-            "$member.you",
-            "{{member.name}}, you",
-            "{{member.name}}"
-           ]
-          },
-          "action": {
-           "if": [
-            "$member.you",
-            null,
-            {
-             "sheet": "member",
-             "params": "$member.id"
-            }
-           ]
           }
-         }
+         ]
         }
        ]
-      }
-     ]
-    },
-    {
-     "type": "stack",
-     "axis": "horizontal",
-     "children": [
-      {
-       "type": "button",
-       "variant": "plain",
-       "symbol": {
-        "if": [
-         "$voice.mute",
-         "mic.slash.fill",
-         "mic.fill"
-        ]
-       },
-       "symbolSize": 20,
-       "width": 54,
-       "height": 54,
-       "shape": "circle",
-       "background": {
-        "if": [
-         "$voice.mute",
-         "#FF453A2E",
-         "#FFFFFF1F"
-        ]
-       },
-       "tint": {
-        "if": [
-         "$voice.mute",
-         "red",
-         "primary"
-        ]
-       },
-       "accessibility": {
-        "if": [
-         "$voice.mute",
-         "Unmute microphone",
-         "Mute microphone"
-        ]
-       },
-       "action": {
-        "command": "mute",
-        "value": {
-         "not": "$voice.mute"
-        }
-       }
       },
       {
-       "type": "symbol",
-       "name": "headphones",
-       "size": 20,
-       "weight": "semibold",
-       "slash": "$voice.deaf",
-       "width": 54,
-       "height": 54,
-       "shape": "circle",
-       "background": {
-        "if": [
-         "$voice.deaf",
-         "#FF453A2E",
-         "#FFFFFF1F"
-        ]
-       },
-       "color": {
-        "if": [
-         "$voice.deaf",
-         "red",
-         "primary"
-        ]
-       },
-       "accessibility": {
-        "if": [
-         "$voice.deaf",
-         "Undeafen",
-         "Deafen"
-        ]
-       },
-       "action": {
-        "command": "deafen",
-        "value": {
-         "not": "$voice.deaf"
+       "type": "stack",
+       "axis": "horizontal",
+       "children": [
+        {
+         "type": "button",
+         "variant": "plain",
+         "symbol": {
+          "if": [
+           "$voice.mute",
+           "mic.slash.fill",
+           "mic.fill"
+          ]
+         },
+         "symbolSize": 20,
+         "width": 54,
+         "height": 54,
+         "shape": "circle",
+         "background": {
+          "if": [
+           "$voice.mute",
+           "#FF453A2E",
+           "#FFFFFF1F"
+          ]
+         },
+         "tint": {
+          "if": [
+           "$voice.mute",
+           "red",
+           "primary"
+          ]
+         },
+         "accessibility": {
+          "if": [
+           "$voice.mute",
+           "Unmute microphone",
+           "Mute microphone"
+          ]
+         },
+         "action": {
+          "command": "mute",
+          "value": {
+           "not": "$voice.mute"
+          }
+         }
+        },
+        {
+         "type": "symbol",
+         "name": "headphones",
+         "size": 20,
+         "weight": "semibold",
+         "slash": "$voice.deaf",
+         "width": 54,
+         "height": 54,
+         "shape": "circle",
+         "background": {
+          "if": [
+           "$voice.deaf",
+           "#FF453A2E",
+           "#FFFFFF1F"
+          ]
+         },
+         "color": {
+          "if": [
+           "$voice.deaf",
+           "red",
+           "primary"
+          ]
+         },
+         "accessibility": {
+          "if": [
+           "$voice.deaf",
+           "Undeafen",
+           "Deafen"
+          ]
+         },
+         "action": {
+          "command": "deafen",
+          "value": {
+           "not": "$voice.deaf"
+          }
+         }
+        },
+        {
+         "type": "button",
+         "variant": "plain",
+         "symbol": "waveform",
+         "symbolSize": 20,
+         "width": 54,
+         "height": 54,
+         "shape": "circle",
+         "background": "#FFFFFF1F",
+         "tint": "primary",
+         "accessibility": "Soundboard",
+         "action": [
+          {
+           "cover": "soundboard"
+          },
+          {
+           "command": "soundboard"
+          }
+         ]
+        },
+        {
+         "type": "button",
+         "variant": "plain",
+         "symbol": "phone.down.fill",
+         "symbolSize": 20,
+         "tint": "white",
+         "width": 72,
+         "height": 54,
+         "background": "red",
+         "shape": "capsule",
+         "accessibility": "Leave call",
+         "action": {
+          "command": "leave"
+         }
         }
-       }
-      },
-      {
-       "type": "button",
-       "variant": "plain",
-       "symbol": "phone.down.fill",
-       "symbolSize": 20,
-       "tint": "white",
-       "width": 72,
-       "height": 54,
-       "background": "red",
-       "shape": "capsule",
-       "accessibility": "Leave call",
-       "action": {
-        "command": "leave"
-       }
+       ],
+       "spacing": 18,
+       "padding": 8,
+       "glass": true,
+       "shape": "capsule"
       }
      ],
-     "spacing": 18,
-     "padding": 8,
-     "glass": true,
-     "shape": "capsule"
+     "spacing": 14,
+     "alignment": "center",
+     "padding": [
+      16,
+      16,
+      0,
+      16
+     ],
+     "fill": "both"
     }
-   ],
-   "spacing": 14,
-   "alignment": "center",
-   "padding": [
-    16,
-    16,
-    0,
-    16
-   ],
-   "background": "black",
-   "corner": 22,
-   "fill": "both"
+   ]
   },
   "else": {
    "type": "empty",
@@ -722,6 +768,315 @@
      "color": "secondary",
      "padding": 22
     }
+   }
+  }
+ },
+ "covers": {
+  "soundboard": {
+   "bar": {
+    "leading": [
+     {
+      "type": "button",
+      "variant": "glass",
+      "symbol": "chevron.down",
+      "label": "Soundboard",
+      "action": {
+       "dismiss": true
+      },
+      "accessibility": "Close soundboard"
+     }
+    ],
+    "trailing": [
+     {
+      "type": "progress",
+      "when": {
+       "eq": [
+        "$soundboard.status",
+        "loading"
+       ]
+      },
+      "width": 42,
+      "height": 42,
+      "glass": true,
+      "shape": "circle"
+     },
+     {
+      "type": "button",
+      "variant": "glass",
+      "symbol": "arrow.clockwise",
+      "action": {
+       "command": "soundboard"
+      },
+      "accessibility": "Reload sounds"
+     }
+    ]
+   },
+   "background": "black",
+   "body": {
+    "type": "layers",
+    "alignment": "bottom",
+    "background": "black",
+    "corner": 22,
+    "clip": true,
+    "fill": "both",
+    "children": [
+     {
+      "type": "stack",
+      "height": 200,
+      "fill": "width",
+      "align": "top",
+      "children": [
+       {
+        "type": "stack",
+        "width": 420,
+        "height": 420,
+        "shape": "circle",
+        "background": "#5865F2",
+        "opacity": 0.55,
+        "blur": 90,
+        "children": []
+       }
+      ]
+     },
+     {
+      "type": "stack",
+      "fill": "both",
+      "padding": [
+       0,
+       16,
+       0,
+       16
+      ],
+      "children": [
+       {
+        "type": "if",
+        "test": {
+         "not": "$inCall"
+        },
+        "then": {
+         "type": "empty",
+         "symbol": "phone.down",
+         "title": "Not in a call.",
+         "message": "Join a voice channel to play sounds."
+        },
+        "else": {
+         "type": "if",
+         "test": {
+          "gt": [
+           {
+            "count": "$soundboard.groups"
+           },
+           0
+          ]
+         },
+         "then": {
+          "type": "scroll",
+          "fill": "both",
+          "children": [
+           {
+            "type": "stack",
+            "spacing": 18,
+            "alignment": "fill",
+            "padding": [
+             4,
+             0,
+             90,
+             0
+            ],
+            "children": [
+             {
+              "type": "each",
+              "items": "$soundboard.groups",
+              "as": "group",
+              "template": {
+               "type": "stack",
+               "spacing": 10,
+               "alignment": "fill",
+               "children": [
+                {
+                 "type": "text",
+                 "text": "$group.name",
+                 "style": "subheadline",
+                 "weight": "semibold",
+                 "color": "secondary"
+                },
+                {
+                 "type": "grid",
+                 "minWidth": 104,
+                 "spacing": 10,
+                 "children": [
+                  {
+                   "type": "each",
+                   "items": "$group.sounds",
+                   "as": "sound",
+                   "template": {
+                    "type": "stack",
+                    "key": "$sound.id",
+                    "spacing": 6,
+                    "alignment": "center",
+                    "fill": "width",
+                    "padding": [
+                     14,
+                     8
+                    ],
+                    "corner": 16,
+                    "background": {
+                     "if": [
+                      {
+                       "eq": [
+                        "$ui.playing",
+                        "$sound.id"
+                       ]
+                      },
+                      "#5865F2",
+                      "#FFFFFF14"
+                     ]
+                    },
+                    "children": [
+                     {
+                      "type": "image",
+                      "src": "$sound.emojiURL",
+                      "fit": "fit",
+                      "width": 30,
+                      "height": 30,
+                      "when": {
+                       "has": "$sound.emojiURL"
+                      }
+                     },
+                     {
+                      "type": "text",
+                      "text": "$sound.emoji",
+                      "style": "title2",
+                      "when": {
+                       "has": "$sound.emoji"
+                      }
+                     },
+                     {
+                      "type": "symbol",
+                      "name": "speaker.wave.2.fill",
+                      "size": 20,
+                      "color": "secondary",
+                      "height": 30,
+                      "when": {
+                       "and": [
+                        {
+                         "not": {
+                          "has": "$sound.emojiURL"
+                         }
+                        },
+                        {
+                         "not": {
+                          "has": "$sound.emoji"
+                         }
+                        }
+                       ]
+                      }
+                     },
+                     {
+                      "type": "text",
+                      "text": "$sound.name",
+                      "style": "caption",
+                      "weight": "medium",
+                      "lines": 1
+                     }
+                    ],
+                    "accessibility": "Play {{sound.name}}",
+                    "action": [
+                     {
+                      "set": "playing",
+                      "value": "$sound.id"
+                     },
+                     {
+                      "command": "sound",
+                      "value": {
+                       "id": "$sound.id"
+                      },
+                      "onError": {
+                       "set": "playing",
+                       "value": null
+                      }
+                     },
+                     {
+                      "set": "playing",
+                      "value": null
+                     }
+                    ]
+                   }
+                  }
+                 ]
+                }
+               ]
+              }
+             }
+            ]
+           }
+          ]
+         },
+         "else": {
+          "type": "if",
+          "test": {
+           "eq": [
+            "$soundboard.status",
+            "error"
+           ]
+          },
+          "then": {
+           "type": "empty",
+           "symbol": "exclamationmark.triangle",
+           "title": "Soundboard unavailable.",
+           "message": {
+            "coalesce": [
+             "$soundboard.error",
+             "Discord did not share its sounds."
+            ]
+           },
+           "children": [
+            {
+             "type": "button",
+             "label": "Try again",
+             "variant": "bordered",
+             "action": {
+              "command": "soundboard"
+             }
+            }
+           ]
+          },
+          "else": {
+           "type": "if",
+           "test": {
+            "eq": [
+             "$soundboard.status",
+             "ready"
+            ]
+           },
+           "then": {
+            "type": "empty",
+            "symbol": "waveform",
+            "title": "No sounds.",
+            "message": "Add sounds to a server's soundboard in Discord.",
+            "children": [
+             {
+              "type": "button",
+              "label": "Try again",
+              "variant": "bordered",
+              "action": {
+               "command": "soundboard"
+              }
+             }
+            ]
+           },
+           "else": {
+            "type": "empty",
+            "title": "Loading sounds…",
+            "loading": true
+           }
+          }
+         }
+        }
+       }
+      ]
+     }
+    ]
    }
   }
  }

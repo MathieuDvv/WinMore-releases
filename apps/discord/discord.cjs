@@ -49,6 +49,29 @@ function presentMember(entry,{selfId,speaking}){
   streaming:voice.self_stream===true
  };
 }
+// Soundboard sounds as the phone sees them, grouped by server: the call's server first, then
+// other servers, then Discord's default sounds. Discord reports default sounds without a real
+// server id, and expects that same value back when one is played.
+const MAX_SOUNDS=400;
+function presentSounds(list,{guildNames,currentGuild}){
+ const groups=new Map();
+ for(const raw of Array.isArray(list)?list.slice(0,MAX_SOUNDS):[]){
+  const id=raw?.sound_id??raw?.id;
+  if(id==null||raw.available===false||!/^[\w-]{1,32}$/.test(String(id)))continue;
+  const guildId=raw.guild_id!=null&&SNOWFLAKE.test(String(raw.guild_id))?String(raw.guild_id):null;
+  const key=guildId||'default';
+  if(!groups.has(key))groups.set(key,{id:key,name:guildId?guildNames.get(guildId)||'Server sounds':'Discord sounds',current:guildId!==null&&guildId===currentGuild,sounds:[]});
+  const emojiId=raw.emoji_id!=null&&SNOWFLAKE.test(String(raw.emoji_id))?String(raw.emoji_id):null;
+  groups.get(key).sounds.push({
+   id:`${key}:${id}`,soundId:String(id),guildArg:raw.guild_id!=null?String(raw.guild_id):'DEFAULT',
+   name:String(raw.name||'Sound').slice(0,40),
+   emoji:emojiId?null:(typeof raw.emoji_name==='string'&&raw.emoji_name?raw.emoji_name.slice(0,16):null),
+   emojiURL:emojiId?`https://cdn.discordapp.com/emojis/${emojiId}.png?size=64`:null
+  });
+ }
+ const rank=group=>group.current?0:group.id==='default'?2:1;
+ return [...groups.values()].sort((a,b)=>rank(a)-rank(b)||a.name.localeCompare(b.name));
+}
 function validateDiscordCommand(action,value,members){
  if(action==='mute'||action==='deafen'){
   if(typeof value!=='boolean')throw Error('Choose on or off.');
@@ -64,6 +87,11 @@ function validateDiscordCommand(action,value,members){
   if(typeof value.volume!=='number'||!Number.isFinite(value.volume)||value.volume<0||value.volume>200)throw Error('Volume must be between 0 and 200.');
   return {action,id:value.id,volume:Math.round(value.volume)};
  }
+ if(action==='sound'){
+  if(!value||typeof value!=='object'||typeof value.id!=='string'||value.id.length>80)throw Error('Choose a sound.');
+  return {action,id:value.id};
+ }
+ if(action==='soundboard')return {action};
  throw Error('Unknown call control.');
 }
 function validateSetup({clientId,clientSecret}={}){
@@ -87,8 +115,10 @@ function openPipe(){
 
 function createDiscord({file,encryption,fetch=globalThis.fetch,connect=openPipe,retryDelay=5000}={}){
  let config=null,socket=null,status='setup',error=null,user=null,closed=false,retryTimer=null;
- let channel=null,guild=null,watched=null,loading=Promise.resolve();
+ let channel=null,watched=null,loading=Promise.resolve();
  const members=new Map(),speaking=new Set(),voice={mute:false,deaf:false},guildNames=new Map(),pending=new Map();
+ // Soundboard: Discord's list of sounds this user can play, read once per connection and on request.
+ let sounds=null,soundsStatus='idle',soundsError=null,soundsLoading=null;
  // Saved setup: { clientId, secret, tokens } with secrets encrypted by Windows (safeStorage).
  function load(){
   try{
@@ -104,7 +134,27 @@ function createDiscord({file,encryption,fetch=globalThis.fetch,connect=openPipe,
   fs.writeFileSync(file,JSON.stringify({version:1,clientId:config.clientId,secret:encryption.encryptString(config.clientSecret).toString('base64'),
    tokens:config.tokens?encryption.encryptString(JSON.stringify(config.tokens)).toString('base64'):null}),{mode:0o600});
  }
- function resetCall(){channel=null;guild=null;watched=null;members.clear();speaking.clear();}
+ function resetCall(){channel=null;watched=null;members.clear();speaking.clear();sounds=null;soundsStatus='idle';soundsError=null;soundsLoading=null;}
+ // Server names, read once each; the call header and the soundboard groups both use them.
+ const guildLookups=new Set();
+ function guildName(id){
+  if(guildNames.get(id)||guildLookups.has(id))return;
+  guildLookups.add(id);
+  request('GET_GUILD',{guild_id:id}).then(value=>{if(value?.name)guildNames.set(id,String(value.name));}).catch(()=>{}).finally(()=>guildLookups.delete(id));
+ }
+ function loadSounds(){
+  if(soundsLoading)return soundsLoading;
+  soundsStatus='loading';soundsError=null;
+  soundsLoading=request('GET_SOUNDBOARD_SOUNDS').then(list=>{
+   sounds=Array.isArray(list)?list:Array.isArray(list?.sounds)?list.sounds:[];
+   for(const raw of sounds)if(raw?.guild_id!=null&&SNOWFLAKE.test(String(raw.guild_id)))guildName(String(raw.guild_id));
+   soundsStatus='ready';
+  }).catch(e=>{
+   soundsStatus='error';
+   soundsError=/unknown|invalid command|not supported/i.test(e.message)?'This Discord version does not offer the soundboard to apps.':e.message;
+  }).finally(()=>{soundsLoading=null;});
+  return soundsLoading;
+ }
  function schedule(){clearTimeout(retryTimer);if(!closed&&config&&status!=='error')retryTimer=setTimeout(()=>start(),retryDelay);}
  function request(cmd,args={},{evt,timeout=10000}={}){
   if(!socket)return Promise.reject(Error('Discord is not connected.'));
@@ -157,13 +207,12 @@ function createDiscord({file,encryption,fetch=globalThis.fetch,connect=openPipe,
   loading=loading.then(async()=>{
    const selected=await request('GET_SELECTED_VOICE_CHANNEL');
    members.clear();speaking.clear();
-   if(!selected?.id){await watch(null);channel=null;guild=null;return;}
+   if(!selected?.id){await watch(null);channel=null;return;}
+   if(soundsStatus==='idle')loadSounds();
    await watch(selected.id);
    channel={id:String(selected.id),name:String(selected.name||'Voice call'),guildId:selected.guild_id?String(selected.guild_id):null};
    for(const entry of selected.voice_states||[])if(entry?.user?.id)members.set(String(entry.user.id),entry);
-   guild=channel.guildId?guildNames.get(channel.guildId)||null:null;
-   const guildId=channel.guildId;
-   if(guildId&&!guild)request('GET_GUILD',{guild_id:guildId}).then(value=>{const name=value?.name?String(value.name):null;guildNames.set(guildId,name);if(channel?.guildId===guildId)guild=name;}).catch(()=>{});
+   if(channel.guildId)guildName(channel.guildId);
   }).catch(e=>{if(socket)console.warn('Discord call could not be read:',e.message);});
   return loading;
  }
@@ -239,7 +288,8 @@ function createDiscord({file,encryption,fetch=globalThis.fetch,connect=openPipe,
     configured:!!config,status,error,
     user:user?{id:String(user.id),name:String(user.global_name||user.username||''),avatar:avatarURL(user)}:null,
     voice:{mute:voice.mute||voice.deaf,deaf:voice.deaf},
-    call:status==='ready'&&channel?{id:channel.id,name:channel.name,guild,members:list}:null
+    call:status==='ready'&&channel?{id:channel.id,name:channel.name,guild:channel.guildId?guildNames.get(channel.guildId)||null:null,members:list}:null,
+    soundboard:{status:soundsStatus,error:soundsError,groups:sounds?presentSounds(sounds,{guildNames,currentGuild:channel?.guildId||null}).map(({sounds,...group})=>({...group,sounds:sounds.map(({guildArg,soundId,...sound})=>sound)})):[]}
    };
   },
   // Island-only setup: secrets are typed on the PC and never come from the phone.
@@ -261,6 +311,14 @@ function createDiscord({file,encryption,fetch=globalThis.fetch,connect=openPipe,
     if(!channel)throw Error('You are not in a call.');
     await request('SELECT_VOICE_CHANNEL',{channel_id:null,force:true});return;
    }
+   if(command.action==='soundboard'){await loadSounds();if(soundsStatus==='error')throw Error(soundsError);return;}
+   if(command.action==='sound'){
+    if(!channel)throw Error('Join a call to play sounds.');
+    if(!sounds)await loadSounds();
+    const sound=presentSounds(sounds,{guildNames,currentGuild:channel.guildId}).flatMap(group=>group.sounds).find(item=>item.id===command.id);
+    if(!sound)throw Error('That sound is no longer available.');
+    await request('PLAY_SOUNDBOARD_SOUND',{guild_id:sound.guildArg,sound_id:sound.soundId});return;
+   }
    const entry=members.get(command.id);
    if(entry?.user?.id===user?.id)throw Error('Use Mute or Deafen for yourself.');
    if(command.action==='user-mute'){await request('SET_USER_VOICE_SETTINGS',{user_id:command.id,mute:command.muted});if(entry)entry.mute=command.muted;return;}
@@ -269,4 +327,4 @@ function createDiscord({file,encryption,fetch=globalThis.fetch,connect=openPipe,
   close(){closed=true;disconnect();}
  };
 }
-module.exports={createDiscord,encodeFrame,createFrameReader,avatarURL,presentMember,validateDiscordCommand,validateSetup,OP,SCOPES};
+module.exports={createDiscord,encodeFrame,createFrameReader,avatarURL,presentMember,presentSounds,validateDiscordCommand,validateSetup,OP,SCOPES};

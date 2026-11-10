@@ -104,15 +104,15 @@
     {
       "id": "discord",
       "name": "Discord",
-      "version": "2.0.1",
-      "description": "Voice call controls through the Discord app on your PC.",
+      "version": "2.1.0",
+      "description": "Voice call controls and the soundboard through the Discord app on your PC.",
       "icon": "apps/discord/icon.svg",
       "folder": "apps/discord/",
       "files": [
         {
           "path": "discord.cjs",
-          "size": 15749,
-          "sha256": "e5ad049d75455145ae5eee9c044e78846ea104375ab63951c2d834d129c856d4"
+          "size": 19070,
+          "sha256": "67063f2eb49a76e3949229203d11a3d9cdde2213f43910649ba55b645760c013"
         },
         {
           "path": "icon.png",
@@ -131,13 +131,13 @@
         },
         {
           "path": "manifest.json",
-          "size": 277,
-          "sha256": "c64e38f315b7e986efa95dd67f97df7a75e54cfa1137234e4200bd1f612e81dd"
+          "size": 296,
+          "sha256": "1f40c6906dd5afb62caeba60cbc7ef1c01fe1850fa0097f8dbb504aaa7118683"
         },
         {
           "path": "ui/screen.json",
-          "size": 14943,
-          "sha256": "fee2c41ebb87f3ad4cec61fc5c2c8a36b7f6238a2fcf03416a67240f5e66a09b"
+          "size": 24332,
+          "sha256": "57a6bab2f39b3282b22ca2b50a6709b15d149ef7587870b4af706ccfe4a2504b"
         }
       ],
       "bundle": "bundles/discord.wmapp"
