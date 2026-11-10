@@ -1,0 +1,62 @@
+{
+  "format": "winmore-catalog",
+  "updated": "2026-11-10",
+  "apps": [
+    {
+      "id": "browser",
+      "name": "Browser",
+      "version": "1.0.0",
+      "description": "Drive a PC browser window from your phone using screenshots.",
+      "bundle": "browser.wmapp",
+      "icon": "browser.svg"
+    },
+    {
+      "id": "discord",
+      "name": "Discord",
+      "version": "1.0.0",
+      "description": "Voice call controls through the Discord app on your PC.",
+      "bundle": "discord.wmapp",
+      "icon": "discord.svg"
+    },
+    {
+      "id": "mixer",
+      "name": "Audio Mixer",
+      "version": "1.0.0",
+      "description": "Per-app volume for the PC's default playback device.",
+      "bundle": "mixer.wmapp",
+      "icon": "mixer.svg"
+    },
+    {
+      "id": "music",
+      "name": "YouTube Music",
+      "version": "1.0.0",
+      "description": "Browse, play and queue YouTube Music running on your PC, with synced lyrics.",
+      "bundle": "music.wmapp",
+      "icon": "music.svg"
+    },
+    {
+      "id": "pc",
+      "name": "PC Status",
+      "version": "1.0.0",
+      "description": "PC uptime, memory and load, plus Lock PC and Keep awake. Its screen is plain JSON, so it needs no iPhone update.",
+      "bundle": "pc.wmapp",
+      "icon": "pc.svg"
+    },
+    {
+      "id": "reddit",
+      "name": "Reddit",
+      "version": "1.0.1",
+      "description": "A landscape Reddit reader backed by your signed-in Reddit session on the PC.",
+      "bundle": "reddit.wmapp",
+      "icon": "reddit.svg"
+    },
+    {
+      "id": "twitch",
+      "name": "Twitch",
+      "version": "1.0.0",
+      "description": "Read a Twitch channel's chat, anonymously.",
+      "bundle": "twitch.wmapp",
+      "icon": "twitch.svg"
+    }
+  ]
+}
