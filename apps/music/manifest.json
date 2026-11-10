@@ -1,0 +1,13 @@
+{
+  "id": "music",
+  "name": "YouTube Music",
+  "shortName": "Music",
+  "version": "1.0.0",
+  "description": "Browse, play and queue YouTube Music running on your PC, with synced lyrics.",
+  "entry": "index.cjs",
+  "ui": "native:music",
+  "symbol": "music.note",
+  "icon": "icon.svg",
+  "iconPNG": "icon.png",
+  "modules": ["music", "system"]
+}

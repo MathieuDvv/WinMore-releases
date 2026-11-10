@@ -1,0 +1,13 @@
+{
+  "id": "reddit",
+  "name": "Reddit",
+  "shortName": "Reddit",
+  "version": "2.0.0",
+  "description": "A landscape Reddit reader backed by your signed-in Reddit session on the PC.",
+  "entry": "index.cjs",
+  "ui": "kit",
+  "screen": "ui/screen.json",
+  "symbol": "text.bubble",
+  "icon": "icon.svg",
+  "iconPNG": "icon.png"
+}

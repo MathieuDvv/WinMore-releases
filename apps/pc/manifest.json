@@ -1,0 +1,12 @@
+{
+  "id": "pc",
+  "name": "PC Monitor",
+  "shortName": "PC",
+  "version": "1.1.0",
+  "description": "PC master volume, processor and memory load, hardware temperatures, and network transfer rates across three pages.",
+  "entry": "index.cjs",
+  "ui": "schema",
+  "symbol": "desktopcomputer",
+  "icon": "icon.svg",
+  "iconPNG": "icon.png"
+}

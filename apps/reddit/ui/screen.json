@@ -1,0 +1,347 @@
+{
+  "type": "screen",
+  "title": "Reddit",
+  "chrome": "fullscreen",
+  "background": "#1A1A1B",
+  "surface": "#272729",
+  "accent": "#FF4500",
+  "state": { "showSearch": false, "query": "", "searchAll": false, "goto": "", "pendingVote": null, "pendingSave": null },
+  "refresh": { "interval": 1.5, "fast": 0.45, "fastWhen": { "or": ["$loading", "$post.loading"] } },
+
+  "bar": {
+    "leading": [
+      {
+        "type": "stack", "axis": "horizontal", "spacing": 8,
+        "padding": [0, 10, 0, 14], "height": 42, "glass": true, "shape": "capsule",
+        "action": { "sheet": "places" },
+        "accessibility": "Current feed: {{title}}. Choose a subreddit",
+        "children": [
+          { "type": "image", "src": "icon.png", "template": true, "width": 22, "height": 22 },
+          { "type": "text", "text": { "coalesce": ["$title", "Reddit"] }, "style": "headline", "lines": 1 },
+          { "type": "symbol", "name": "chevron.down", "size": 11, "weight": "bold", "color": "secondary" }
+        ]
+      }
+    ],
+    "trailing": [
+      { "type": "progress", "when": "$loading", "width": 42, "height": 42, "glass": true, "shape": "circle" },
+      {
+        "type": "button", "variant": "glass", "symbol": "magnifyingglass",
+        "selected": { "or": ["$ui.showSearch", { "eq": ["$feed", "search"] }] },
+        "action": { "toggle": "showSearch" },
+        "accessibility": "Search Reddit"
+      },
+      {
+        "type": "menu", "when": "$historyGroup", "symbol": "line.3.horizontal.decrease", "accessibility": "History view",
+        "items": [
+          { "label": "Newest", "symbol": "arrow.down", "checked": { "and": [{ "eq": ["$feed", "history"] }, { "ne": ["$sort", "old"] }] }, "action": { "command": "open", "value": { "feed": "history", "sort": "new" } } },
+          { "label": "Oldest", "symbol": "arrow.up", "checked": { "and": [{ "eq": ["$feed", "history"] }, { "eq": ["$sort", "old"] }] }, "action": { "command": "open", "value": { "feed": "history", "sort": "old" } } },
+          { "divider": true },
+          { "label": "Upvoted", "symbol": "arrow.up.circle", "checked": { "eq": ["$feed", "upvoted"] }, "action": { "command": "open", "value": { "feed": "upvoted", "sort": "new" } } },
+          { "label": "Downvoted", "symbol": "arrow.down.circle", "checked": { "eq": ["$feed", "downvoted"] }, "action": { "command": "open", "value": { "feed": "downvoted", "sort": "new" } } },
+          { "label": "Hidden", "symbol": "eye.slash", "checked": { "eq": ["$feed", "hidden"] }, "action": { "command": "open", "value": { "feed": "hidden", "sort": "new" } } },
+          { "label": "Your posts", "symbol": "person.crop.circle", "checked": { "eq": ["$feed", "submitted"] }, "action": { "command": "open", "value": { "feed": "submitted", "sort": "new" } } }
+        ]
+      },
+      {
+        "type": "pill",
+        "children": [
+          { "type": "button", "symbol": "clock.arrow.circlepath", "selected": "$historyGroup", "action": { "command": "library", "value": "history" }, "accessibility": "History" },
+          { "type": "button", "symbol": { "if": [{ "eq": ["$feed", "saved"] }, "bookmark.fill", "bookmark"] }, "selected": { "eq": ["$feed", "saved"] }, "action": { "command": "library", "value": "saved" }, "accessibility": "Saved" }
+        ]
+      }
+    ]
+  },
+
+  "accessory": {
+    "type": "field", "when": "$ui.showSearch", "bind": "query", "keyboard": "search",
+    "placeholder": { "if": [{ "and": ["$currentSubreddit", { "not": "$ui.searchAll" }] }, "Search {{currentSubreddit}}", "Search Reddit"] },
+    "symbol": { "if": ["$currentSubreddit", null, "magnifyingglass"] },
+    "leading": {
+      "type": "menu", "when": "$currentSubreddit", "variant": "plain", "chevron": true,
+      "label": { "if": ["$ui.searchAll", "All", "$currentSubreddit"] },
+      "height": 32, "background": "#FFFFFF1A", "shape": "capsule",
+      "items": [
+        { "label": "$currentSubreddit", "symbol": "number", "checked": { "not": "$ui.searchAll" }, "action": { "set": "searchAll", "value": false } },
+        { "label": "All of Reddit", "symbol": "globe", "checked": "$ui.searchAll", "action": { "set": "searchAll", "value": true } }
+      ]
+    },
+    "submit": [
+      { "keyboard": "hide" },
+      { "command": "search", "value": { "query": "$value", "subreddit": { "if": [{ "or": ["$ui.searchAll", { "not": "$currentSubreddit" }] }, null, "$currentSubreddit"] } } }
+    ],
+    "padding": [0, 6, 0, 4], "height": 46, "glass": true, "shape": "capsule"
+  },
+
+  "body": {
+    "type": "if",
+    "test": { "has": "$posts" },
+    "then": {
+      "type": "scroll", "spacing": 14, "snap": "$env.landscape",
+      "refresh": { "command": "refresh" },
+      "end": { "if": { "and": ["$hasMore", { "not": "$loading" }] }, "then": { "command": "more" } },
+      "footer": {
+        "type": "if", "test": "$hasMore",
+        "then": { "type": "progress", "padding": 16 },
+        "else": { "type": "text", "text": "You’re all caught up.", "style": "footnote", "color": "secondary", "padding": 16 }
+      },
+      "children": [
+        {
+          "type": "each", "items": "$posts", "as": "post",
+          "template": {
+            "type": "card", "inset": 0, "spacing": 0,
+            "height": { "if": ["$env.landscape", "screen", null] }, "screenOffset": 106,
+            "minHeight": { "if": ["$env.landscape", null, { "if": ["$post.hasMedia", 400, 200] }] },
+            "action": [
+              { "set": "pendingVote", "value": null },
+              { "set": "pendingSave", "value": null },
+              { "cover": "post", "params": "$post" },
+              { "command": "post", "value": "$post.postId" }
+            ],
+            "children": [
+              {
+                "type": "split", "ratio": 0.58, "spacing": 0, "portraitHeight": 240,
+                "children": [
+                  {
+                    "type": "media", "when": "$post.hasMedia", "inline": true,
+                    "video": "$post.video", "images": "$post.gallery", "image": "$post.image",
+                    "spoiler": "$post.spoiler", "badge": "$post.badge", "badgeSymbol": "$post.badgeSymbol"
+                  },
+                  {
+                    "type": "stack", "spacing": 8, "fill": "both", "align": "topLeading",
+                    "padding": { "if": ["$env.landscape", 20, 16] },
+                    "children": [
+                      {
+                        "type": "stack", "axis": "horizontal", "spacing": 4,
+                        "children": [
+                          {
+                            "type": "text", "when": { "startsWith": ["$post.subreddit", "r/"] }, "text": "$post.subreddit",
+                            "style": "caption", "weight": "semibold", "padding": [6, 0],
+                            "action": { "command": "open", "value": { "feed": "$post.subreddit", "sort": "$sort" } },
+                            "accessibility": "Open {{post.subreddit}}"
+                          },
+                          { "type": "text", "when": { "not": { "startsWith": ["$post.subreddit", "r/"] } }, "text": "$post.subreddit", "style": "caption", "weight": "semibold" },
+                          { "type": "text", "text": "· u/{{post.author}} · {{post.created|age}}", "style": "caption", "color": "secondary", "lines": 1 }
+                        ]
+                      },
+                      { "type": "badge", "when": "$post.flair", "text": "$post.flair" },
+                      {
+                        "type": "text",
+                        "text": { "if": [{ "eq": ["$post.kind", "comment"] }, "Comment on “{{post.title}}”", "$post.title"] },
+                        "style": { "if": ["$env.landscape", "title3", "headline"] }, "weight": "semibold",
+                        "lines": { "if": [{ "and": ["$env.landscape", "$post.hasMedia"] }, 5, 3] }
+                      },
+                      { "type": "text", "when": "$post.text", "text": "$post.text", "style": "callout", "color": "secondary", "lines": { "if": ["$post.hasMedia", 4, 9] } },
+                      { "type": "spacer", "min": 0 },
+                      {
+                        "type": "stack", "axis": "horizontal", "spacing": 14,
+                        "children": [
+                          { "type": "label", "text": "{{post.score|count}}", "symbol": "arrow.up", "style": "caption", "weight": "medium", "color": "secondary" },
+                          { "type": "label", "when": { "ne": ["$post.kind", "comment"] }, "text": "{{post.comments|count}}", "symbol": "bubble.right", "style": "caption", "weight": "medium", "color": "secondary" },
+                          { "type": "spacer", "min": 0 },
+                          { "type": "symbol", "when": "$post.saved", "name": "bookmark.fill", "size": 12, "color": "accent", "accessibility": "Saved" }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "else": {
+      "type": "empty", "fill": "both", "background": "card", "corner": 24,
+      "symbol": { "if": [{ "eq": ["$feed", "history"] }, "clock", { "if": ["$library", "bookmark", "text.bubble"] }] },
+      "loading": { "or": ["$loading", { "not": "$feed" }] },
+      "title": {
+        "if": [{ "or": ["$loading", { "not": "$feed" }] }, "Finding the good stuff…",
+          { "if": [{ "or": ["$error", "$env.error"] }, "Reddit is out of reach",
+            { "if": [{ "eq": ["$feed", "history"] }, "Nothing here yet",
+              { "if": ["$library", "Nothing in {{title}} yet", "No posts"] }] }] }]
+      },
+      "message": {
+        "if": [{ "and": [{ "or": ["$error", "$env.error"] }, { "not": "$loading" }] }, { "coalesce": ["$error", "$env.error"] },
+          { "if": [{ "and": [{ "eq": ["$feed", "history"] }, { "not": "$loading" }] }, "Posts you open appear in History.", null] }]
+      },
+      "children": [
+        { "type": "button", "when": { "and": ["$error", { "not": "$loading" }] }, "label": "Try again", "action": { "command": "refresh" } },
+        { "type": "button", "when": { "and": ["$error", { "not": "$loading" }, { "not": "$signedIn" }] }, "label": "Sign in on PC", "action": { "command": "signin" } },
+        { "type": "button", "when": { "and": ["$error", { "not": "$loading" }] }, "label": "Open on PC", "action": { "command": "pc", "value": "https://www.reddit.com/" } },
+        { "type": "button", "when": { "and": ["$feed", { "not": "$error" }, { "not": "$loading" }, { "not": "$library" }] }, "label": "Choose a subreddit", "action": { "sheet": "places" } }
+      ]
+    }
+  },
+
+  "sheets": {
+    "places": {
+      "title": "Go to",
+      "detents": ["large"],
+      "body": {
+        "type": "list",
+        "children": [
+          {
+            "type": "section",
+            "children": [
+              {
+                "type": "field", "bind": "goto", "prefix": "r/", "placeholder": "Go to a subreddit", "keyboard": "search",
+                "submit": [
+                  { "command": "open", "value": { "feed": "$value", "sort": "$sort" } },
+                  { "set": "goto", "value": "" },
+                  { "dismiss": true }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "section", "title": "Sort",
+            "children": [
+              {
+                "type": "picker", "value": "$sort", "disabled": "$library",
+                "options": [{ "value": "hot", "label": "Hot" }, { "value": "new", "label": "New" }, { "value": "top", "label": "Top" }, { "value": "rising", "label": "Rising" }],
+                "action": { "command": "open", "value": { "feed": "$feed", "sort": "$value" } }
+              }
+            ]
+          },
+          {
+            "type": "section", "title": "Feeds",
+            "children": [
+              { "type": "row", "title": "Home", "symbol": "house", "checked": { "eq": ["$feed", "home"] }, "action": [{ "command": "open", "value": { "feed": "home", "sort": "$sort" } }, { "dismiss": true }] },
+              { "type": "row", "title": "Popular", "symbol": "flame", "checked": { "eq": ["$feed", "popular"] }, "action": [{ "command": "open", "value": { "feed": "popular", "sort": "$sort" } }, { "dismiss": true }] },
+              { "type": "row", "title": "All", "symbol": "globe", "checked": { "eq": ["$feed", "all"] }, "action": [{ "command": "open", "value": { "feed": "all", "sort": "$sort" } }, { "dismiss": true }] }
+            ]
+          },
+          {
+            "type": "section", "title": "Recent", "when": { "has": "$recent" },
+            "children": [
+              {
+                "type": "each", "items": "$recent", "as": "name",
+                "template": {
+                  "type": "row", "title": "r/{{name}}", "symbol": "clock",
+                  "checked": { "eq": [{ "lower": "$feed" }, { "lower": "r/{{name}}" }] },
+                  "action": [{ "command": "open", "value": { "feed": "r/{{name}}", "sort": "$sort" } }, { "dismiss": true }]
+                }
+              }
+            ]
+          },
+          {
+            "type": "section", "title": { "if": ["$signedIn", "Your subreddits", "Popular subreddits"] },
+            "children": [
+              {
+                "type": "each", "items": "$subreddits", "as": "name",
+                "template": {
+                  "type": "row", "title": "r/{{name}}", "symbol": "number",
+                  "checked": { "eq": [{ "lower": "$feed" }, { "lower": "r/{{name}}" }] },
+                  "action": [{ "command": "open", "value": { "feed": "r/{{name}}", "sort": "$sort" } }, { "dismiss": true }]
+                }
+              }
+            ]
+          },
+          {
+            "type": "section", "title": "Account",
+            "footer": "Reddit runs in WinMore’s Reddit window on your PC. Signing in there unlocks Saved and your own Home feed.",
+            "children": [
+              { "type": "row", "when": "$signedIn", "title": "Signed in on your PC", "symbol": "person.crop.circle.badge.checkmark" },
+              { "type": "row", "when": { "and": [{ "not": "$signedIn" }, "$signingIn"] }, "title": "Finish signing in on your PC, then close the window.", "symbol": "desktopcomputer" },
+              { "type": "row", "when": { "and": [{ "not": "$signedIn" }, { "not": "$signingIn" }] }, "title": "Sign in on PC", "symbol": "person.crop.circle", "tint": "accent", "action": { "command": "signin" } },
+              { "type": "row", "title": "Manage account on PC", "symbol": "desktopcomputer", "action": { "command": "pc", "value": "https://www.reddit.com/settings/" } }
+            ]
+          }
+        ]
+      }
+    }
+  },
+
+  "covers": {
+    "post": {
+      "let": {
+        "detail": { "if": [{ "eq": ["$data.post.id", "$params.postId"] }, "$data.post", null] },
+        "p": { "coalesce": ["$detail.post", "$params"] },
+        "upvoted": { "eq": [{ "coalesce": ["$ui.pendingVote", "$p.vote", 0] }, 1] },
+        "saved": { "coalesce": ["$ui.pendingSave", "$p.saved", false] },
+        "busy": { "ne": [{ "coalesce": ["$detail.loading", true] }, false] }
+      },
+      "bar": {
+        "leading": [
+          { "type": "button", "variant": "glass", "symbol": "chevron.left", "label": "$p.subreddit", "action": { "dismiss": true }, "accessibility": "Back to {{title}}" }
+        ],
+        "trailing": [
+          { "type": "progress", "when": "$busy", "width": 42, "height": 42, "glass": true, "shape": "circle" },
+          { "type": "button", "variant": "glass", "symbol": "safari", "when": { "and": [{ "eq": ["$p.kind", "link"] }, "$p.url"] }, "action": { "open": "$p.url" }, "accessibility": "Open link on iPhone" },
+          {
+            "type": "button", "variant": "glass", "symbol": { "if": ["$upvoted", "arrowshape.up.fill", "arrowshape.up"] }, "selected": "$upvoted",
+            "accessibility": { "if": ["$upvoted", "Remove upvote", "Upvote"] },
+            "action": [
+              { "set": "pendingVote", "value": { "if": ["$upvoted", 0, 1] } },
+              { "command": "vote", "value": { "id": "$p.postId", "dir": { "if": ["$upvoted", 0, 1] } }, "onError": { "set": "pendingVote", "value": null } },
+              { "set": "pendingVote", "value": null }
+            ]
+          },
+          {
+            "type": "button", "variant": "glass", "symbol": { "if": ["$saved", "bookmark.fill", "bookmark"] }, "selected": "$saved",
+            "accessibility": { "if": ["$saved", "Unsave", "Save"] },
+            "action": [
+              { "set": "pendingSave", "value": { "not": "$saved" } },
+              { "command": "save", "value": { "id": "$p.postId", "saved": { "not": "$saved" } }, "onError": { "set": "pendingSave", "value": null } },
+              { "set": "pendingSave", "value": null }
+            ]
+          }
+        ]
+      },
+      "body": {
+        "type": "split", "ratio": 0.56, "spacing": 12, "portraitHeight": 300,
+        "children": [
+          {
+            "type": "media", "when": "$p.hasMedia", "fit": "fit", "expandable": true, "clip": true, "corner": 24,
+            "video": "$p.video", "images": "$p.gallery", "image": "$p.image", "spoiler": "$p.spoiler"
+          },
+          {
+            "type": "scroll", "background": "card", "corner": 24, "clip": true,
+            "children": [
+              {
+                "type": "stack", "spacing": 12, "padding": 18, "alignment": "fill",
+                "children": [
+                  {
+                    "type": "stack", "axis": "horizontal", "spacing": 4,
+                    "children": [
+                      {
+                        "type": "text", "when": { "startsWith": ["$p.subreddit", "r/"] }, "text": "$p.subreddit", "style": "caption", "weight": "semibold", "padding": [6, 0],
+                        "action": [{ "dismiss": true }, { "command": "open", "value": { "feed": "$p.subreddit", "sort": "$sort" } }],
+                        "accessibility": "Open {{p.subreddit}}"
+                      },
+                      { "type": "text", "text": "· u/{{p.author}} · {{p.created|age}}", "style": "caption", "color": "secondary", "lines": 1 }
+                    ]
+                  },
+                  { "type": "text", "text": "$p.title", "style": "title3", "weight": "semibold" },
+                  { "type": "badge", "when": "$p.flair", "text": "$p.flair" },
+                  { "type": "text", "when": { "and": ["$p.text", { "or": [{ "ne": ["$p.kind", "comment"] }, "$detail.post"] }] }, "text": "$p.text", "markdown": true, "selectable": true },
+                  { "type": "button", "when": { "and": [{ "eq": ["$p.kind", "link"] }, "$p.url"] }, "variant": "link", "label": { "coalesce": ["$p.domain", "Open link"] }, "symbol": "arrow.up.right.square", "action": { "open": "$p.url" } },
+                  {
+                    "type": "stack", "axis": "horizontal", "spacing": 14,
+                    "children": [
+                      { "type": "label", "text": "{{p.score|count}}", "symbol": "arrow.up", "style": "caption", "weight": "medium", "color": "secondary" },
+                      { "type": "label", "when": { "ne": ["$p.kind", "comment"] }, "text": "{{p.comments|count}}", "symbol": "bubble.right", "style": "caption", "weight": "medium", "color": "secondary" },
+                      { "type": "spacer", "min": 0 },
+                      { "type": "symbol", "when": "$saved", "name": "bookmark.fill", "size": 12, "color": "accent" }
+                    ]
+                  },
+                  { "type": "divider" },
+                  { "type": "label", "when": "$detail.error", "text": "$detail.error", "symbol": "exclamationmark.triangle", "style": "subheadline", "color": "secondary" },
+                  { "type": "progress", "when": { "and": ["$busy", { "not": "$detail.error" }, { "not": { "has": "$detail.comments" } }] }, "fill": "width", "padding": [20, 0] },
+                  { "type": "text", "when": { "and": [{ "not": "$busy" }, { "not": "$detail.error" }, { "not": { "has": "$detail.comments" } }] }, "text": "No comments yet.", "style": "subheadline", "color": "secondary" },
+                  {
+                    "type": "each", "items": "$detail.comments", "as": "c",
+                    "template": {
+                      "type": "comment", "author": "u/{{c.author}}", "body": "$c.body", "meta": "{{c.created|age}}", "score": "{{c.score|count}}",
+                      "depth": "$c.depth", "highlight": { "if": ["$c.op", "OP", null] }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

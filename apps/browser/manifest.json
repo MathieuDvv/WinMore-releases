@@ -1,0 +1,12 @@
+{
+  "id": "browser",
+  "name": "Browser",
+  "shortName": "Web",
+  "version": "1.0.0",
+  "description": "Drive a PC browser window from your phone using screenshots.",
+  "entry": "index.cjs",
+  "ui": "native:browser",
+  "symbol": "globe",
+  "icon": "icon.svg",
+  "iconPNG": "icon.png"
+}
