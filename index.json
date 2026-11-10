@@ -11,6 +11,22 @@
       "icon": "browser.svg"
     },
     {
+      "id": "clipboard",
+      "name": "Clipboard",
+      "version": "1.0.0",
+      "description": "Share text and images with your PC.",
+      "bundle": "clipboard.wmapp",
+      "icon": "clipboard.svg"
+    },
+    {
+      "id": "clock",
+      "name": "Clock",
+      "version": "1.0.0",
+      "description": "A customizable bedside clock. Notification mirroring requires a future Bluetooth bridge.",
+      "bundle": "clock.wmapp",
+      "icon": "clock.svg"
+    },
+    {
       "id": "discord",
       "name": "Discord",
       "version": "1.0.0",
