@@ -2,7 +2,7 @@
   "id": "mixer",
   "name": "Audio Mixer",
   "shortName": "Mixer",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Per-app volume for the PC's default playback device.",
   "entry": "index.cjs",
   "ui": "kit",

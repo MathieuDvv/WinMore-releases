@@ -90,6 +90,7 @@
          "variant": "glass",
          "width": 40,
          "height": 32,
+         "symbolSize": 14,
          "symbol": {
           "if": [
            "$muted",
@@ -233,6 +234,7 @@
             "variant": "glass",
             "width": 40,
             "height": 32,
+            "symbolSize": 14,
             "symbol": {
              "if": [
               "$app.muted",

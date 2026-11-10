@@ -13,39 +13,70 @@
   "type": "stack",
   "children": [
    {
-    "type": "field",
-    "bind": "address",
-    "placeholder": "Search or enter a website",
-    "keyboard": "url",
+    "type": "stack",
+    "axis": "horizontal",
+    "children": [
+     {
+      "type": "button",
+      "variant": "plain",
+      "symbol": "chevron.left",
+      "width": 30,
+      "height": 32,
+      "accessibility": "Go back",
+      "disabled": {
+       "not": "$canGoBack"
+      },
+      "action": {
+       "command": "back"
+      }
+     },
+     {
+      "type": "field",
+      "bind": "address",
+      "placeholder": "Search or enter a website",
+      "keyboard": "url",
+      "fill": "width",
+      "submit": [
+       {
+        "keyboard": "hide"
+       },
+       {
+        "command": "navigate",
+        "value": "$value"
+       }
+      ]
+     },
+     {
+      "type": "button",
+      "variant": "plain",
+      "symbol": "arrow.right.circle.fill",
+      "symbolSize": 22,
+      "width": 32,
+      "height": 32,
+      "accessibility": "Open website",
+      "disabled": {
+       "not": {
+        "has": "$ui.address"
+       }
+      },
+      "action": [
+       {
+        "keyboard": "hide"
+       },
+       {
+        "command": "navigate",
+        "value": "$ui.address"
+       }
+      ]
+     }
+    ],
+    "spacing": 12,
     "padding": [
      3,
      10
     ],
     "glass": true,
-    "shape": "capsule",
-    "leading": {
-     "type": "button",
-     "variant": "plain",
-     "symbol": "chevron.left",
-     "width": 30,
-     "height": 32,
-     "accessibility": "Go back",
-     "disabled": {
-      "not": "$canGoBack"
-     },
-     "action": {
-      "command": "back"
-     }
-    },
-    "submit": [
-     {
-      "keyboard": "hide"
-     },
-     {
-      "command": "navigate",
-      "value": "$value"
-     }
-    ]
+    "shape": "capsule"
    },
    {
     "type": "scroll",

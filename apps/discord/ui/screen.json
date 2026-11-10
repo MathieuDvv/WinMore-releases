@@ -209,62 +209,10 @@
               }
              },
              {
-              "type": "symbol",
-              "name": {
-               "if": [
-                "$member.muted",
-                "speaker.slash.fill",
-                {
-                 "if": [
-                  {
-                   "or": [
-                    "$member.selfDeaf",
-                    "$member.serverDeaf"
-                   ]
-                  },
-                  "headphones",
-                  {
-                   "if": [
-                    {
-                     "or": [
-                      "$member.selfMute",
-                      "$member.serverMute"
-                     ]
-                    },
-                    "mic.slash.fill",
-                    null
-                   ]
-                  }
-                 ]
-                }
-               ]
-              },
-              "size": 11,
-              "weight": "bold",
-              "color": "white",
-              "width": 24,
-              "height": 24,
-              "background": {
-               "if": [
-                "$member.muted",
-                "red",
-                "#333333"
-               ]
-              },
+              "type": "stack",
+              "padding": 2,
+              "background": "black",
               "shape": "circle",
-              "slash": {
-               "and": [
-                {
-                 "not": "$member.muted"
-                },
-                {
-                 "or": [
-                  "$member.selfDeaf",
-                  "$member.serverDeaf"
-                 ]
-                }
-               ]
-              },
               "when": {
                "has": {
                 "if": [
@@ -295,7 +243,67 @@
                  }
                 ]
                }
-              }
+              },
+              "children": [
+               {
+                "type": "symbol",
+                "name": {
+                 "if": [
+                  "$member.muted",
+                  "speaker.slash.fill",
+                  {
+                   "if": [
+                    {
+                     "or": [
+                      "$member.selfDeaf",
+                      "$member.serverDeaf"
+                     ]
+                    },
+                    "headphones",
+                    {
+                     "if": [
+                      {
+                       "or": [
+                        "$member.selfMute",
+                        "$member.serverMute"
+                       ]
+                      },
+                      "mic.slash.fill",
+                      null
+                     ]
+                    }
+                   ]
+                  }
+                 ]
+                },
+                "size": 11,
+                "weight": "bold",
+                "color": "white",
+                "width": 24,
+                "height": 24,
+                "background": {
+                 "if": [
+                  "$member.muted",
+                  "red",
+                  "#333333"
+                 ]
+                },
+                "shape": "circle",
+                "slash": {
+                 "and": [
+                  {
+                   "not": "$member.muted"
+                  },
+                  {
+                   "or": [
+                    "$member.selfDeaf",
+                    "$member.serverDeaf"
+                   ]
+                  }
+                 ]
+                }
+               }
+              ]
              }
             ]
            },
@@ -424,10 +432,11 @@
        }
       },
       {
-       "type": "button",
-       "variant": "plain",
-       "symbol": "headphones",
-       "symbolSize": 20,
+       "type": "symbol",
+       "name": "headphones",
+       "size": 20,
+       "weight": "semibold",
+       "slash": "$voice.deaf",
        "width": 54,
        "height": 54,
        "shape": "circle",
@@ -438,7 +447,7 @@
          "#FFFFFF1F"
         ]
        },
-       "tint": {
+       "color": {
         "if": [
          "$voice.deaf",
          "red",
@@ -482,6 +491,7 @@
     }
    ],
    "spacing": 14,
+   "alignment": "center",
    "padding": [
     16,
     16,
@@ -589,6 +599,7 @@
       },
       {
        "type": "button",
+       "variant": "plain",
        "label": {
         "if": [
          "$m.muted",
@@ -611,7 +622,9 @@
         ]
        },
        "fill": "width",
-       "size": "large",
+       "height": 46,
+       "background": "#FFFFFF1F",
+       "corner": 14,
        "action": {
         "command": "user-mute",
         "value": {

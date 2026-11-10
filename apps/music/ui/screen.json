@@ -364,39 +364,60 @@
           }
          },
          {
-          "type": "button",
-          "variant": "plain",
-          "symbol": "arrow.clockwise",
-          "width": 44,
-          "height": 44,
-          "accessibility": "Refresh Home",
-          "when": "$speedDial",
-          "action": {
-           "command": "refreshHome"
-          }
-         },
-         {
-          "type": "button",
-          "variant": "plain",
-          "symbol": "chevron.left",
-          "width": 44,
-          "height": 44,
-          "accessibility": "Previous music page",
-          "when": {
+          "type": "if",
+          "test": {
            "or": [
             "$collection",
             "$ui.searching"
            ]
           },
-          "action": [
-           {
-            "set": "searching",
-            "value": false
+          "then": {
+           "type": "button",
+           "variant": "plain",
+           "symbol": "chevron.left",
+           "width": 44,
+           "height": 44,
+           "accessibility": "Previous music page",
+           "action": [
+            {
+             "set": "searching",
+             "value": false
+            },
+            {
+             "command": "back"
+            }
+           ]
+          },
+          "else": {
+           "type": "button",
+           "variant": "plain",
+           "symbol": "arrow.clockwise",
+           "width": 44,
+           "height": 44,
+           "accessibility": {
+            "if": [
+             "$speedDial",
+             "Refresh Home",
+             "Refresh {{ui.page}}"
+            ]
            },
-           {
-            "command": "back"
+           "action": {
+            "if": "$speedDial",
+            "then": {
+             "command": "refreshHome"
+            },
+            "else": [
+             {
+              "set": "dial",
+              "value": 0
+             },
+             {
+              "command": "page",
+              "value": "$ui.page"
+             }
+            ]
            }
-          ]
+          }
          }
         ],
         "spacing": 8
@@ -1169,19 +1190,23 @@
           "text": "$title",
           "style": "headline",
           "weight": "bold",
-          "lines": 2
+          "lines": 2,
+          "textAlign": "center"
          },
          {
           "type": "text",
           "text": "$artist",
           "style": "caption",
           "color": "#FFFFFF99",
-          "lines": 1
+          "lines": 1,
+          "textAlign": "center"
          }
         ],
         "spacing": 5,
         "fill": "width",
-        "key": "$track"
+        "key": "$track",
+        "alignment": "center",
+        "align": "center"
        },
        {
         "type": "scrubber",
@@ -1189,7 +1214,8 @@
         "action": {
          "command": "seek",
          "value": "$value"
-        }
+        },
+        "fill": "width"
        },
        {
         "type": "stack",
@@ -1263,6 +1289,8 @@
       "padding": 16,
       "background": "#00000038",
       "corner": 26,
+      "alignment": "center",
+      "align": "top",
       "width": "$miniWidth",
       "fill": "height"
      }
@@ -1329,39 +1357,60 @@
           }
          },
          {
-          "type": "button",
-          "variant": "plain",
-          "symbol": "arrow.clockwise",
-          "width": 44,
-          "height": 44,
-          "accessibility": "Refresh Home",
-          "when": "$speedDial",
-          "action": {
-           "command": "refreshHome"
-          }
-         },
-         {
-          "type": "button",
-          "variant": "plain",
-          "symbol": "chevron.left",
-          "width": 44,
-          "height": 44,
-          "accessibility": "Previous music page",
-          "when": {
+          "type": "if",
+          "test": {
            "or": [
             "$collection",
             "$ui.searching"
            ]
           },
-          "action": [
-           {
-            "set": "searching",
-            "value": false
+          "then": {
+           "type": "button",
+           "variant": "plain",
+           "symbol": "chevron.left",
+           "width": 44,
+           "height": 44,
+           "accessibility": "Previous music page",
+           "action": [
+            {
+             "set": "searching",
+             "value": false
+            },
+            {
+             "command": "back"
+            }
+           ]
+          },
+          "else": {
+           "type": "button",
+           "variant": "plain",
+           "symbol": "arrow.clockwise",
+           "width": 44,
+           "height": 44,
+           "accessibility": {
+            "if": [
+             "$speedDial",
+             "Refresh Home",
+             "Refresh {{ui.page}}"
+            ]
            },
-           {
-            "command": "back"
+           "action": {
+            "if": "$speedDial",
+            "then": {
+             "command": "refreshHome"
+            },
+            "else": [
+             {
+              "set": "dial",
+              "value": 0
+             },
+             {
+              "command": "page",
+              "value": "$ui.page"
+             }
+            ]
            }
-          ]
+          }
          }
         ],
         "spacing": 8
@@ -2134,19 +2183,23 @@
           "text": "$title",
           "style": "headline",
           "weight": "bold",
-          "lines": 2
+          "lines": 2,
+          "textAlign": "center"
          },
          {
           "type": "text",
           "text": "$artist",
           "style": "caption",
           "color": "#FFFFFF99",
-          "lines": 1
+          "lines": 1,
+          "textAlign": "center"
          }
         ],
         "spacing": 5,
         "fill": "width",
-        "key": "$track"
+        "key": "$track",
+        "alignment": "center",
+        "align": "center"
        },
        {
         "type": "scrubber",
@@ -2154,7 +2207,8 @@
         "action": {
          "command": "seek",
          "value": "$value"
-        }
+        },
+        "fill": "width"
        },
        {
         "type": "stack",
@@ -2228,6 +2282,8 @@
       "padding": 16,
       "background": "#00000038",
       "corner": 26,
+      "alignment": "center",
+      "align": "top",
       "height": 320,
       "fill": "width"
      }

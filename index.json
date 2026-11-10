@@ -6,7 +6,7 @@
     {
       "id": "browser",
       "name": "Browser",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "description": "Drive a PC browser window from your phone using screenshots.",
       "icon": "apps/browser/icon.svg",
       "folder": "apps/browser/",
@@ -28,13 +28,13 @@
         },
         {
           "path": "manifest.json",
-          "size": 287,
-          "sha256": "3b006c4d16e5ad4a52deaa1cd3361c0767ceb6a5bd97dcc3c0b2e695f9e00405"
+          "size": 275,
+          "sha256": "25378b3338b4b4ee5d0e7bbee5b77f776351e3429149237fae4bcbaa07b046ec"
         },
         {
           "path": "ui/screen.json",
-          "size": 3689,
-          "sha256": "1d137897ac1f23bb9fdd9ac76cccfdd71ab38d7ac620ade47ad957010c03b66e"
+          "size": 4290,
+          "sha256": "5c264116ed98f77126fb489bdad6362da547b470c7f383d06072f097187d176a"
         }
       ],
       "bundle": "bundles/browser.wmapp"
@@ -104,7 +104,7 @@
     {
       "id": "discord",
       "name": "Discord",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "description": "Voice call controls through the Discord app on your PC.",
       "icon": "apps/discord/icon.svg",
       "folder": "apps/discord/",
@@ -131,13 +131,13 @@
         },
         {
           "path": "manifest.json",
-          "size": 289,
-          "sha256": "1d34be1ad91c91cc8fbaef3fda5b9a12502c8a9e242f522dc92a6c2a81366bb9"
+          "size": 277,
+          "sha256": "c64e38f315b7e986efa95dd67f97df7a75e54cfa1137234e4200bd1f612e81dd"
         },
         {
           "path": "ui/screen.json",
-          "size": 14493,
-          "sha256": "af1162f1734fc77eab20b386db81e8c5591d8c4bc3eed772f4bce3750c62f05d"
+          "size": 14943,
+          "sha256": "fee2c41ebb87f3ad4cec61fc5c2c8a36b7f6238a2fcf03416a67240f5e66a09b"
         }
       ],
       "bundle": "bundles/discord.wmapp"
@@ -145,7 +145,7 @@
     {
       "id": "mixer",
       "name": "Audio Mixer",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "description": "Per-app volume for the PC's default playback device.",
       "icon": "apps/mixer/icon.svg",
       "folder": "apps/mixer/",
@@ -167,8 +167,8 @@
         },
         {
           "path": "manifest.json",
-          "size": 332,
-          "sha256": "65d0617740bb414242ea31391dd5d7dacf6333bc8ca9569dc3a376f8630a83ec"
+          "size": 317,
+          "sha256": "fefe4bddd10902510f25d68b03ef3a2d2e97e1ab362102d60edadd968373953d"
         },
         {
           "path": "mixer.cjs",
@@ -182,8 +182,8 @@
         },
         {
           "path": "ui/screen.json",
-          "size": 7477,
-          "sha256": "ca797fc5aae0d291785aa16600973786fa4214df649fb787f3ee465bbfe5dbae"
+          "size": 7534,
+          "sha256": "4a8cc22514640efce21fbae20992e63bc6728a04a14039f0f4ef32881f8a44dc"
         }
       ],
       "bundle": "bundles/mixer.wmapp"
@@ -191,7 +191,7 @@
     {
       "id": "music",
       "name": "YouTube Music",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "description": "Browse, play and queue YouTube Music running on your PC, with synced lyrics.",
       "icon": "apps/music/icon.svg",
       "folder": "apps/music/",
@@ -223,8 +223,8 @@
         },
         {
           "path": "manifest.json",
-          "size": 364,
-          "sha256": "cee3f13c91a8286c5012a827fb835446edc038c33c8bd2735ba6e506ea1d2515"
+          "size": 348,
+          "sha256": "a5a0bbd61063e1b2156b1d2da80a4606a82b81c11bd71458a7b1c78c71b30938"
         },
         {
           "path": "music.cjs",
@@ -233,8 +233,8 @@
         },
         {
           "path": "ui/screen.json",
-          "size": 86356,
-          "sha256": "28f961ff2a28b9704098b9ba275bff519714ed2ccb6ef2d0fe821b69fce3cea8"
+          "size": 87698,
+          "sha256": "ce9accc12f85d6f93e1abe9d3c2bc2a08829e34c4380295fd45764c1ded7446e"
         }
       ],
       "bundle": "bundles/music.wmapp"
