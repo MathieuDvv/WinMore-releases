@@ -4,7 +4,7 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>`&#${c.charCodeAt(0)};`);
 // The headline steps aside while the island moves up, or while it is expanded over it.
 const copy=document.getElementById('hero-copy');
 document.addEventListener('island',({detail})=>{
-  copy.style.paddingTop=detail.heroBottom+40+'px';
+  copy.style.paddingTop=detail.heroBottom+56+'px';
   copy.style.opacity=detail.mode==='player'?0:Math.max(0,1-detail.progress*2.2);
 });
 
