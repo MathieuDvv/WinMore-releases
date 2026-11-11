@@ -310,7 +310,7 @@
     {
       "id": "music",
       "name": "YouTube Music",
-      "version": "2.2.1",
+      "version": "2.2.2",
       "description": "Browse, play and queue YouTube Music running on your PC, with synced lyrics.",
       "platforms": [
         "win32",
@@ -342,8 +342,8 @@
         },
         {
           "path": "index.cjs",
-          "size": 9881,
-          "sha256": "f87235c2e556e29d5f42839b419b90803af67dfa38078981f9b15cd67c2cb2cf"
+          "size": 9790,
+          "sha256": "5ee1fa2085be2b5b15bd2519b1b9459e6685705a095b69f3673d516c61cf72eb"
         },
         {
           "path": "lyrics.cjs",
@@ -353,17 +353,17 @@
         {
           "path": "manifest.json",
           "size": 409,
-          "sha256": "53630d4e499c0bdfbebbbb9be97d30291e6944f1c2ca9d19bfa10ce5d957abfb"
+          "sha256": "73166728c65385ab2b6c8ea1c5a4f867ef79d5eef09295406def0ee160b0647a"
         },
         {
           "path": "music.cjs",
-          "size": 15948,
-          "sha256": "4466ba57e98204b79863f33cb546779cdb11d3af18e5607ee268f5c22261393d"
+          "size": 16885,
+          "sha256": "68f297739dca5dd27a0fbee6d2d145f06197d1501a9be9a7a22222615a1a92b1"
         },
         {
           "path": "ui/screen.json",
-          "size": 91924,
-          "sha256": "8f26e925af57f367b109f6145e211ea85e54edb3a621c2a4f2122696028df93d"
+          "size": 93015,
+          "sha256": "968a79bbc78678e71c37197bac0de94139c8c4abce8c43898400aeba4783ebf0"
         }
       ],
       "bundle": "bundles/music.wmapp"

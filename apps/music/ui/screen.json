@@ -202,11 +202,11 @@
       },
       {
        "max": [
-        72,
+        40,
         {
          "sub": [
-          "$env.height",
-          230
+          "$miniHeight",
+          220
          ]
         }
        ]
@@ -241,13 +241,13 @@
       {
        "sub": [
         "$env.height",
-        24
+        32
        ]
       },
       {
        "sub": [
         "$env.height",
-        360
+        384
        ]
       }
      ]
@@ -324,6 +324,17 @@
        "$pageSize"
       ]
      }
+    }
+   ]
+  },
+  "miniHeight": {
+   "min": [
+    360,
+    {
+     "sub": [
+      "$env.height",
+      56
+     ]
     }
    ]
   }
@@ -1222,172 +1233,176 @@
       "type": "stack",
       "children": [
        {
-        "type": "spacer"
-       },
-       {
         "type": "stack",
-        "axis": "horizontal",
         "children": [
          {
-          "type": "spacer"
-         },
-         {
-          "type": "layers",
-          "alignment": "topTrailing",
+          "type": "stack",
+          "axis": "horizontal",
           "children": [
            {
-            "type": "image",
-            "src": "$artwork",
-            "placeholder": "music.note",
-            "width": "$miniArt",
-            "height": "$miniArt",
-            "clip": true,
-            "corner": 16,
-            "key": "$track"
+            "type": "spacer"
+           },
+           {
+            "type": "layers",
+            "alignment": "topTrailing",
+            "children": [
+             {
+              "type": "image",
+              "src": "$artwork",
+              "placeholder": "music.note",
+              "width": "$miniArt",
+              "height": "$miniArt",
+              "clip": true,
+              "corner": 16,
+              "key": "$track"
+             },
+             {
+              "type": "button",
+              "variant": "plain",
+              "symbol": "arrow.up.left.and.arrow.down.right",
+              "width": 44,
+              "height": 44,
+              "background": "#FFFFFF1A",
+              "shape": "circle",
+              "accessibility": "Focus player",
+              "action": {
+               "set": "browsing",
+               "value": false
+              },
+              "padding": 5
+             }
+            ]
+           },
+           {
+            "type": "spacer"
+           }
+          ],
+          "fill": "width"
+         },
+         {
+          "type": "stack",
+          "children": [
+           {
+            "type": "text",
+            "text": "$title",
+            "style": "headline",
+            "weight": "bold",
+            "lines": 2,
+            "textAlign": "center"
+           },
+           {
+            "type": "text",
+            "text": "$artist",
+            "style": "caption",
+            "color": "#FFFFFF99",
+            "lines": 1,
+            "textAlign": "center"
+           }
+          ],
+          "spacing": 5,
+          "fill": "width",
+          "key": "$track",
+          "alignment": "center",
+          "align": "center"
+         },
+         {
+          "type": "scrubber",
+          "compact": true,
+          "action": {
+           "command": "seek",
+           "value": "$value"
+          },
+          "fill": "width"
+         },
+         {
+          "type": "stack",
+          "axis": "horizontal",
+          "children": [
+           {
+            "type": "spacer"
            },
            {
             "type": "button",
             "variant": "plain",
-            "symbol": "arrow.up.left.and.arrow.down.right",
-            "width": 44,
-            "height": 44,
-            "background": "#FFFFFF1A",
-            "shape": "circle",
-            "accessibility": "Focus player",
+            "symbol": "backward.end.fill",
+            "symbolSize": 20,
+            "width": 48,
+            "height": 48,
+            "accessibility": "Previous track",
             "action": {
-             "set": "browsing",
-             "value": false
+             "command": "previous"
+            }
+           },
+           {
+            "type": "spacer"
+           },
+           {
+            "type": "button",
+            "variant": "plain",
+            "symbol": {
+             "if": [
+              "$playing",
+              "pause.fill",
+              "play.fill"
+             ]
             },
-            "padding": 5
+            "symbolSize": 28,
+            "width": 54,
+            "height": 44,
+            "accessibility": {
+             "if": [
+              "$playing",
+              "Pause",
+              "Play"
+             ]
+            },
+            "action": {
+             "command": "toggle"
+            }
+           },
+           {
+            "type": "spacer"
+           },
+           {
+            "type": "button",
+            "variant": "plain",
+            "symbol": "forward.end.fill",
+            "symbolSize": 20,
+            "width": 48,
+            "height": 48,
+            "accessibility": "Next track",
+            "action": {
+             "command": "next"
+            }
+           },
+           {
+            "type": "spacer"
            }
-          ]
-         },
-         {
-          "type": "spacer"
+          ],
+          "foreground": "white"
          }
         ],
-        "fill": "width"
-       },
-       {
-        "type": "stack",
-        "children": [
-         {
-          "type": "text",
-          "text": "$title",
-          "style": "headline",
-          "weight": "bold",
-          "lines": 2,
-          "textAlign": "center"
-         },
-         {
-          "type": "text",
-          "text": "$artist",
-          "style": "caption",
-          "color": "#FFFFFF99",
-          "lines": 1,
-          "textAlign": "center"
-         }
-        ],
-        "spacing": 5,
-        "fill": "width",
-        "key": "$track",
+        "spacing": 10,
+        "padding": 16,
+        "background": "#00000038",
+        "corner": 26,
         "alignment": "center",
-        "align": "center"
-       },
-       {
-        "type": "scrubber",
-        "compact": true,
-        "action": {
-         "command": "seek",
-         "value": "$value"
-        },
-        "fill": "width"
-       },
-       {
-        "type": "stack",
-        "axis": "horizontal",
-        "children": [
-         {
-          "type": "spacer"
-         },
-         {
-          "type": "button",
-          "variant": "plain",
-          "symbol": "backward.end.fill",
-          "symbolSize": 20,
-          "width": 48,
-          "height": 48,
-          "accessibility": "Previous track",
-          "action": {
-           "command": "previous"
-          }
-         },
-         {
-          "type": "spacer"
-         },
-         {
-          "type": "button",
-          "variant": "plain",
-          "symbol": {
-           "if": [
-            "$playing",
-            "pause.fill",
-            "play.fill"
-           ]
-          },
-          "symbolSize": 28,
-          "width": 54,
-          "height": 44,
-          "accessibility": {
-           "if": [
-            "$playing",
-            "Pause",
-            "Play"
-           ]
-          },
-          "action": {
-           "command": "toggle"
-          }
-         },
-         {
-          "type": "spacer"
-         },
-         {
-          "type": "button",
-          "variant": "plain",
-          "symbol": "forward.end.fill",
-          "symbolSize": 20,
-          "width": 48,
-          "height": 48,
-          "accessibility": "Next track",
-          "action": {
-           "command": "next"
-          }
-         },
-         {
-          "type": "spacer"
-         }
-        ],
-        "foreground": "white"
-       },
-       {
-        "type": "spacer"
+        "align": "center",
+        "width": "$miniWidth",
+        "height": "$miniHeight"
        }
       ],
-      "spacing": 10,
-      "padding": 16,
-      "background": "#00000038",
-      "corner": 26,
+      "width": "$miniWidth",
+      "fill": "height",
       "alignment": "center",
       "align": "center",
-      "width": "$miniWidth",
-      "fill": "height"
+      "spacing": 0
      }
     ],
     "spacing": 18,
     "fill": "both",
     "padding": [
-     8,
+     16,
      0,
      16,
      0
@@ -2281,159 +2296,174 @@
       "children": [
        {
         "type": "stack",
-        "axis": "horizontal",
         "children": [
          {
-          "type": "spacer"
-         },
-         {
-          "type": "layers",
-          "alignment": "topTrailing",
+          "type": "stack",
+          "axis": "horizontal",
           "children": [
            {
-            "type": "image",
-            "src": "$artwork",
-            "placeholder": "music.note",
-            "width": "$miniArt",
-            "height": "$miniArt",
-            "clip": true,
-            "corner": 16,
-            "key": "$track"
+            "type": "spacer"
+           },
+           {
+            "type": "layers",
+            "alignment": "topTrailing",
+            "children": [
+             {
+              "type": "image",
+              "src": "$artwork",
+              "placeholder": "music.note",
+              "width": "$miniArt",
+              "height": "$miniArt",
+              "clip": true,
+              "corner": 16,
+              "key": "$track"
+             },
+             {
+              "type": "button",
+              "variant": "plain",
+              "symbol": "arrow.up.left.and.arrow.down.right",
+              "width": 44,
+              "height": 44,
+              "background": "#FFFFFF1A",
+              "shape": "circle",
+              "accessibility": "Focus player",
+              "action": {
+               "set": "browsing",
+               "value": false
+              },
+              "padding": 5
+             }
+            ]
+           },
+           {
+            "type": "spacer"
+           }
+          ],
+          "fill": "width"
+         },
+         {
+          "type": "stack",
+          "children": [
+           {
+            "type": "text",
+            "text": "$title",
+            "style": "headline",
+            "weight": "bold",
+            "lines": 2,
+            "textAlign": "center"
+           },
+           {
+            "type": "text",
+            "text": "$artist",
+            "style": "caption",
+            "color": "#FFFFFF99",
+            "lines": 1,
+            "textAlign": "center"
+           }
+          ],
+          "spacing": 5,
+          "fill": "width",
+          "key": "$track",
+          "alignment": "center",
+          "align": "center"
+         },
+         {
+          "type": "scrubber",
+          "compact": true,
+          "action": {
+           "command": "seek",
+           "value": "$value"
+          },
+          "fill": "width"
+         },
+         {
+          "type": "stack",
+          "axis": "horizontal",
+          "children": [
+           {
+            "type": "spacer"
            },
            {
             "type": "button",
             "variant": "plain",
-            "symbol": "arrow.up.left.and.arrow.down.right",
-            "width": 44,
-            "height": 44,
-            "background": "#FFFFFF1A",
-            "shape": "circle",
-            "accessibility": "Focus player",
+            "symbol": "backward.end.fill",
+            "symbolSize": 20,
+            "width": 48,
+            "height": 48,
+            "accessibility": "Previous track",
             "action": {
-             "set": "browsing",
-             "value": false
+             "command": "previous"
+            }
+           },
+           {
+            "type": "spacer"
+           },
+           {
+            "type": "button",
+            "variant": "plain",
+            "symbol": {
+             "if": [
+              "$playing",
+              "pause.fill",
+              "play.fill"
+             ]
             },
-            "padding": 5
+            "symbolSize": 28,
+            "width": 54,
+            "height": 44,
+            "accessibility": {
+             "if": [
+              "$playing",
+              "Pause",
+              "Play"
+             ]
+            },
+            "action": {
+             "command": "toggle"
+            }
+           },
+           {
+            "type": "spacer"
+           },
+           {
+            "type": "button",
+            "variant": "plain",
+            "symbol": "forward.end.fill",
+            "symbolSize": 20,
+            "width": 48,
+            "height": 48,
+            "accessibility": "Next track",
+            "action": {
+             "command": "next"
+            }
+           },
+           {
+            "type": "spacer"
            }
-          ]
-         },
-         {
-          "type": "spacer"
+          ],
+          "foreground": "white"
          }
         ],
-        "fill": "width"
-       },
-       {
-        "type": "stack",
-        "children": [
-         {
-          "type": "text",
-          "text": "$title",
-          "style": "headline",
-          "weight": "bold",
-          "lines": 2,
-          "textAlign": "center"
-         },
-         {
-          "type": "text",
-          "text": "$artist",
-          "style": "caption",
-          "color": "#FFFFFF99",
-          "lines": 1,
-          "textAlign": "center"
-         }
-        ],
-        "spacing": 5,
-        "fill": "width",
-        "key": "$track",
+        "spacing": 10,
+        "padding": 16,
+        "background": "#00000038",
+        "corner": 26,
         "alignment": "center",
-        "align": "center"
-       },
-       {
-        "type": "scrubber",
-        "compact": true,
-        "action": {
-         "command": "seek",
-         "value": "$value"
-        },
+        "align": "center",
+        "height": 320,
         "fill": "width"
-       },
-       {
-        "type": "stack",
-        "axis": "horizontal",
-        "children": [
-         {
-          "type": "spacer"
-         },
-         {
-          "type": "button",
-          "variant": "plain",
-          "symbol": "backward.end.fill",
-          "symbolSize": 20,
-          "width": 48,
-          "height": 48,
-          "accessibility": "Previous track",
-          "action": {
-           "command": "previous"
-          }
-         },
-         {
-          "type": "spacer"
-         },
-         {
-          "type": "button",
-          "variant": "plain",
-          "symbol": {
-           "if": [
-            "$playing",
-            "pause.fill",
-            "play.fill"
-           ]
-          },
-          "symbolSize": 28,
-          "width": 54,
-          "height": 44,
-          "accessibility": {
-           "if": [
-            "$playing",
-            "Pause",
-            "Play"
-           ]
-          },
-          "action": {
-           "command": "toggle"
-          }
-         },
-         {
-          "type": "spacer"
-         },
-         {
-          "type": "button",
-          "variant": "plain",
-          "symbol": "forward.end.fill",
-          "symbolSize": 20,
-          "width": 48,
-          "height": 48,
-          "accessibility": "Next track",
-          "action": {
-           "command": "next"
-          }
-         },
-         {
-          "type": "spacer"
-         }
-        ],
-        "foreground": "white"
        }
       ],
-      "spacing": 10,
-      "padding": 16,
-      "background": "#00000038",
-      "corner": 26,
+      "fill": "width",
       "alignment": "center",
       "align": "center",
-      "height": 320,
-      "fill": "width"
+      "padding": [
+       12,
+       0,
+       12,
+       0
+      ],
+      "spacing": 0
      }
     ],
     "spacing": 16,

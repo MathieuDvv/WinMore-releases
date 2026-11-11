@@ -1,5 +1,5 @@
 // Executed inside the PC's YouTube Music renderer. No phone-side service session.
-function readMusicSnapshot(maxVolume = 70) {
+function readMusicSnapshot(maxVolume = 70, includeBrowse = true) {
   const text = element => element?.textContent?.replace(/\s+/g,' ').trim() || '';
   const player = document.querySelector('ytmusic-player-bar');
   const video = document.querySelector('video');
@@ -26,6 +26,8 @@ function readMusicSnapshot(maxVolume = 70) {
     if(Number.isFinite(level)&&level>maxVolume&&typeof api?.setVolume==='function'){api.setVolume(maxVolume);level=Number(api.getVolume());}
     if(Number.isFinite(level)&&typeof api?.setVolume==='function')volume={available:true,value:Math.round(Math.max(0,Math.min(100,level*100/maxVolume))),playerValue:level,maxPlayerValue:maxVolume,muted:api.isMuted?.()===true,source:'youtube-music'};
   }catch{}
+  let browse={};
+  if(includeBrowse){
   const items = [], seen = new Set();
   const tiles='ytmusic-responsive-list-item-renderer, ytmusic-two-row-item-renderer';
   // On Home, the phone's grid is the account's Speed Dial shelf only, not Listen again or
@@ -88,6 +90,8 @@ function readMusicSnapshot(maxVolume = 70) {
       thumbs.at(-1)?.url||imageOf(row.querySelector('img'),url.pathname==='/watch'?url.searchParams.get('v'):''));
     if(items.length>=1000)break;
   }
+  browse={items,section:speedDial?'speed-dial':homeLoading?'loading':'page',loading:homeLoading,pageTitle:text(content.querySelector('ytmusic-detail-header-renderer .title, ytmusic-responsive-header-renderer .title, ytmusic-immersive-header-renderer .title')) || ''};
+  }
   // Playback queue: songs after the one currently selected, including Automix suggestions.
   let videoId='', videoAuthor='', videoTitle='', videoDuration=0, videoTime=NaN;
   try{const playerApi=document.querySelector('#movie_player') || document.querySelector('ytmusic-player')?.playerApi;const data=playerApi?.getVideoData?.();videoId=data?.video_id||'';videoAuthor=data?.author||'';videoTitle=data?.title||'';videoDuration=Number(playerApi?.getDuration?.())||0;videoTime=Number(playerApi?.getCurrentTime?.());}catch{}
@@ -112,8 +116,7 @@ function readMusicSnapshot(maxVolume = 70) {
     // song with the old song's time. The <video> element is the fallback.
     current:Number.isFinite(videoTime)&&videoId?videoTime:(video?.currentTime||0),
     duration:videoId&&videoDuration>0?videoDuration:(Number.isFinite(video?.duration)?video.duration:0),
-    loading:homeLoading||!!document.querySelector('ytmusic-app[is-loading], #progress[aria-valuenow="0"]'),
-    items,section:speedDial?'speed-dial':homeLoading?'loading':'page',pageTitle:text(content.querySelector('ytmusic-detail-header-renderer .title, ytmusic-responsive-header-renderer .title, ytmusic-immersive-header-renderer .title')) || '',
+    ...browse,loading:!!browse.loading||!!document.querySelector('ytmusic-app[is-loading]'),
     url:location.href,ready:!!document.querySelector('ytmusic-app'),volume
   };
 }
@@ -122,6 +125,24 @@ function toggleMusicLike(){
   const button=player?.querySelector('ytmusic-like-button-renderer #button-shape-like button, ytmusic-like-button-renderer #like-button');
   if(!button||button.disabled)throw Error('Play a song and sign in to YouTube Music to like it.');
   button.click();
+}
+function controlMusicPlayback(action){
+  if(action==='next'||action==='previous'){
+    const button=document.querySelector(action==='next'?'.next-button':'.previous-button');
+    if(!button)throw Error('Load a track in YouTube Music first.');
+    button.click();return {};
+  }
+  const video=document.querySelector('video');
+  if(!video)throw Error('Choose a track on PC first.');
+  const api=document.querySelector('#movie_player')||document.querySelector('ytmusic-player')?.playerApi;
+  const playing=video.paused;
+  if(playing){
+    if(typeof api?.playVideo==='function')api.playVideo();
+    else video.play()?.catch(()=>{});
+  }else if(typeof api?.pauseVideo==='function')api.pauseVideo();
+  else video.pause();
+  // Acknowledge immediately; HTMLMediaElement.play() can wait for network buffering.
+  return {playing};
 }
 function loadMoreMusic(){
   const continuation=document.querySelector('ytmusic-playlist-shelf-renderer ytmusic-continuation-item-renderer, ytmusic-shelf-renderer ytmusic-continuation-item-renderer');
@@ -194,4 +215,4 @@ function validateQueueTarget(value){
   if(!id&&!(Number.isInteger(index)&&index>=0&&index<1000))throw Error('Choose a song from the queue.');
   return {id:id||'',index:Number.isInteger(index)?index:null};
 }
-module.exports={readMusicSnapshot,musicURL,navigateMusicPage,setMusicVolume,validateVolume,playQueueItem,validateQueueTarget,toggleMusicLike,loadMoreMusic};
+module.exports={readMusicSnapshot,musicURL,navigateMusicPage,setMusicVolume,validateVolume,playQueueItem,validateQueueTarget,toggleMusicLike,loadMoreMusic,controlMusicPlayback};

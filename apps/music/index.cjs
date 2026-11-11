@@ -1,5 +1,5 @@
 // YouTube Music package: the PC plays music in a hidden window; the phone browses and controls it.
-const {readMusicSnapshot,musicURL,navigateMusicPage,setMusicVolume,validateVolume,playQueueItem,validateQueueTarget,toggleMusicLike,loadMoreMusic}=require('./music.cjs');
+const {readMusicSnapshot,musicURL,navigateMusicPage,setMusicVolume,validateVolume,playQueueItem,validateQueueTarget,toggleMusicLike,loadMoreMusic,controlMusicPlayback}=require('./music.cjs');
 const {createLyrics,readYouTubeMusicLyrics}=require('./lyrics.cjs');
 const {createBrowse,artwork}=require('./browse.cjs');
 const {createArtworkCache}=require('./artwork.cjs');
@@ -10,11 +10,11 @@ function activate(ctx){
   music.webContents.setWindowOpenHandler(()=>({action:'deny'}));
   music.on('close',event=>{if(!ctx.isQuitting()){event.preventDefault();music.hide();}});
   const run=script=>music.webContents.executeJavaScript(script,true);
-  let snapshot=null,reading=null,browsing=false,lastRead=0,pending=null,loadingError='',generation=0,lastNavigation={action:'page',value:'home'};
+  let snapshot=null,reading=null,browsing=false,lastRead=0,lastBrowse=0,pending=null,loadingError='',generation=0,lastNavigation={action:'page',value:'home'};
   const covers=createArtworkCache({fetch:ctx.electron.net?.fetch?.bind(ctx.electron.net)});
   const browse=createBrowse();
   const read=()=>{
-    if(!reading)reading=run(`(${readMusicSnapshot.toString()})()`).catch(()=>null).finally(()=>{reading=null;});
+    if(!reading){const details=!!pending||!snapshot||Date.now()-lastBrowse>2000;reading=run(`(${readMusicSnapshot.toString()})(70,${details})`).then(result=>{if(details)lastBrowse=Date.now();return result;}).catch(()=>null).finally(()=>{reading=null;});}
     return reading;
   };
   const navigate=async url=>{browsing=true;try{await music.loadURL(url);}finally{browsing=false;}};
@@ -23,7 +23,7 @@ function activate(ctx){
   // The island and the phone both poll; one read of the page serves both within a moment.
   async function current(){
     if(!browsing&&Date.now()-lastRead>300){
-      const started=generation,result=await read();lastRead=Date.now();
+      const started=generation,update=await read(),result=update?{...snapshot,...update}:null;lastRead=Date.now();
       if(!result&&started===generation&&pending&&Date.now()-pending.started>20000){pending=null;loadingError='Music could not be read. Try again.';if(snapshot)snapshot={...snapshot,items:[],loading:false};}
       if(result&&started===generation){
         if(pending){
@@ -82,14 +82,11 @@ function activate(ctx){
       return {
         ...info,
         artwork:covers.get(artwork(info.artwork,800)),
-        queue:(info.queue||[]).map(song=>({...song,image:covers.get(artwork(song.image,160))})),
+        queue:(info.queue||[]).map(song=>({...song,image:artwork(song.image,160)})),
         // What identifies the playing song for the position bar (the title can lag behind the audio).
         track:info.videoId||`${info.title}\u001f${info.artist}`,
         volume,
-        ...shown,
-        home:shown.home.map(item=>({...item,image:covers.get(item.image)})),
-        items:shown.items.map(item=>({...item,image:covers.get(item.image)})),
-        collection:shown.collection?{...shown.collection,image:covers.get(shown.collection.image),songs:shown.collection.songs.map(item=>({...item,image:covers.get(item.image)}))}:null
+        ...shown
       };
     },
     async command(action,value){
@@ -118,15 +115,18 @@ function activate(ctx){
       }
       if(action==='queue'){const target=validateQueueTarget(value);await run(`(${playQueueItem.toString()})(${JSON.stringify(target.id)},${JSON.stringify(target.index)})`);return;}
       if(action==='back'){browse.leave();pending=null;generation++;lastRead=0;if(music.webContents.navigationHistory.canGoBack())music.webContents.navigationHistory.goBack();return;}
-      if(action==='more'){await run(`(${loadMoreMusic.toString()})()`);lastRead=0;return;}
+      if(action==='more'){await run(`(${loadMoreMusic.toString()})()`);lastRead=0;lastBrowse=0;return;}
       if(action==='seek'){
         if(typeof value!=='number'||!Number.isFinite(value)||value<0)throw Error('Invalid track position.');
         // The player's own seek fetches unbuffered audio; setting currentTime past the buffer can be ignored.
         await run(`(()=>{const api=document.querySelector('#movie_player')||document.querySelector('ytmusic-player')?.playerApi;const v=document.querySelector('video');const d=Number(api?.getDuration?.())||v?.duration;const t=Math.min(${value},Number.isFinite(d)?Math.max(0,d-1):${value});if(typeof api?.seekTo==='function')api.seekTo(t,true);else if(v)v.currentTime=t;})()`);return;
       }
-      const scripts={toggle:`(()=>{const v=document.querySelector('video');if(!v)throw Error('Choose a track on PC first');return v.paused?v.play():v.pause()})()`,next:`document.querySelector('.next-button')?.click()`,previous:`document.querySelector('.previous-button')?.click()`};
-      if(!scripts[action])throw Error('Unknown music command');
-      await run(scripts[action]);
+      if(!['toggle','next','previous'].includes(action))throw Error('Unknown music command');
+      generation++;
+      const result=await run(`(${controlMusicPlayback.toString()})(${JSON.stringify(action)})`);
+      if(snapshot&&typeof result?.playing==='boolean')snapshot.playing=result.playing;
+      // Give the next poll a chance to read the changed player without a browse scan.
+      lastRead=Date.now();
     },
     close(){covers.close();if(!music.isDestroyed())music.destroy();}
   };
