@@ -21,7 +21,7 @@ window.WinMoreIcons={icon,GHOST};
 const page=document.body.dataset.page;               // "home" or "docs"
 const home=page==='home'?'./':'index.html';
 const RELEASES='https://github.com/MathieuDvv/WinMore-releases/releases/latest';
-const SIZES={rest:[232,48,25],player:[348,194,26],menu:[348,160,26]};
+const SIZES={rest:[232,48,25],player:[348,194,26],menu:[348,174,26]};
 
 const island=document.createElement('nav');
 island.className='island';island.dataset.mode='rest';island.setAttribute('aria-label','WinMore');
