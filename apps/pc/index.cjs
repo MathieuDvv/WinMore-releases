@@ -2,13 +2,14 @@ const os=require('node:os');
 const {execFile}=require('node:child_process');
 const {createMixer}=require('./mixer.cjs');
 const {createTelemetry}=require('./telemetry.cjs');
+const {createMasterAudio}=require('./unix.cjs');
 function cpuTimes(){return os.cpus().reduce((total,cpu)=>{const t=cpu.times;total.idle+=t.idle;total.all+=t.user+t.nice+t.sys+t.idle+t.irq;return total;},{idle:0,all:0});}
 const duration=seconds=>{const d=Math.floor(seconds/86400),h=Math.floor(seconds%86400/3600),m=Math.floor(seconds%3600/60);return d?`${d}d ${h}h`:h?`${h}h ${m}m`:`${m}m`;};
 const gigabytes=bytes=>(bytes/1024**3).toFixed(1)+' GB';
 const speed=value=>value===null?'Measuring…':value>=1024**2?(value/1024**2).toFixed(1)+' MB/s':(value/1024).toFixed(1)+' KB/s';
 function activate(ctx, dependencies={}){
   const {powerSaveBlocker}=ctx.electron;
-  const mixer=(dependencies.createMixer||createMixer)(),telemetry=(dependencies.createTelemetry||createTelemetry)();
+  const mixer=(dependencies.createMixer||(process.platform==='win32'?createMixer:createMasterAudio))(),telemetry=(dependencies.createTelemetry||createTelemetry)();
   let blocker=null,last=cpuTimes(),load=0;
   const sampler=setInterval(()=>{const now=cpuTimes(),all=now.all-last.all;load=all>0?Math.round(100*(1-(now.idle-last.idle)/all)):load;last=now;},2000);
   telemetry.poll();
@@ -31,7 +32,7 @@ function activate(ctx, dependencies={}){
       };
     },
     async command(action,value){
-      // Always address the default Windows endpoint, never the music audio session.
+      // Always address the default output device, never the music audio session.
       if(action==='volume'){await mixer.command('volume',{id:'master',value});return;}
       if(action==='mute'){await mixer.command('mute',{id:'master',muted:value});return;}
       if(action==='awake'){
@@ -41,8 +42,10 @@ function activate(ctx, dependencies={}){
         return;
       }
       if(action==='lock'){
-        if(process.platform!=='win32')throw Error('Locking requires Windows.');
-        await new Promise((resolve,reject)=>execFile('rundll32.exe',['user32.dll,LockWorkStation'],error=>error?reject(error):resolve()));return;
+        // macOS: sleeping the display locks when "require password" is on (the default).
+        const [command,args]={win32:['rundll32.exe',['user32.dll,LockWorkStation']],darwin:['pmset',['displaysleepnow']],linux:['loginctl',['lock-session']]}[process.platform]||[];
+        if(!command)throw Error('Locking is not supported on this PC.');
+        await new Promise((resolve,reject)=>execFile(command,args,error=>error?reject(error):resolve()));return;
       }
       throw Error('Unknown PC command.');
     },

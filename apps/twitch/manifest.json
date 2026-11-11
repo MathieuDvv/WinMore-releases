@@ -8,5 +8,10 @@
   "ui": "kit",
   "symbol": "bubble.left.and.bubble.right",
   "icon": "icon.svg",
-  "iconPNG": "icon.png"
+  "iconPNG": "icon.png",
+  "platforms": [
+    "win32",
+    "darwin",
+    "linux"
+  ]
 }

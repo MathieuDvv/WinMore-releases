@@ -2,7 +2,7 @@
   "id": "music",
   "name": "YouTube Music",
   "shortName": "Music",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Browse, play and queue YouTube Music running on your PC, with synced lyrics.",
   "entry": "index.cjs",
   "ui": "kit",
@@ -12,5 +12,10 @@
   "modules": [
     "music",
     "system"
+  ],
+  "platforms": [
+    "win32",
+    "darwin",
+    "linux"
   ]
 }

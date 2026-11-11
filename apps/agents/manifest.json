@@ -1,5 +1,0 @@
-{
-  "id": "agents", "name": "Agent Watch", "shortName": "Agents", "version": "1.2.1",
-  "description": "Follow local Codex, Claude Code and OpenCode tasks and approve individual permission requests.",
-  "entry": "index.cjs", "ui": "kit", "symbol": "sparkles", "icon": "icon.svg"
-}

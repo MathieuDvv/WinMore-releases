@@ -28,8 +28,7 @@ function activate(ctx){
     if(browsing)throw Error('Music is loading. Try again in a moment.');
     await run(`(${navigateMusicPage.toString()})(${JSON.stringify(action)},${JSON.stringify(value)},${JSON.stringify(url)})`);
   };
-  return {
-    async state(){
+  async function state(){
       await current();
       const info={...(snapshot||{title:'Open YouTube Music on PC',artist:'Sign in and choose something to play',playing:false}),loading:browsing};
       // Lyrics for the current song (looked up once per song, in the background) and its queue.
@@ -38,10 +37,25 @@ function activate(ctx){
       // The island tints its waveform with the cover's colour.
       if(info.artwork)info.accent=ctx.accentColor(info.artwork);
       return {music:info,volume:info.volume||{available:false,value:0,muted:false}};
+  }
+  return {
+    state,
+    // The PC island: the playing song in the resting pill, and a player card when it opens.
+    async island(){
+      const {music:info,volume}=await state();
+      const active=!!(info.playing||info.artwork);
+      return {
+        priority:info.playing?20:active?10:1,
+        compact:active?{title:info.title,image:info.artwork,accent:info.accent,activity:!!info.playing}:null,
+        expanded:{title:info.title,subtitle:info.artist,image:info.artwork,placeholder:'note',
+          buttons:[{symbol:'previous',action:'previous',label:'Previous'},{symbol:info.playing?'pause':'play',action:'toggle',label:info.playing?'Pause':'Play'},{symbol:'next',action:'next',label:'Next'}],
+          slider:{action:'volume',value:volume.value,label:'YouTube Music volume',symbol:'speaker',disabled:!volume.available,display:volume.available?(volume.muted?'Mute':volume.value+'%'):'—'},
+          footer:{label:'Open YouTube Music',action:'setup',note:'Runs on PC'}}
+      };
     },
     // The phone's Music screen (ui/screen.json).
     async data(){
-      const {music:info,volume}=await this.state();
+      const {music:info,volume}=await state();
       const shown=browse.view(snapshot);
       return {
         ...info,
