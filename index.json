@@ -310,7 +310,7 @@
     {
       "id": "music",
       "name": "YouTube Music",
-      "version": "2.1.0",
+      "version": "2.2.0",
       "description": "Browse, play and queue YouTube Music running on your PC, with synced lyrics.",
       "platforms": [
         "win32",
@@ -321,9 +321,14 @@
       "folder": "apps/music/",
       "files": [
         {
+          "path": "artwork.cjs",
+          "size": 1819,
+          "sha256": "4aae9e98d9aaf1b493866261f9e4d7046b85ec4c7718b78f5782b26ca5d7fbe1"
+        },
+        {
           "path": "browse.cjs",
-          "size": 3260,
-          "sha256": "e364597bc925a11e9b7bc2220f0207371cf187aed2e018f76d3ea7901e8a1252"
+          "size": 3845,
+          "sha256": "a3705615028125837c023df5f77391c1bb96f2de3cc809e05ff6d8ae66a3aff1"
         },
         {
           "path": "icon.png",
@@ -332,33 +337,33 @@
         },
         {
           "path": "icon.svg",
-          "size": 449,
-          "sha256": "da113f9efcc8d346cb612ca8cbe50316fb8d24720d09efe4fc56252cdc3e04a8"
+          "size": 450,
+          "sha256": "a788ccf70bda5d1faa3a7c045269cf1a81b93bbbb00bc5be9ac799c43e1346de"
         },
         {
           "path": "index.cjs",
-          "size": 6869,
-          "sha256": "bca03c217f38d72458344ffbd0078312cf932f16887c2fc58ccd89301c6db0ea"
+          "size": 9430,
+          "sha256": "2a1f9db29aa236ede701d1896e357ca2e517c8238fd8ca9b3d5fca297a3a98ed"
         },
         {
           "path": "lyrics.cjs",
-          "size": 6035,
-          "sha256": "41a7474b10208b3e870f6d2e5d350f3917d7e0b88258ade179b2c318d0b39502"
+          "size": 6133,
+          "sha256": "c4a4e1f10d17f7938aa37a9852fd6754fd0f8b77de1c83a6749f6401cdac43fd"
         },
         {
           "path": "manifest.json",
           "size": 409,
-          "sha256": "5966f3e02b42c04513f866b66643bf000080c7932df6fbc2848bea4d22f2429a"
+          "sha256": "6d432d26b8225114092dd66523e37f926fae7589b20ce5370980b462100d05c0"
         },
         {
           "path": "music.cjs",
-          "size": 12867,
-          "sha256": "3c7cb63732ac7610e5c34dbe69aab9d3c0987dadccd18d1eef8303f5d848831f"
+          "size": 15948,
+          "sha256": "4466ba57e98204b79863f33cb546779cdb11d3af18e5607ee268f5c22261393d"
         },
         {
           "path": "ui/screen.json",
-          "size": 87698,
-          "sha256": "ce9accc12f85d6f93e1abe9d3c2bc2a08829e34c4380295fd45764c1ded7446e"
+          "size": 91900,
+          "sha256": "9dad79de1afa8deba0f4beced6026b3198cd7c59dd766cb736f9ea34268f017c"
         }
       ],
       "bundle": "bundles/music.wmapp"

@@ -11,7 +11,12 @@ function readMusicSnapshot(maxVolume = 70) {
   };
   const playerImage=player?.querySelector('img');
   let playing='';try{playing=new URL(location.href).searchParams.get('v')||'';}catch{}
-  const art = imageOf(playerImage,playing);
+  const api=document.querySelector('#movie_player') || document.querySelector('ytmusic-player')?.playerApi;
+  let activeId=playing;try{activeId=api?.getVideoData?.()?.video_id||playing;}catch{}
+  const art = imageOf(playerImage,activeId);
+  const likeButton=player?.querySelector('ytmusic-like-button-renderer #button-shape-like button, ytmusic-like-button-renderer #like-button');
+  const likeRenderer=player?.querySelector('ytmusic-like-button-renderer');
+  const liked=likeRenderer?.getAttribute('like-status')==='LIKE'||likeButton?.getAttribute('aria-pressed')==='true';
   let volume={available:false,value:0,muted:false,source:'youtube-music'};
   try {
     const api=document.querySelector('#movie_player') || document.querySelector('ytmusic-player')?.playerApi;
@@ -35,41 +40,53 @@ function readMusicSnapshot(maxVolume = 70) {
   const homeLoading=home&&!speedDial&&shelves.length<3;
   const kindOf=url=>url.pathname==='/watch'?'Song':url.pathname==='/playlist'?'Playlist':'Collection';
   const add=(url,title,subtitle,image)=>{
-    if(!url||!title||seen.has(url.href))return;
+    if(!url||!title)return;
+    if(seen.has(url.href)){const existing=items.find(item=>item.id===url.href);if(existing&&!existing.image&&image)existing.image=image;return;}
     seen.add(url.href);
     items.push({id:url.href,title:title.slice(0,180),subtitle:(subtitle||'').slice(0,220),image,kind:kindOf(url)});
   };
   // Speed Dial is read from the shelf's data: it holds every tile, in your order, as soon as the
   // shelf exists, while the page only draws some of them (and draws them progressively).
   const runs=value=>(value?.runs||[]).map(run=>run.text).join('');
-  for(const entry of speedDial?.data?.contents||[]){
+  const fromData=entry=>{
     const tile=entry.musicTwoRowItemRenderer||entry.musicResponsiveListItemRenderer;
-    if(!tile)continue;
+    if(!tile)return;
     const columns=(tile.flexColumns||[]).map(column=>column.musicResponsiveListItemFlexColumnRenderer?.text);
-    const endpoint=tile.navigationEndpoint||columns[0]?.runs?.[0]?.navigationEndpoint
+    const endpoint=tile.navigationEndpoint||columns[0]?.runs?.find(run=>run.navigationEndpoint)?.navigationEndpoint
       ||tile.overlay?.musicItemThumbnailOverlayRenderer?.content?.musicPlayButtonRenderer?.playNavigationEndpoint;
     let url=null;
-    const watch=endpoint?.watchEndpoint, browse=endpoint?.browseEndpoint?.browseId;
+    const watch=endpoint?.watchEndpoint||(tile.playlistItemData?.videoId?{videoId:tile.playlistItemData.videoId}:null), browse=endpoint?.browseEndpoint?.browseId;
     if(watch?.videoId){url=new URL('https://music.youtube.com/watch');url.searchParams.set('v',watch.videoId);if(watch.playlistId)url.searchParams.set('list',watch.playlistId);}
     else if(typeof browse==='string'&&browse)url=browse.startsWith('VL')?new URL('https://music.youtube.com/playlist?list='+encodeURIComponent(browse.slice(2))):new URL('https://music.youtube.com/browse/'+encodeURIComponent(browse));
-    const thumbs=(tile.thumbnailRenderer||tile.thumbnail)?.musicThumbnailRenderer?.thumbnail?.thumbnails||[];
+    const thumbs=(tile.thumbnailRenderer||tile.thumbnail)?.musicThumbnailRenderer?.thumbnail?.thumbnails||tile.thumbnail?.thumbnails||[];
     const thumb=thumbs[thumbs.length-1]?.url||'';
     add(url,runs(tile.title)||runs(columns[0]),runs(tile.subtitle)||columns.slice(1).map(runs).filter(Boolean).join(' • '),
       thumb.startsWith('https://')?thumb:(watch?.videoId?`https://i.ytimg.com/vi/${watch.videoId}/hqdefault.jpg`:''));
-  }
+  };
+  for(const entry of speedDial?.data?.contents||[])fromData(entry);
+  // Shelf data includes lazy and virtualized rows before their anchors/images exist.
+  const content=document.querySelector(location.pathname==='/search'?'ytmusic-search-page:not([hidden])':'ytmusic-browse-response:not([hidden])')||document;
+  const visit=(value,depth=0)=>{
+    if(!value||typeof value!=='object'||depth>24)return;
+    if(value.musicResponsiveListItemRenderer||value.musicTwoRowItemRenderer){fromData(value);return;}
+    for(const child of Object.values(value))visit(child,depth+1);
+  };
+  if(!home)for(const shelf of content.querySelectorAll('ytmusic-shelf-renderer, ytmusic-playlist-shelf-renderer, ytmusic-carousel-shelf-renderer, ytmusic-section-list-renderer'))visit(shelf.data);
   // Every other page (and a Speed Dial whose data couldn't be read) uses the rendered tiles.
-  const rows = homeLoading||items.length?[]:(speedDial||document).querySelectorAll(tiles);
+  const rows = homeLoading?[]:(speedDial||content).querySelectorAll(tiles);
   for(const row of rows) {
     // Speed Dial pages beyond the first sit off-screen in its carousel but still count.
     if(row.closest('ytmusic-player-queue') || (!speedDial&&!row.getClientRects().length)) continue;
     const anchors=Array.from(row.querySelectorAll('a[href]'));
     let url;
     const anchor=anchors.find(a=>{try{const candidate=new URL(a.getAttribute('href'),location.origin);if(candidate.origin==='https://music.youtube.com'&&(['/watch','/playlist','/browse'].includes(candidate.pathname)||candidate.pathname.startsWith('/browse/'))){url=candidate;return true;}}catch{}return false;});
-    if(!anchor)continue;
+    if(!anchor){fromData({musicResponsiveListItemRenderer:row.data});continue;}
+    const data=row.data||{};
+    const thumbs=(data.thumbnailRenderer||data.thumbnail)?.musicThumbnailRenderer?.thumbnail?.thumbnails||data.thumbnail?.thumbnails||[];
     add(url,text(row.querySelector('.title')) || text(anchor) || row.getAttribute('aria-label') || '',
       text(row.querySelector('.subtitle')) || text(row.querySelector('.secondary-flex-columns')) || text(row.querySelector('.flex-column:nth-child(2)')),
-      imageOf(row.querySelector('img'),url.pathname==='/watch'?url.searchParams.get('v'):''));
-    if(items.length>=60)break;
+      thumbs.at(-1)?.url||imageOf(row.querySelector('img'),url.pathname==='/watch'?url.searchParams.get('v'):''));
+    if(items.length>=1000)break;
   }
   // Playback queue: songs after the one currently selected, including Automix suggestions.
   let videoId='', videoAuthor='', videoTitle='', videoDuration=0, videoTime=NaN;
@@ -88,16 +105,28 @@ function readMusicSnapshot(maxVolume = 70) {
       duration:text(row.querySelector('.duration'))||(data.lengthText?.runs||[]).map(r=>r.text).join(''),image,automix:!!row.closest('#automix-contents')});
   }
   return {
-    videoId,videoTitle,videoAuthor,videoDuration,queue,
+    videoId,videoTitle,videoAuthor,videoDuration,queue,liked,canLike:!!likeButton&&!likeButton.disabled,
     title:text(player?.querySelector('.title')) || 'Find your next favorite',
     artist:text(player?.querySelector('.byline')) || 'YouTube Music on your PC',
     artwork:art,playing:video?!video.paused:false,// Time and length come from the same player as videoId, so a track switch can't pair the new
     // song with the old song's time. The <video> element is the fallback.
     current:Number.isFinite(videoTime)&&videoId?videoTime:(video?.currentTime||0),
     duration:videoId&&videoDuration>0?videoDuration:(Number.isFinite(video?.duration)?video.duration:0),
-    items,section:speedDial?'speed-dial':homeLoading?'loading':'page',pageTitle:text(document.querySelector('ytmusic-detail-header-renderer .title')) || text(document.querySelector('ytmusic-immersive-header-renderer .title')) || '',
+    loading:homeLoading||!!document.querySelector('ytmusic-app[is-loading], #progress[aria-valuenow="0"]'),
+    items,section:speedDial?'speed-dial':homeLoading?'loading':'page',pageTitle:text(content.querySelector('ytmusic-detail-header-renderer .title, ytmusic-responsive-header-renderer .title, ytmusic-immersive-header-renderer .title')) || '',
     url:location.href,ready:!!document.querySelector('ytmusic-app'),volume
   };
+}
+function toggleMusicLike(){
+  const player=document.querySelector('ytmusic-player-bar');
+  const button=player?.querySelector('ytmusic-like-button-renderer #button-shape-like button, ytmusic-like-button-renderer #like-button');
+  if(!button||button.disabled)throw Error('Play a song and sign in to YouTube Music to like it.');
+  button.click();
+}
+function loadMoreMusic(){
+  const continuation=document.querySelector('ytmusic-playlist-shelf-renderer ytmusic-continuation-item-renderer, ytmusic-shelf-renderer ytmusic-continuation-item-renderer');
+  if(continuation){continuation.scrollIntoView({block:'center'});continuation.querySelector('button')?.click();}
+  else{const scroller=document.querySelector('ytmusic-app #layout #content, ytmusic-browse-response #contents');if(scroller&&scroller.scrollHeight>scroller.clientHeight)scroller.scrollTop+=scroller.clientHeight*.8;else window.scrollBy(0,window.innerHeight*.8);}
 }
 function navigateMusicPage(action,value,url) {
   const app=document.querySelector('ytmusic-app');
@@ -165,4 +194,4 @@ function validateQueueTarget(value){
   if(!id&&!(Number.isInteger(index)&&index>=0&&index<1000))throw Error('Choose a song from the queue.');
   return {id:id||'',index:Number.isInteger(index)?index:null};
 }
-module.exports={readMusicSnapshot,musicURL,navigateMusicPage,setMusicVolume,validateVolume,playQueueItem,validateQueueTarget};
+module.exports={readMusicSnapshot,musicURL,navigateMusicPage,setMusicVolume,validateVolume,playQueueItem,validateQueueTarget,toggleMusicLike,loadMoreMusic};

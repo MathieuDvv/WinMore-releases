@@ -18,7 +18,7 @@ function matchesCollection(url,id){
 function artwork(url,pixels=1200){
   if(typeof url!=='string'||!url.startsWith('https://'))return url||'';
   let host='';try{host=new URL(url).hostname;}catch{return url;}
-  if(!(host.endsWith('googleusercontent.com')||host.endsWith('.ggpht.com')))return url;
+  if(!(host==='googleusercontent.com'||host.endsWith('.googleusercontent.com')||host.endsWith('.ggpht.com')))return url;
   const size=Math.min(1600,Math.max(128,pixels));
   return url.replace(/=w\d+-h\d+/,`=w${size}-h${size}`).replace(/=s\d+(?=[-&]|$)/,`=s${size}`);
 }
@@ -26,17 +26,21 @@ const decorate=(item,pixels=384)=>({...item,image:artwork(item.image,pixels),son
 
 function createBrowse(){
   let home=[],awaitingHome=true,collection=null,songs=[];
+  const merge=(old,items)=>{const saved=new Map(old.map(item=>[item.id,item])),seen=new Set();for(const item of items){if(seen.has(item.id))continue;seen.add(item.id);saved.set(item.id,{...saved.get(item.id),...item,image:item.image||saved.get(item.id)?.image||''});}return [...saved.values()];};
   return {
     // Called with each snapshot of the PC's YouTube Music page.
     observe(snapshot){
       if(!snapshot||snapshot.loading)return;
       const items=snapshot.items||[];
-      if((awaitingHome||!home.length)&&isHome(snapshot.url)&&snapshot.section!=='loading'&&items.length){
-        const seen=new Set();home=items.filter(item=>!seen.has(item.id)&&seen.add(item.id)).slice(0,36);awaitingHome=false;
+      if(isHome(snapshot.url)&&snapshot.section!=='loading'&&items.length){
+        if(awaitingHome||!home.length){home=merge([],items).slice(0,36);awaitingHome=false;}
+        else if(snapshot.section==='speed-dial')home=merge(home,items).slice(0,36);
       }
       if(collection&&matchesCollection(snapshot.url,collection.id)){
         const found=items.filter(item=>item.kind==='Song');
-        if(found.length)songs=found;
+        if(found.length)songs=merge(songs,found);
+        if(snapshot.pageTitle)collection.title=snapshot.pageTitle;
+        if(!collection.image)collection.image=found.find(item=>item.image)?.image||'';
       }
     },
     // Opening a tile: albums and playlists become the open collection; songs just play.
@@ -54,7 +58,7 @@ function createBrowse(){
       return {
         home:home.map(item=>decorate(item)),
         items:(snapshot?.items||[]).map(item=>decorate(item)),
-        collection:collection?{...decorate(collection,600),title:snapshot?.pageTitle||collection.title,songs:songs.map(item=>decorate(item,160))}:null
+        collection:collection?{...decorate(collection,600),title:(!snapshot?.url||matchesCollection(snapshot.url,collection.id))&&snapshot?.pageTitle||collection.title,songs:songs.map(item=>decorate(item,160))}:null
       };
     }
   };

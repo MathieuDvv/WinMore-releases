@@ -238,11 +238,16 @@
     {
      "if": [
       "$env.landscape",
-      "$env.height",
       {
        "sub": [
         "$env.height",
-        336
+        24
+       ]
+      },
+      {
+       "sub": [
+        "$env.height",
+        360
        ]
       }
      ]
@@ -294,6 +299,31 @@
        ]
       }
      ]
+    }
+   ]
+  },
+  "homePages": {
+   "max": [
+    1,
+    {
+     "floor": {
+      "div": [
+       {
+        "add": [
+         {
+          "count": "$home"
+         },
+         {
+          "sub": [
+           "$pageSize",
+           1
+          ]
+         }
+        ]
+       },
+       "$pageSize"
+      ]
+     }
     }
    ]
   }
@@ -425,7 +455,7 @@
        {
         "type": "field",
         "bind": "query",
-        "placeholder": "Songs, artists, albums",
+        "placeholder": "Songs, artists, albums, playlists",
         "symbol": "magnifyingglass",
         "keyboard": "search",
         "when": "$ui.showSearch",
@@ -440,15 +470,19 @@
         "shape": "capsule",
         "submit": [
          {
-          "set": "searching",
-          "value": true
-         },
-         {
           "keyboard": "hide"
          },
          {
+          "set": "dial",
+          "value": 0
+         },
+         {
           "command": "search",
-          "value": "$value"
+          "value": "$ui.query"
+         },
+         {
+          "set": "searching",
+          "value": true
          }
         ]
        },
@@ -471,6 +505,28 @@
          }
         ],
         "when": "$ui.searching"
+       },
+       {
+        "type": "stack",
+        "when": {
+         "has": "$loadingError"
+        },
+        "children": [
+         {
+          "type": "text",
+          "text": "$loadingError",
+          "style": "footnote",
+          "color": "secondary"
+         },
+         {
+          "type": "button",
+          "label": "Try again",
+          "action": {
+           "command": "retryBrowse"
+          }
+         }
+        ],
+        "spacing": 6
        },
        {
         "type": "if",
@@ -686,6 +742,15 @@
             }
            ],
            "spacing": 0
+          },
+          {
+           "type": "button",
+           "label": "Load more songs",
+           "symbol": "arrow.clockwise",
+           "disabled": "$loading",
+           "action": {
+            "command": "more"
+           }
           }
          ],
          "padding": [
@@ -702,9 +767,27 @@
          },
          "then": {
           "type": "empty",
-          "title": "Find your next favorite",
+          "title": {
+           "if": [
+            "$ui.searching",
+            "No results yet",
+            "Find your next favorite"
+           ]
+          },
           "loading": "$loading",
           "children": [
+           {
+            "type": "text",
+            "text": {
+             "if": [
+              "$ui.searching",
+              "Try another song, artist, album or playlist.",
+              "Your music will appear here when it loads."
+             ]
+            },
+            "style": "subheadline",
+            "color": "secondary"
+           },
            {
             "type": "button",
             "label": "Open music on PC",
@@ -726,7 +809,7 @@
             {
              "type": "each",
              "items": {
-              "range": 3
+              "range": "$homePages"
              },
              "as": "p",
              "template": {
@@ -1139,6 +1222,9 @@
       "type": "stack",
       "children": [
        {
+        "type": "spacer"
+       },
+       {
         "type": "stack",
         "axis": "horizontal",
         "children": [
@@ -1283,6 +1369,9 @@
          }
         ],
         "foreground": "white"
+       },
+       {
+        "type": "spacer"
        }
       ],
       "spacing": 10,
@@ -1290,13 +1379,19 @@
       "background": "#00000038",
       "corner": 26,
       "alignment": "center",
-      "align": "top",
+      "align": "center",
       "width": "$miniWidth",
       "fill": "height"
      }
     ],
     "spacing": 18,
-    "fill": "both"
+    "fill": "both",
+    "padding": [
+     8,
+     0,
+     16,
+     0
+    ]
    },
    "else": {
     "type": "stack",
@@ -1418,7 +1513,7 @@
        {
         "type": "field",
         "bind": "query",
-        "placeholder": "Songs, artists, albums",
+        "placeholder": "Songs, artists, albums, playlists",
         "symbol": "magnifyingglass",
         "keyboard": "search",
         "when": "$ui.showSearch",
@@ -1433,15 +1528,19 @@
         "shape": "capsule",
         "submit": [
          {
-          "set": "searching",
-          "value": true
-         },
-         {
           "keyboard": "hide"
          },
          {
+          "set": "dial",
+          "value": 0
+         },
+         {
           "command": "search",
-          "value": "$value"
+          "value": "$ui.query"
+         },
+         {
+          "set": "searching",
+          "value": true
          }
         ]
        },
@@ -1464,6 +1563,28 @@
          }
         ],
         "when": "$ui.searching"
+       },
+       {
+        "type": "stack",
+        "when": {
+         "has": "$loadingError"
+        },
+        "children": [
+         {
+          "type": "text",
+          "text": "$loadingError",
+          "style": "footnote",
+          "color": "secondary"
+         },
+         {
+          "type": "button",
+          "label": "Try again",
+          "action": {
+           "command": "retryBrowse"
+          }
+         }
+        ],
+        "spacing": 6
        },
        {
         "type": "if",
@@ -1679,6 +1800,15 @@
             }
            ],
            "spacing": 0
+          },
+          {
+           "type": "button",
+           "label": "Load more songs",
+           "symbol": "arrow.clockwise",
+           "disabled": "$loading",
+           "action": {
+            "command": "more"
+           }
           }
          ],
          "padding": [
@@ -1695,9 +1825,27 @@
          },
          "then": {
           "type": "empty",
-          "title": "Find your next favorite",
+          "title": {
+           "if": [
+            "$ui.searching",
+            "No results yet",
+            "Find your next favorite"
+           ]
+          },
           "loading": "$loading",
           "children": [
+           {
+            "type": "text",
+            "text": {
+             "if": [
+              "$ui.searching",
+              "Try another song, artist, album or playlist.",
+              "Your music will appear here when it loads."
+             ]
+            },
+            "style": "subheadline",
+            "color": "secondary"
+           },
            {
             "type": "button",
             "label": "Open music on PC",
@@ -1719,7 +1867,7 @@
             {
              "type": "each",
              "items": {
-              "range": 3
+              "range": "$homePages"
              },
              "as": "p",
              "template": {
@@ -2283,13 +2431,19 @@
       "background": "#00000038",
       "corner": 26,
       "alignment": "center",
-      "align": "top",
+      "align": "center",
       "height": 320,
       "fill": "width"
      }
     ],
     "spacing": 16,
-    "fill": "both"
+    "fill": "both",
+    "padding": [
+     8,
+     0,
+     16,
+     0
+    ]
    }
   },
   "else": {
@@ -2777,6 +2931,32 @@
           "spacing": 5,
           "fill": "width",
           "key": "$track"
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": {
+           "if": [
+            "$liked",
+            "hand.thumbsup.fill",
+            "hand.thumbsup"
+           ]
+          },
+          "width": 44,
+          "height": 44,
+          "disabled": {
+           "not": "$canLike"
+          },
+          "accessibility": {
+           "if": [
+            "$liked",
+            "Unlike this song",
+            "Like this song"
+           ]
+          },
+          "action": {
+           "command": "like"
+          }
          },
          {
           "type": "button",
@@ -3438,6 +3618,32 @@
           "spacing": 5,
           "fill": "width",
           "key": "$track"
+         },
+         {
+          "type": "button",
+          "variant": "plain",
+          "symbol": {
+           "if": [
+            "$liked",
+            "hand.thumbsup.fill",
+            "hand.thumbsup"
+           ]
+          },
+          "width": 44,
+          "height": 44,
+          "disabled": {
+           "not": "$canLike"
+          },
+          "accessibility": {
+           "if": [
+            "$liked",
+            "Unlike this song",
+            "Like this song"
+           ]
+          },
+          "action": {
+           "command": "like"
+          }
          },
          {
           "type": "button",
