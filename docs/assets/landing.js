@@ -2,10 +2,11 @@
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>`&#${c.charCodeAt(0)};`);
 
 // The headline steps aside while the island moves up, or while it is expanded over it.
-const copy=document.getElementById('hero-copy');
+const copy=document.getElementById('hero-copy'),art=document.querySelector('.hero-art');
 document.addEventListener('island',({detail})=>{
   copy.style.paddingTop=detail.heroBottom+56+'px';
   copy.style.opacity=detail.mode==='player'?0:Math.max(0,1-detail.progress*2.2);
+  art.style.opacity=Math.max(0,.9-detail.progress*1.4);
 });
 
 fetch('data/apps.json').then(r=>r.json()).then(({apps})=>{
