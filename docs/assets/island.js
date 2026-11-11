@@ -39,7 +39,7 @@ island.innerHTML=`
       <a href="${home}#apps">${icon('grid')}<span><strong>App library</strong><small>What you can install</small></span></a>
       <a href="docs.html"${page==='docs'?' aria-current="page"':''}>${icon('doc')}<span><strong>Documentation</strong><small>How it works</small></span></a>
       <a href="docs.html#explorer">${icon('sliders')}<span><strong>Components</strong><small>Kit explorer</small></span></a>
-      <a href="${RELEASES}">${icon('download')}<span><strong>Download</strong><small>For Windows</small></span></a>
+      <a href="${RELEASES}">${icon('download')}<span><strong>Download the client</strong><small>Windows, macOS and Linux</small></span></a>
     </div>
   </div>`;
 document.body.prepend(island);
