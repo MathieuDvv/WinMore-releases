@@ -138,6 +138,8 @@ td:first-child{white-space:nowrap}
 .k-meter{display:block;height:5px;border-radius:3px;background:#ffffff1f;overflow:hidden;width:100%}
 .k-meter i{display:block;height:100%;background:var(--tint,var(--k-accent));border-radius:3px}
 .k-stat .k-meter{margin-top:6px}
+.k-scrubber{width:100%}
+.k-times{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;color:#98989f;font-variant-numeric:tabular-nums}
 .k-progress{display:flex;flex-direction:column;gap:6px;width:100%;font-size:13px;color:#98989f}
 .k-spin{width:20px;height:20px;border-radius:50%;border:2.5px solid #ffffff2a;border-top-color:#f5f5f7;animation:kspin .8s linear infinite;display:inline-block}
 @keyframes kspin{to{transform:rotate(360deg)}}
@@ -202,6 +204,100 @@ td:first-child{white-space:nowrap}
 .k-tap{cursor:pointer}
 .k-tap:active{opacity:.7}
 [data-k-act]{cursor:pointer}
+
+/* ── Phone style switch ───────────────────────────── */
+.ex-platform{display:flex;margin-left:auto;border:1px solid var(--line-2)}
+.ex-platform button{padding:5px 12px;font:12px var(--mono);color:var(--secondary)}
+.ex-platform button:hover{color:var(--text)}
+.ex-platform button[aria-checked=true]{background:var(--accent);color:#fff}
+
+/* ── Android preview: Material 3 Expressive, dark, seeded from the app's accent ── */
+.phone[data-platform=android]{
+  --m-primary:#a8c8ff;--m-on-primary:#003063;--m-secondary-container:#3d4758;--m-on-secondary-container:#d9e3f8;
+  --m-surface-container:#1d2024;--m-surface-container-high:#272a2f;--m-surface-container-highest:#32353a;
+  --m-on-surface:#e2e2e9;--m-on-surface-variant:#c4c6d0;--m-outline:#8e9099;
+  border-radius:30px;background:#202124;box-shadow:0 0 0 1px #3c4043}
+.phone[data-platform=android]::before{left:20px;width:11px;height:11px;border-radius:50%}
+.phone[data-platform=android] .screen{--k-accent:var(--m-primary);--k-surface:var(--m-surface-container);border-radius:22px;grid-template-columns:58px 1fr}
+.phone[data-platform=android] .rail{align-self:center;justify-self:center;margin-left:12px;padding:6px;gap:6px;border-radius:999px;background:var(--m-surface-container-high);box-shadow:0 2px 6px #0007}
+.phone[data-platform=android] .rail i{width:30px;height:30px;border-radius:50%;background:none;position:relative}
+.phone[data-platform=android] .rail i::after{content:'';position:absolute;inset:8px;border-radius:4px;background:var(--m-on-surface-variant);opacity:.55}
+.phone[data-platform=android] .rail i.on{background:var(--m-secondary-container)}
+.phone[data-platform=android] .rail i.on::after{background:var(--m-on-secondary-container);opacity:1}
+.phone[data-platform=android] .canvas{font-family:'Roboto Flex',Roboto,system-ui,sans-serif;color:var(--m-on-surface)}
+/* Lists: Material's segmented list, separate rounded items with small gaps. */
+.phone[data-platform=android] :is(.k-list,.k-section .k-group){display:flex;flex-direction:column;gap:2px;background:none;border-radius:0;overflow:visible}
+.phone[data-platform=android] :is(.k-group,.k-list)>.k{background:var(--m-surface-container);border-radius:4px}
+.phone[data-platform=android] :is(.k-group,.k-list)>.k:first-child{border-top-left-radius:20px;border-top-right-radius:20px}
+.phone[data-platform=android] :is(.k-group,.k-list)>.k:last-child{border-bottom-left-radius:20px;border-bottom-right-radius:20px}
+.phone[data-platform=android] :is(.k-group,.k-list)>.k+.k{border-top:0}
+.phone[data-platform=android] .k-list.plain>.k{background:none}
+.phone[data-platform=android] .k-section h6{margin:4px 0 4px 16px;font-size:14px;font-weight:500;text-transform:none;letter-spacing:.1px;color:var(--m-primary)}
+.phone[data-platform=android] .k-foot{color:var(--m-on-surface-variant)}
+.phone[data-platform=android] .k-row{padding:12px 16px;min-height:56px}
+.phone[data-platform=android] .k-row-sym{border-radius:50%;background:var(--m-secondary-container)}
+.phone[data-platform=android] .k-row-text small,.phone[data-platform=android] .k-row-value{color:var(--m-on-surface-variant)}
+.phone[data-platform=android] .k-card{border-radius:24px}
+.phone[data-platform=android] .k-stat{border-radius:20px}
+.phone[data-platform=android] :is(.k-image,.k-gallery){border-radius:16px;background:var(--m-surface-container-high)}
+/* Buttons: tonal by default, filled when prominent, text when plain; the corners tighten while pressed. */
+.phone[data-platform=android] .k-button{height:40px;padding:0 16px;font:500 14px/1 'Roboto Flex',Roboto,system-ui,sans-serif;letter-spacing:.1px;background:var(--m-secondary-container);color:var(--tint,var(--m-on-secondary-container));box-shadow:none;backdrop-filter:none;transition:border-radius .2s cubic-bezier(.2,0,0,1),background .2s}
+.phone[data-platform=android] .k-button:active{transform:none;border-radius:12px}
+.phone[data-platform=android] .k-button.v-prominent{background:var(--tint,var(--m-primary));color:var(--m-on-primary)}
+.phone[data-platform=android] .k-button.v-prominent[style*="--tint"]{color:#fff}
+.phone[data-platform=android] :is(.k-button.v-plain,.k-button.v-link){background:none;padding:0 12px;color:var(--tint,var(--m-primary))}
+.phone[data-platform=android] .k-button.s-circle{width:40px;padding:0;border-radius:50%}
+.phone[data-platform=android] .k-button.s-circle:active{border-radius:12px}
+.phone[data-platform=android] .k-button.z-large{height:56px;font-size:16px;padding:0 24px}
+.phone[data-platform=android] .k-button.z-large.s-circle{width:56px;padding:0}
+.phone[data-platform=android] .k-button.z-small{height:32px;font-size:13px;padding:0 12px}
+.phone[data-platform=android] .k-button.z-small.s-circle{width:32px;padding:0}
+.phone[data-platform=android] .k-button.on{background:var(--tint,var(--m-primary));color:var(--m-on-primary);border-radius:12px}
+.phone[data-platform=android] .k-button.on.s-circle{border-radius:14px}
+/* The floating material: an opaque tonal surface with a soft shadow, not glass. */
+.phone[data-platform=android] .k-glass,.phone[data-platform=android] .k-button.v-glass{background:var(--m-surface-container-high);backdrop-filter:none;box-shadow:0 2px 6px #0008;color:var(--m-on-surface)}
+.phone[data-platform=android] .k-pill{padding:4px;gap:2px}
+.phone[data-platform=android] .k-pill .k-button{background:none;box-shadow:none;color:var(--m-on-surface);width:48px;padding:0;border-radius:999px}
+.phone[data-platform=android] .k-pill .k-button.on{background:var(--m-secondary-container);color:var(--m-on-secondary-container)}
+.phone[data-platform=android] .k-menu-list{border-radius:16px;padding:4px 0;background:var(--m-surface-container);backdrop-filter:none;box-shadow:0 4px 12px #0009}
+.phone[data-platform=android] .k-menu-list button{border-radius:0;padding:12px 16px;font-size:14px;color:var(--m-on-surface)}
+.phone[data-platform=android] .k-menu-list button:hover{background:#ffffff14}
+/* Controls in rows */
+.phone[data-platform=android] :is(.k-toggle,.k-slider,.k-stepper,.k-field){background:var(--m-surface-container);border-radius:20px;padding:12px 16px}
+.phone[data-platform=android] .k-switch{width:52px;height:32px;border-radius:16px;background:var(--m-surface-container-highest);box-shadow:inset 0 0 0 2px var(--m-outline)}
+.phone[data-platform=android] .k-switch::after{left:8px;top:8px;width:16px;height:16px;background:var(--m-outline);box-shadow:none;transition:all .2s cubic-bezier(.2,0,0,1)}
+.phone[data-platform=android] .k-switch[aria-checked=true]{background:var(--m-primary);box-shadow:none}
+.phone[data-platform=android] .k-switch[aria-checked=true]::after{left:4px;top:4px;width:24px;height:24px;transform:translateX(20px);background:var(--m-on-primary) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%23a8c8ff' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
+/* Slider: a thick track, a gap around the handle, a tall thin handle. */
+.phone[data-platform=android] .k-slider input{-webkit-appearance:none;appearance:none;height:44px;background:none;--fill:var(--tint,var(--m-primary))}
+.phone[data-platform=android] .k-slider input::-webkit-slider-runnable-track{height:16px;border-radius:999px;background:linear-gradient(to right,var(--fill) var(--p,50%),var(--m-secondary-container) var(--p,50%))}
+.phone[data-platform=android] .k-slider input::-webkit-slider-thumb{-webkit-appearance:none;width:4px;height:44px;margin-top:-14px;border-radius:2px;background:var(--fill);box-shadow:0 0 0 6px var(--m-surface-container)}
+.phone[data-platform=android] .k-slider input::-moz-range-track{height:16px;border-radius:999px;background:var(--m-secondary-container)}
+.phone[data-platform=android] .k-slider input::-moz-range-progress{height:16px;border-radius:999px;background:var(--fill)}
+.phone[data-platform=android] .k-slider input::-moz-range-thumb{width:4px;height:44px;border:0;border-radius:2px;background:var(--fill);box-shadow:0 0 0 6px var(--m-surface-container)}
+.phone[data-platform=android] .k-step{gap:4px;background:none}
+.phone[data-platform=android] .k-step button{width:40px;height:40px;border-radius:50%;background:var(--m-secondary-container);color:var(--m-on-secondary-container);transition:border-radius .2s}
+.phone[data-platform=android] .k-step button:active{border-radius:12px}
+.phone[data-platform=android] .k-step button+button{border-left:0}
+/* Segmented picker: Material's connected button group. */
+.phone[data-platform=android] .k-picker.seg{gap:2px;padding:0;background:none;border-radius:0}
+.phone[data-platform=android] .k-picker.seg button{height:40px;border-radius:8px;background:var(--m-surface-container-high);color:var(--m-on-surface-variant);font-size:14px;font-weight:500;box-shadow:none;transition:border-radius .2s cubic-bezier(.2,0,0,1)}
+.phone[data-platform=android] .k-picker.seg button:first-child{border-radius:999px 8px 8px 999px}
+.phone[data-platform=android] .k-picker.seg button:last-child{border-radius:8px 999px 999px 8px}
+.phone[data-platform=android] .k-picker.seg button.on{background:var(--m-primary);color:var(--m-on-primary);border-radius:999px}
+.phone[data-platform=android] .k-picker-menu{color:var(--m-primary)}
+.phone[data-platform=android] .k-field{border-radius:4px 4px 0 0;background:var(--m-surface-container-highest);box-shadow:inset 0 -1px 0 var(--m-on-surface-variant)}
+.phone[data-platform=android] .k-field:focus-within{box-shadow:inset 0 -2px 0 var(--m-primary)}
+.phone[data-platform=android] .k-field input{color:var(--m-on-surface)}
+.phone[data-platform=android] .k-badge{border-radius:8px}
+/* Progress: a thin bar on a tonal track; the media scrubber's played part is a wave. */
+.phone[data-platform=android] .k-meter{height:4px;border-radius:2px;background:var(--m-secondary-container)}
+.phone[data-platform=android] .k-meter i{background:var(--tint,var(--m-primary))}
+.phone[data-platform=android] .k-scrubber .k-meter{height:12px;overflow:visible;background:linear-gradient(var(--m-secondary-container),var(--m-secondary-container)) right center/100% 4px no-repeat}
+.phone[data-platform=android] .k-scrubber .k-meter i{background:var(--m-primary);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 12'%3E%3Cpath d='M0 6q5-6 10 0t10 0' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round'/%3E%3C/svg%3E") left center/20px 12px repeat-x;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 12'%3E%3Cpath d='M0 6q5-6 10 0t10 0' fill='none' stroke='%23000' stroke-width='3.2' stroke-linecap='round'/%3E%3C/svg%3E") left center/20px 12px repeat-x}
+.phone[data-platform=android] .k-spin{border-color:var(--m-secondary-container);border-top-color:var(--m-primary);border-width:4px}
+.phone[data-platform=android] .k-gauge .track{stroke:var(--m-secondary-container)}
+.phone[data-platform=android] .k-dots i.on{background:var(--m-primary)}
 
 @media (max-width:1100px){
   .explorer{grid-template-columns:200px minmax(0,1fr);height:auto}

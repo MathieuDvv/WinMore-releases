@@ -2,7 +2,7 @@
   "id": "discord",
   "name": "Discord",
   "shortName": "Calls",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Voice call controls and the soundboard through the Discord app on your PC.",
   "entry": "index.cjs",
   "ui": "kit",

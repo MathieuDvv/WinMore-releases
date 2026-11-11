@@ -29,7 +29,7 @@ const NOTES={
   reddit:'A landscape Reddit reader. Reddit runs in WinMore\'s own window on the PC, so no API key is needed: sign in there once (or browse signed out). Each post is a screen-sized card; open one for comments, upvote and save. History, Saved and your lists are a tap away.',
   twitch:'Join any public channel and read its chat live. Connects anonymously on the PC: no login, read-only.',
   pc:'A glance at your PC on three pages: master volume, processor and memory load, hardware temperatures (from Libre Hardware Monitor or Open Hardware Monitor when running), and network speeds.',
-  clipboard:'Moves text and images between the phone and the PC. <strong>Copy to iPhone</strong> takes what the PC copied; <strong>Send to PC</strong> pops it onto the island with Copy and Dismiss for 30 seconds. Nothing is kept as history.',
+  clipboard:'Moves text and images between the phone and the PC. <strong>Copy to phone</strong> takes what the PC copied; <strong>Send to PC</strong> pops it onto the island with Copy and Dismiss for 30 seconds. Nothing is kept as history.',
   clock:'Turns the phone into a bedside clock with several faces. Notification mirroring will come with a future Bluetooth bridge.',
 };
 fetch('data/apps.json').then(r=>r.json()).then(({apps})=>{
@@ -111,7 +111,11 @@ function draw(){
     const el=e.target.closest('input[data-k-act]');if(!el)return;
     const a=ctx.actions[el.dataset.kAct];run(a.action,a.scope,state,log,+el.value);draw();
   };
-  canvas.oninput=e=>{if(e.target.dataset.kBind)state[e.target.dataset.kBind]=e.target.value;};
+  canvas.oninput=e=>{
+    if(e.target.dataset.kBind)state[e.target.dataset.kBind]=e.target.value;
+    // Sliders: the filled part of the Android track follows the thumb.
+    if(e.target.type==='range'){const t=e.target,p=(t.value-t.min)/((t.max-t.min)||1)*100;t.parentElement.style.setProperty('--p',p+'%');}
+  };
   canvas.onkeydown=e=>{if(e.key==='Enter'&&e.target.dataset.kBind!=null){const s=example.submit||findSubmit(example);if(s){run(s,scope,state,log);}}};
 }
 const findSubmit=node=>{if(!node||typeof node!=='object')return null;if(node.type==='field')return node.submit;for(const v of Object.values(node)){const f=Array.isArray(v)?v.map(findSubmit).find(Boolean):typeof v==='object'?findSubmit(v):null;if(f)return f;}return null;};
@@ -137,6 +141,15 @@ $('ex-side').addEventListener('click',e=>{
     $('ex-json').value=JSON.stringify(example,null,2);draw();
   }
 });
+
+// iPhone or Android: the preview frame takes that phone's look (CSS under [data-platform]).
+function platform(name){
+  $('ex-phone').dataset.platform=name;
+  document.querySelectorAll('.ex-platform button').forEach(b=>b.setAttribute('aria-checked',b.dataset.platform===name));
+  try{localStorage.setItem('winmore-platform',name);}catch{}
+}
+document.querySelector('.ex-platform').addEventListener('click',e=>{const b=e.target.closest('button[data-platform]');if(b)platform(b.dataset.platform);});
+try{const saved=localStorage.getItem('winmore-platform');if(saved==='android'||saved==='ios')platform(saved);}catch{}
 
 function select(type,push=true){
   current=type;state={...STATE};

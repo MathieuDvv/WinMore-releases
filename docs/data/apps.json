@@ -27,33 +27,33 @@
    "id": "clipboard",
    "name": "Clipboard",
    "shortName": "Clipboard",
-   "version": "2.0.0",
+   "version": "2.0.1",
    "description": "Share text and images with your PC.",
    "icon": "apps/clipboard.svg",
    "platforms": null,
-   "size": 7613,
+   "size": 7555,
    "files": 4
   },
   {
    "id": "clock",
    "name": "Clock",
    "shortName": "Clock",
-   "version": "2.0.0",
+   "version": "2.0.1",
    "description": "A customizable bedside clock. Notification mirroring requires a future Bluetooth bridge.",
    "icon": "apps/clock.svg",
    "platforms": null,
-   "size": 4327,
+   "size": 4312,
    "files": 4
   },
   {
    "id": "discord",
    "name": "Discord",
    "shortName": "Calls",
-   "version": "2.1.0",
+   "version": "2.1.1",
    "description": "Voice call controls and the soundboard through the Discord app on your PC.",
    "icon": "apps/discord.svg",
    "platforms": null,
-   "size": 51247,
+   "size": 51201,
    "files": 6
   },
   {
@@ -77,7 +77,7 @@
    "description": "Browse, play and queue YouTube Music running on your PC, with synced lyrics.",
    "icon": "apps/music.svg",
    "platforms": null,
-   "size": 121099,
+   "size": 121098,
    "files": 8
   },
   {
@@ -88,18 +88,18 @@
    "description": "PC master volume, processor and memory load, hardware temperatures, and network transfer rates across three pages.",
    "icon": "apps/pc.svg",
    "platforms": null,
-   "size": 32010,
+   "size": 32009,
    "files": 10
   },
   {
    "id": "reddit",
    "name": "Reddit",
    "shortName": "Reddit",
-   "version": "2.0.0",
+   "version": "2.0.1",
    "description": "A landscape Reddit reader backed by your signed-in Reddit session on the PC.",
    "icon": "apps/reddit.svg",
    "platforms": null,
-   "size": 55881,
+   "size": 55852,
    "files": 7
   },
   {

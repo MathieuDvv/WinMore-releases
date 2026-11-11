@@ -73,7 +73,7 @@
    },
    {
     "type": "button",
-    "label": "Copy to iPhone",
+    "label": "Copy to phone",
     "symbol": "doc.on.doc",
     "disabled": {
      "not": {
@@ -86,7 +86,7 @@
      },
      {
       "set": "notice",
-      "value": "Copied to iPhone"
+      "value": "Copied to phone"
      },
      {
       "haptic": "success"

@@ -27,7 +27,7 @@ function activate(ctx){
     }
     clearTimeout(expiryTimer);
     incoming={kind:value.kind,data:value.data,id:require('node:crypto').randomUUID(),expiresAt:Date.now()+30000};
-    ctx.island.present({...incoming,title:'From iPhone',action:'copy',dismissAction:'dismiss'});
+    ctx.island.present({...incoming,title:'From phone',action:'copy',dismissAction:'dismiss'});
     expiryTimer=setTimeout(()=>{clearTimeout(expiryTimer);incoming=null;ctx.island.dismiss();},30000);expiryTimer.unref?.();return;
    }
    if(action==='dismiss'){clearTimeout(expiryTimer);incoming=null;ctx.island.dismiss();return;}

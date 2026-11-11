@@ -2,7 +2,7 @@
   "id": "clipboard",
   "name": "Clipboard",
   "shortName": "Clipboard",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Share text and images with your PC.",
   "entry": "index.cjs",
   "ui": "kit",

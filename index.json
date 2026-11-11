@@ -138,7 +138,7 @@
     {
       "id": "clipboard",
       "name": "Clipboard",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "description": "Share text and images with your PC.",
       "icon": "apps/clipboard/icon.svg",
       "folder": "apps/clipboard/",
@@ -150,18 +150,18 @@
         },
         {
           "path": "index.cjs",
-          "size": 2575,
-          "sha256": "2f9cd5bf6385a448df216de8046db6843cf404caa7187c037ca48b97979256be"
+          "size": 2530,
+          "sha256": "a3850a32085291e31422d258ba2c276b08c4a169507aa42aa3a5c4dca52a0ca3"
         },
         {
           "path": "manifest.json",
-          "size": 257,
-          "sha256": "b45fc84e6243b2c9dc57128986a432b848727e41155f62033e736bfb3a980786"
+          "size": 246,
+          "sha256": "1c0c3f4f76c776c8795c5eafe6cfb94d35619c8b6fa6562fadb3f3b95b4bb003"
         },
         {
           "path": "ui/screen.json",
-          "size": 4574,
-          "sha256": "c771b43208fccb0649ba70c4cc5b35f9570fe60f635f12b566e31d0f3b12f5dd"
+          "size": 4572,
+          "sha256": "c63e9f5f9f0dfc679b091d670d0415359845d4c97ddd8a95fd4125c604fccd7c"
         }
       ],
       "bundle": "bundles/clipboard.wmapp"
@@ -169,7 +169,7 @@
     {
       "id": "clock",
       "name": "Clock",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "description": "A customizable bedside clock. Notification mirroring requires a future Bluetooth bridge.",
       "icon": "apps/clock/icon.svg",
       "folder": "apps/clock/",
@@ -181,18 +181,18 @@
         },
         {
           "path": "index.cjs",
-          "size": 154,
-          "sha256": "8327efc43ca96277f7b15c845b545156cee0e51d1318c3995758425b16bd4dbe"
+          "size": 151,
+          "sha256": "5c07ee3b549884e5d1f115b14147fe89a4a91c37c0ea89a85d16418d7381714f"
         },
         {
           "path": "manifest.json",
-          "size": 287,
-          "sha256": "02583fedceda39b4db369ed44981e5a09a80febd4285ed9c1e53256adc06dd64"
+          "size": 276,
+          "sha256": "bfac47f06bd39022dfd7d9b13680afadbbdd09f73a6b28935fe88354136adae3"
         },
         {
           "path": "ui/screen.json",
-          "size": 3721,
-          "sha256": "4df27b5781435c3033b8db249227f6a017e705a5a19dcab36f89b554fbb664e3"
+          "size": 3720,
+          "sha256": "a58169dd5c03b968e9d754e308a9200b9691eb52fd39d67e01f6ab024871d7c5"
         }
       ],
       "bundle": "bundles/clock.wmapp"
@@ -200,7 +200,7 @@
     {
       "id": "discord",
       "name": "Discord",
-      "version": "2.1.0",
+      "version": "2.1.1",
       "description": "Voice call controls and the soundboard through the Discord app on your PC.",
       "icon": "apps/discord/icon.svg",
       "folder": "apps/discord/",
@@ -222,13 +222,13 @@
         },
         {
           "path": "index.cjs",
-          "size": 3106,
-          "sha256": "c0d4d0baa54e6785a37c58a2fbbe5c1f6ca7425d102b40574b81ea5a15381678"
+          "size": 3060,
+          "sha256": "d4c34e6f8b37581a77b63d4a79a4542181d4d94fc56228342c262d3f96b4b1c2"
         },
         {
           "path": "manifest.json",
           "size": 296,
-          "sha256": "1f40c6906dd5afb62caeba60cbc7ef1c01fe1850fa0097f8dbb504aaa7118683"
+          "sha256": "6ab0deb547a902304f0a041d5c8c3ab091ec779c1920527135139e8a0cd9dc8c"
         },
         {
           "path": "ui/screen.json",
@@ -294,8 +294,8 @@
       "files": [
         {
           "path": "browse.cjs",
-          "size": 3261,
-          "sha256": "f47b4d72b2df54d52dc1ef4a4cd35a2f56e6650fac219478a980eb4431a5f8cb"
+          "size": 3260,
+          "sha256": "e364597bc925a11e9b7bc2220f0207371cf187aed2e018f76d3ea7901e8a1252"
         },
         {
           "path": "icon.png",
@@ -375,8 +375,8 @@
         },
         {
           "path": "README.md",
-          "size": 1249,
-          "sha256": "d9f943bcbbfd0de1218b71f163213dd7f27acfecf29d0de6ca5cb8d2dd822f1f"
+          "size": 1248,
+          "sha256": "bc58711bd9544a070ecc1217e70f4c3d01b14d84dcb21ac2236ab2292ebdf570"
         },
         {
           "path": "telemetry.cjs",
@@ -399,7 +399,7 @@
     {
       "id": "reddit",
       "name": "Reddit",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "description": "A landscape Reddit reader backed by your signed-in Reddit session on the PC.",
       "icon": "apps/reddit/icon.svg",
       "folder": "apps/reddit/",
@@ -416,13 +416,13 @@
         },
         {
           "path": "index.cjs",
-          "size": 703,
-          "sha256": "d07f7b79db6ab24b28cb40f86c0c34c4fd775b829b66a331d9b5691d8c0bf0e5"
+          "size": 688,
+          "sha256": "479893d5488a9d7daacb2514fc69005684c81c6d3c15d640ec9deb0242ce520d"
         },
         {
           "path": "manifest.json",
-          "size": 341,
-          "sha256": "5ac17d18cdf71aa460bc93728f5063a627e4626b47828afa2298a43fcc97977e"
+          "size": 328,
+          "sha256": "700318b4bd9b0a3916b87961333a38d84a34fe50b2e6072dfca31132e1929ff5"
         },
         {
           "path": "reddit.cjs",
@@ -436,8 +436,8 @@
         },
         {
           "path": "ui/screen.json",
-          "size": 20542,
-          "sha256": "5c7bf524d1892bb9fbc56b80e6157f3709d8c40537db6a634c51dd80a94f1dc2"
+          "size": 20541,
+          "sha256": "4cd401f016bf71038debe550dff154fab68762233e0a81e4b0f665d2a0d215b7"
         }
       ],
       "bundle": "bundles/reddit.wmapp"

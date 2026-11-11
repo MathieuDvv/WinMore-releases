@@ -267,7 +267,7 @@
         ],
         "trailing": [
           { "type": "progress", "when": "$busy", "width": 42, "height": 42, "glass": true, "shape": "circle" },
-          { "type": "button", "variant": "glass", "symbol": "safari", "when": { "and": [{ "eq": ["$p.kind", "link"] }, "$p.url"] }, "action": { "open": "$p.url" }, "accessibility": "Open link on iPhone" },
+          { "type": "button", "variant": "glass", "symbol": "safari", "when": { "and": [{ "eq": ["$p.kind", "link"] }, "$p.url"] }, "action": { "open": "$p.url" }, "accessibility": "Open link on phone" },
           {
             "type": "button", "variant": "glass", "symbol": { "if": ["$upvoted", "arrowshape.up.fill", "arrowshape.up"] }, "selected": "$upvoted",
             "accessibility": { "if": ["$upvoted", "Remove upvote", "Upvote"] },

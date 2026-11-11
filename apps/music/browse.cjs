@@ -1,5 +1,5 @@
 // What the phone's Music screen shows, worked out on the PC: the saved Home grid, the collection
-// you opened and its songs, and artwork at a size that looks sharp on the iPhone.
+// you opened and its songs, and artwork at a size that looks sharp on the phone.
 
 const isHome=url=>{
   if(!url)return true;

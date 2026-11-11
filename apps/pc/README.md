@@ -1,7 +1,7 @@
 # PC Monitor
 
 Version 1.1.0 provides Overview, Temperatures and Network pages using the existing
-schema screen. Tap the page buttons; no iPhone update is required.
+schema screen. Tap the page buttons; no phone update is required.
 
 The volume slider and mute switch control the default Windows playback device's
 master volume, including audio from every application. They do not change the

@@ -195,7 +195,7 @@
       "children": [
        {
         "type": "text",
-        "text": "iPhone notification mirroring is not connected. A future Windows Bluetooth bridge is needed to display other apps’ notifications.",
+        "text": "Phone notification mirroring is not connected. A future Windows Bluetooth bridge is needed to display other apps’ notifications.",
         "color": "secondary"
        }
       ]

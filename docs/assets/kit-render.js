@@ -1,5 +1,6 @@
 // An approximate web renderer for WinMore Kit screens, for the docs explorer. The real thing is
-// drawn natively by the iPhone app (SwiftUI); this one only aims to show the shape of each component.
+// drawn natively by each phone app; this one only aims to show the shape of each component, in an
+// iPhone style (Liquid Glass) or an Android style (Material 3 Expressive), set by data-platform on the phone frame.
 (()=>{
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>`&#${c.charCodeAt(0)};`);
 const COLORS={primary:'#f5f5f7',secondary:'#98989f',tertiary:'#5a5a5f',accent:'var(--k-accent)',background:'#000',card:'var(--k-surface)',white:'#fff',black:'#000',clear:'transparent',
@@ -196,7 +197,7 @@ function render(node,scope,ctx){
     case 'toggle':return open('label')+(node.symbol?symbol(r('symbol'),17):'')+`<span>${esc(r('label'))}</span><button type="button" role="switch" aria-checked="${!!r('value')}" class="k-switch"${act(node.action?[{set:'__value',value:!r('value')},...[].concat(node.action)]:null)}></button></label>`;
     case 'slider':{
       const min=node.min??0,max=node.max??1,v=n(r('value'));
-      return open('label',`--tint:${color(r('tint'))||'var(--k-accent)'}`)+(node.symbol?symbol(r('symbol'),17):'')+(node.label?`<span>${esc(r('label'))}</span>`:'')+`<input type="range" min="${min}" max="${max}" step="${node.step||(max-min)/100}" value="${v}"${act(node.action)} data-k-input${r('disabled')?' disabled':''}></label>`;
+      return open('label',`--tint:${color(r('tint'))||'var(--k-accent)'};--p:${Math.max(0,Math.min(1,(v-min)/((max-min)||1)))*100}%`)+(node.symbol?symbol(r('symbol'),17):'')+(node.label?`<span>${esc(r('label'))}</span>`:'')+`<input type="range" min="${min}" max="${max}" step="${node.step||(max-min)/100}" value="${v}"${act(node.action)} data-k-input${r('disabled')?' disabled':''}></label>`;
     }
     case 'scrubber':{const tl=get(scope,'song')||{current:37,duration:168};return open()+`<span class="k-meter"><i style="width:${tl.current/tl.duration*100}%"></i></span>`+(node.times!==false?`<span class="k-times"><span>${FILTERS.duration(tl.current)}</span><span>-${FILTERS.duration(tl.duration-tl.current)}</span></span>`:'')+'</div>';}
     case 'stepper':{const v=n(r('value'));return open()+`<span>${esc(r('label'))}</span><span class="k-step"><button type="button"${act([{set:'__value',value:v-(node.step||1)},...[].concat(node.action||[])])}>${symbol('minus',14)}</button><button type="button"${act([{set:'__value',value:v+(node.step||1)},...[].concat(node.action||[])])}>${symbol('plus',14)}</button></span></div>`;}

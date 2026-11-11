@@ -18,7 +18,7 @@ function activate(ctx){
       );
     }else{
       let detail={offline:'Open Discord on this PC. WinMore reconnects automatically.',connecting:'Looking for the Discord app on this PC…',authorize:'Choose Reconnect, then Authorize in the Discord window.',authorizing:'Discord is asking for permission. Choose Authorize in the Discord app.'}[d.status]||'';
-      if(d.status==='ready'){const call=d.call;detail=(d.user?`Signed in as ${d.user.name}. `:'')+(call?`In ${call.name}${call.guild?' · '+call.guild:''} with ${call.members.length} ${call.members.length===1?'person':'people'}.`:'Not in a call. Join a voice channel and your iPhone shows the controls.');}
+      if(d.status==='ready'){const call=d.call;detail=(d.user?`Signed in as ${d.user.name}. `:'')+(call?`In ${call.name}${call.guild?' · '+call.guild:''} with ${call.members.length} ${call.members.length===1?'person':'people'}.`:'Not in a call. Join a voice channel and your phone shows the controls.');}
       if(d.error)detail=d.error+(detail?' '+detail:'');
       items.push({type:'text',text:detail},{type:'button',action:'reconnect',label:'Reconnect',primary:true},{type:'button',action:'forget',label:'Forget Discord'});
     }
