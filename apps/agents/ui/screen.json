@@ -1,0 +1,844 @@
+{
+  "type": "screen",
+  "title": "",
+  "chrome": "fullscreen",
+  "background": "#151922",
+  "surface": "#1E2330",
+  "accent": "#AAA7C9",
+  "refresh": {
+    "interval": 2
+  },
+  "state": {
+    "showFinished": true
+  },
+  "body": {
+    "type": "scroll",
+    "spacing": 18,
+    "padding": 18,
+    "children": [
+      {
+        "type": "if",
+        "test": "$errors",
+        "then": {
+          "type": "text",
+          "text": "$errors",
+          "style": "caption",
+          "color": "#FFBD9C"
+        }
+      },
+      {
+        "type": "each",
+        "items": "$completions",
+        "as": "done",
+        "template": {
+          "type": "stack",
+          "spacing": 12,
+          "children": [
+            {
+              "type": "stack",
+              "spacing": 12,
+              "children": [
+                {
+                  "type": "symbol",
+                  "name": "checkmark.seal.fill",
+                  "size": 32,
+                  "color": "#A1C7B3"
+                },
+                {
+                  "type": "stack",
+                  "spacing": 4,
+                  "children": [
+                    {
+                      "type": "text",
+                      "text": "TASK COMPLETE",
+                      "style": "caption",
+                      "color": "#A1C7B3",
+                      "weight": "bold"
+                    },
+                    {
+                      "type": "text",
+                      "text": "{{done.ai}} finished · {{done.elapsed}}",
+                      "style": "headline",
+                      "color": "#F2F1FA"
+                    }
+                  ]
+                },
+                {
+                  "type": "spacer"
+                },
+                {
+                  "type": "image",
+                  "src": "$done.logo",
+                  "fit": "fit",
+                  "width": 34,
+                  "height": 34,
+                  "padding": 9,
+                  "background": "#FFFFFF",
+                  "corner": 15,
+                  "accessibility": "{{done.ai}} logo"
+                }
+              ],
+              "axis": "horizontal"
+            },
+            {
+              "type": "text",
+              "text": "$done.task",
+              "style": "title3",
+              "color": "#F2F1FA",
+              "weight": "semibold",
+              "lines": 3,
+              "markdown": false
+            },
+            {
+              "type": "stack",
+              "spacing": 12,
+              "children": [
+                {
+                  "type": "text",
+                  "text": "$done.project",
+                  "style": "caption",
+                  "color": "#A4BDAF"
+                },
+                {
+                  "type": "spacer"
+                },
+                {
+                  "type": "button",
+                  "label": "Got it",
+                  "variant": "prominent",
+                  "tint": "#176E50",
+                  "action": [
+                    {
+                      "command": "acknowledge",
+                      "value": "$done.key"
+                    },
+                    {
+                      "haptic": "success"
+                    }
+                  ]
+                }
+              ],
+              "axis": "horizontal"
+            }
+          ],
+          "padding": 22,
+          "corner": 26,
+          "key": "$done.key",
+          "gradient": [
+            "#293A33",
+            "#202C2A"
+          ]
+        }
+      },
+      {
+        "type": "each",
+        "items": "$permissions",
+        "as": "p",
+        "template": {
+          "type": "stack",
+          "spacing": 12,
+          "children": [
+            {
+              "type": "stack",
+              "spacing": 12,
+              "children": [
+                {
+                  "type": "image",
+                  "src": "$p.logo",
+                  "fit": "fit",
+                  "width": 34,
+                  "height": 34,
+                  "padding": 9,
+                  "background": "#FFFFFF",
+                  "corner": 15,
+                  "accessibility": "{{p.ai}} logo"
+                },
+                {
+                  "type": "stack",
+                  "spacing": 3,
+                  "children": [
+                    {
+                      "type": "text",
+                      "text": "NEEDS YOU",
+                      "style": "caption",
+                      "color": "#D2B895",
+                      "weight": "bold"
+                    },
+                    {
+                      "type": "text",
+                      "text": "{{p.ai}} · {{p.tool}}",
+                      "style": "headline",
+                      "color": "#F2F1FA"
+                    }
+                  ]
+                },
+                {
+                  "type": "spacer"
+                },
+                {
+                  "type": "symbol",
+                  "name": "hand.raised.fill",
+                  "color": "#C9AE88",
+                  "size": 24
+                }
+              ],
+              "axis": "horizontal"
+            },
+            {
+              "type": "text",
+              "text": "$p.detail",
+              "style": "caption",
+              "color": "#F2F1FA",
+              "selectable": true,
+              "markdown": false
+            },
+            {
+              "type": "if",
+              "test": "$p.actionable",
+              "then": {
+                "type": "stack",
+                "spacing": 12,
+                "children": [
+                  {
+                    "type": "button",
+                    "label": "Approve once",
+                    "symbol": "checkmark",
+                    "variant": "prominent",
+                    "tint": "#6A4817",
+                    "confirm": "Allow this specific action on your PC?",
+                    "action": {
+                      "command": "decide",
+                      "value": {
+                        "id": "$p.id",
+                        "behavior": "allow"
+                      }
+                    }
+                  },
+                  {
+                    "type": "button",
+                    "label": "Decline",
+                    "role": "destructive",
+                    "variant": "bordered",
+                    "action": {
+                      "command": "decide",
+                      "value": {
+                        "id": "$p.id",
+                        "behavior": "deny"
+                      }
+                    }
+                  }
+                ],
+                "axis": "horizontal"
+              },
+              "else": {
+                "type": "text",
+                "text": "Answer this request on the PC.",
+                "style": "caption",
+                "color": "#F2F1FA"
+              }
+            }
+          ],
+          "padding": 22,
+          "corner": 26,
+          "gradient": [
+            "#383127",
+            "#29282D"
+          ]
+        }
+      },
+      {
+        "type": "grid",
+        "minWidth": 280,
+        "spacing": 16,
+        "children": [
+          {
+            "type": "each",
+            "items": "$active",
+            "as": "agent",
+            "template": {
+              "type": "stack",
+              "spacing": 12,
+              "children": [
+                {
+                  "type": "stack",
+                  "spacing": 12,
+                  "children": [
+                    {
+                      "type": "image",
+                      "src": "$agent.logo",
+                      "fit": "fit",
+                      "width": 34,
+                      "height": 34,
+                      "padding": 9,
+                      "background": "#FFFFFF",
+                      "corner": 15,
+                      "accessibility": "{{agent.ai}} logo"
+                    },
+                    {
+                      "type": "stack",
+                      "spacing": 3,
+                      "children": [
+                        {
+                          "type": "text",
+                          "text": "$agent.ai",
+                          "style": "headline",
+                          "color": "#F2F1FA"
+                        },
+                        {
+                          "type": "text",
+                          "text": "$agent.project",
+                          "style": "caption",
+                          "color": "#A6AEC5",
+                          "lines": 1
+                        }
+                      ]
+                    },
+                    {
+                      "type": "spacer"
+                    },
+                    {
+                      "type": "badge",
+                      "text": "$agent.status",
+                      "tint": "$agent.tint",
+                      "variant": "tinted"
+                    }
+                  ],
+                  "axis": "horizontal"
+                },
+                {
+                  "type": "text",
+                  "text": "$agent.task",
+                  "style": "title3",
+                  "color": "#F2F1FA",
+                  "weight": "semibold",
+                  "lines": 3,
+                  "markdown": false
+                },
+                {
+                  "type": "stack",
+                  "spacing": 12,
+                  "children": [
+                    {
+                      "type": "text",
+                      "text": "$agent.elapsed",
+                      "style": "largeTitle",
+                      "color": "#F2F1FA",
+                      "size": 34,
+                      "weight": "light",
+                      "monospaced": true
+                    },
+                    {
+                      "type": "spacer"
+                    },
+                    {
+                      "type": "symbol",
+                      "name": "arrow.up.right",
+                      "color": "$agent.tint",
+                      "size": 20
+                    }
+                  ],
+                  "axis": "horizontal"
+                },
+                {
+                  "type": "text",
+                  "text": "$agent.tool",
+                  "style": "caption",
+                  "color": "$agent.tint",
+                  "lines": 1,
+                  "when": {
+                    "has": "$agent.tool"
+                  }
+                },
+                {
+                  "type": "stack",
+                  "spacing": 5,
+                  "children": [
+                    {
+                      "type": "text",
+                      "text": "$agent.progress.label",
+                      "style": "caption",
+                      "color": "$agent.tint"
+                    },
+                    {
+                      "type": "progress",
+                      "value": "$agent.progress.fraction",
+                      "tint": "$agent.tint"
+                    }
+                  ],
+                  "when": "$agent.progress.hasTasks"
+                }
+              ],
+              "padding": 20,
+              "corner": 26,
+              "fill": "width",
+              "action": {
+                "cover": "detail",
+                "params": "$agent"
+              },
+              "accessibility": "{{agent.ai}}, {{agent.status}}, {{agent.elapsed}}",
+              "gradient": "$agent.gradient"
+            },
+            "empty": {
+              "type": "stack",
+              "spacing": 10,
+              "children": [
+                {
+                  "type": "text",
+                  "text": "No active tasks",
+                  "style": "headline",
+                  "color": "#F2F1FA"
+                },
+                {
+                  "type": "text",
+                  "text": "Start a task on your computer.",
+                  "style": "caption",
+                  "color": "#A6AEC5"
+                }
+              ],
+              "padding": 20,
+              "background": "#1A2030",
+              "corner": 22,
+              "fill": "width"
+            }
+          }
+        ]
+      },
+      {
+        "type": "stack",
+        "spacing": 12,
+        "children": [
+          {
+            "type": "stack",
+            "spacing": 3,
+            "children": [
+              {
+                "type": "text",
+                "text": "Finished",
+                "style": "title2",
+                "color": "#F2F1FA",
+                "weight": "bold"
+              }
+            ]
+          },
+          {
+            "type": "spacer"
+          },
+          {
+            "type": "button",
+            "symbol": {
+              "if": [
+                "$ui.showFinished",
+                "chevron.up",
+                "chevron.down"
+              ]
+            },
+            "variant": "plain",
+            "tint": "#B8A6FA",
+            "accessibility": "Show or hide finished tasks",
+            "action": {
+              "toggle": "showFinished"
+            }
+          }
+        ],
+        "axis": "horizontal",
+        "when": {
+          "gt": [
+            "$finishedCount",
+            0
+          ]
+        }
+      },
+      {
+        "type": "if",
+        "test": {
+          "and": [
+            "$ui.showFinished",
+            {
+              "gt": [
+                "$finishedCount",
+                0
+              ]
+            }
+          ]
+        },
+        "then": {
+          "type": "each",
+          "items": "$finished",
+          "as": "agent",
+          "template": {
+            "type": "stack",
+            "spacing": 12,
+            "children": [
+              {
+                "type": "image",
+                "src": "$agent.logo",
+                "fit": "fit",
+                "width": 34,
+                "height": 34,
+                "padding": 9,
+                "background": "#FFFFFF",
+                "corner": 15,
+                "accessibility": "{{agent.ai}} logo"
+              },
+              {
+                "type": "stack",
+                "spacing": 4,
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "$agent.task",
+                    "style": "subheadline",
+                    "color": "#F2F1FA",
+                    "lines": 2,
+                    "weight": "semibold",
+                    "markdown": false
+                  },
+                  {
+                    "type": "text",
+                    "text": "{{agent.ai}} · {{agent.project}}",
+                    "style": "caption",
+                    "color": "#A6AEC5"
+                  }
+                ]
+              },
+              {
+                "type": "spacer"
+              },
+              {
+                "type": "stack",
+                "spacing": 4,
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "$agent.status",
+                    "style": "caption",
+                    "color": {
+                      "if": [
+                        {
+                          "eq": [
+                            "$agent.status",
+                            "Completed"
+                          ]
+                        },
+                        "#8BE8BA",
+                        "#A6AEC5"
+                      ]
+                    }
+                  },
+                  {
+                    "type": "text",
+                    "text": "$agent.elapsed",
+                    "style": "caption",
+                    "color": "#A6AEC5",
+                    "monospaced": true
+                  }
+                ]
+              }
+            ],
+            "axis": "horizontal",
+            "padding": 16,
+            "background": "#191F2E",
+            "corner": 20,
+            "action": {
+              "cover": "detail",
+              "params": "$agent"
+            }
+          },
+          "empty": {
+            "type": "text",
+            "text": "Finished tasks will collect here.",
+            "style": "caption",
+            "color": "#A6AEC5"
+          }
+        }
+      }
+    ]
+  },
+  "sheets": {
+    "help": {
+      "title": "Following your agents",
+      "body": {
+        "type": "stack",
+        "spacing": 12,
+        "children": [
+          {
+            "type": "text",
+            "text": "$setup",
+            "style": "body",
+            "color": "#F2F1FA"
+          },
+          {
+            "type": "text",
+            "text": "Log-based status may be delayed. Live hooks provide task status and individual permission requests.",
+            "style": "caption",
+            "color": "#A6AEC5"
+          },
+          {
+            "type": "text",
+            "text": "$connectionError",
+            "style": "caption",
+            "color": "#FFBD9C",
+            "when": {
+              "has": "$connectionError"
+            }
+          }
+        ],
+        "padding": 24
+      }
+    }
+  },
+  "covers": {
+    "detail": {
+      "background": "#151922",
+      "let": {
+        "agent": {
+          "coalesce": [
+            {
+              "find": [
+                "$rows",
+                "id",
+                "$params.id"
+              ]
+            },
+            "$params"
+          ]
+        }
+      },
+      "bar": {
+        "leading": [
+          {
+            "type": "button",
+            "symbol": "chevron.left",
+            "variant": "glass",
+            "tint": "#E7E0FF",
+            "accessibility": "Back to agents",
+            "action": {
+              "dismiss": true
+            }
+          },
+          {
+            "type": "image",
+            "src": "$agent.logo",
+            "fit": "fit",
+            "width": 24,
+            "height": 24,
+            "padding": 5,
+            "background": "#FFFFFF",
+            "corner": 10
+          },
+          {
+            "type": "text",
+            "text": "$agent.ai",
+            "style": "headline",
+            "color": "#F2F1FA",
+            "lines": 1,
+            "maxWidth": 160
+          }
+        ],
+        "trailing": [
+          {
+            "type": "badge",
+            "text": "$agent.status",
+            "tint": "$agent.tint",
+            "variant": "tinted"
+          }
+        ]
+      },
+      "body": {
+        "type": "scroll",
+        "padding": 18,
+        "spacing": 16,
+        "children": [
+          {
+            "type": "text",
+            "text": "$agent.task",
+            "style": "title2",
+            "color": "#F2F1FA",
+            "markdown": false,
+            "selectable": true
+          },
+          {
+            "type": "text",
+            "text": "$agent.elapsed",
+            "style": "largeTitle",
+            "color": "#F2F1FA",
+            "size": 48,
+            "monospaced": true
+          },
+          {
+            "type": "stack",
+            "spacing": 10,
+            "children": [
+              {
+                "type": "stack",
+                "spacing": 5,
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "$agent.progress.label",
+                    "style": "caption",
+                    "color": "$agent.tint"
+                  },
+                  {
+                    "type": "progress",
+                    "value": "$agent.progress.fraction",
+                    "tint": "$agent.tint"
+                  }
+                ],
+                "when": "$agent.progress.hasTasks"
+              },
+              {
+                "type": "each",
+                "items": "$agent.progress.tasks",
+                "as": "step",
+                "template": {
+                  "type": "stack",
+                  "axis": "horizontal",
+                  "spacing": 12,
+                  "children": [
+                    {
+                      "type": "symbol",
+                      "name": "$step.symbol",
+                      "color": "$step.tint",
+                      "size": 18
+                    },
+                    {
+                      "type": "text",
+                      "text": "$step.title",
+                      "style": "subheadline",
+                      "color": "$step.tint",
+                      "markdown": false
+                    }
+                  ],
+                  "padding": [
+                    7,
+                    0
+                  ]
+                }
+              }
+            ],
+            "when": "$agent.progress.hasTasks",
+            "padding": 18,
+            "background": "#1A2030",
+            "corner": 22
+          },
+          {
+            "type": "stack",
+            "spacing": 12,
+            "children": [
+              {
+                "type": "text",
+                "text": "Artifacts & files",
+                "style": "headline",
+                "color": "#F2F1FA"
+              },
+              {
+                "type": "each",
+                "items": "$agent.progress.files",
+                "as": "file",
+                "template": {
+                  "type": "stack",
+                  "spacing": 10,
+                  "children": [
+                    {
+                      "type": "text",
+                      "text": "$file.name",
+                      "style": "subheadline",
+                      "color": "#F2F1FA",
+                      "weight": "semibold",
+                      "markdown": false
+                    },
+                    {
+                      "type": "text",
+                      "text": "$file.kind",
+                      "style": "caption",
+                      "color": "#B8A6FA"
+                    },
+                    {
+                      "type": "text",
+                      "text": "$file.path",
+                      "style": "caption",
+                      "color": "#A6AEC5",
+                      "lines": 3,
+                      "markdown": false,
+                      "selectable": true
+                    },
+                    {
+                      "type": "button",
+                      "label": "Copy path",
+                      "symbol": "doc.on.doc",
+                      "variant": "plain",
+                      "tint": "#B8A6FA",
+                      "action": {
+                        "copy": "$file.path"
+                      }
+                    }
+                  ],
+                  "padding": 14,
+                  "background": "#22283A",
+                  "corner": 16
+                }
+              }
+            ],
+            "when": "$agent.progress.hasFiles"
+          },
+          {
+            "type": "text",
+            "text": "$agent.cwd",
+            "style": "caption",
+            "color": "#A6AEC5",
+            "selectable": true
+          },
+          {
+            "type": "text",
+            "text": "$agent.model",
+            "style": "subheadline",
+            "color": "$agent.tint"
+          },
+          {
+            "type": "text",
+            "text": "$agent.tool",
+            "style": "subheadline",
+            "color": "#F2F1FA"
+          },
+          {
+            "type": "text",
+            "text": "$agent.source",
+            "style": "caption",
+            "color": "#A6AEC5"
+          }
+        ]
+      }
+    }
+  },
+  "bar": {
+    "leading": [
+      {
+        "type": "label",
+        "text": "$host",
+        "symbol": "desktopcomputer",
+        "style": "caption",
+        "color": "#A6AEC5"
+      }
+    ],
+    "trailing": [
+      {
+        "type": "badge",
+        "text": "{{count}} running",
+        "tint": "#B8A6FA",
+        "variant": "plain"
+      },
+      {
+        "type": "button",
+        "symbol": "info.circle",
+        "variant": "glass",
+        "tint": "#E7E0FF",
+        "accessibility": "Connection details",
+        "action": {
+          "sheet": "help"
+        }
+      }
+    ]
+  },
+  "backdrop": "assets/backdrop.png"
+}
