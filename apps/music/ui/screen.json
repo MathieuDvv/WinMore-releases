@@ -843,7 +843,7 @@
                    "accessibility": "{{item.title}}, {{item.kind}}",
                    "action": {
                     "command": "open",
-                    "value": "$item"
+                    "value": "$item.id"
                    },
                    "children": [
                     {
@@ -1027,7 +1027,7 @@
                 "corner": 22,
                 "action": {
                  "command": "open",
-                 "value": "$item"
+                 "value": "$item.id"
                 },
                 "accessibility": "Top result: {{item.title}}"
                },
@@ -1112,7 +1112,7 @@
                   ],
                   "action": {
                    "command": "open",
-                   "value": "$item"
+                   "value": "$item.id"
                   }
                  },
                  {
@@ -1155,7 +1155,7 @@
                  "accessibility": "{{item.title}}, {{item.kind}}",
                  "action": {
                   "command": "open",
-                  "value": "$item"
+                  "value": "$item.id"
                  },
                  "children": [
                   {
@@ -1901,7 +1901,7 @@
                    "accessibility": "{{item.title}}, {{item.kind}}",
                    "action": {
                     "command": "open",
-                    "value": "$item"
+                    "value": "$item.id"
                    },
                    "children": [
                     {
@@ -2085,7 +2085,7 @@
                 "corner": 22,
                 "action": {
                  "command": "open",
-                 "value": "$item"
+                 "value": "$item.id"
                 },
                 "accessibility": "Top result: {{item.title}}"
                },
@@ -2170,7 +2170,7 @@
                   ],
                   "action": {
                    "command": "open",
-                   "value": "$item"
+                   "value": "$item.id"
                   }
                  },
                  {
@@ -2213,7 +2213,7 @@
                  "accessibility": "{{item.title}}, {{item.kind}}",
                  "action": {
                   "command": "open",
-                  "value": "$item"
+                  "value": "$item.id"
                  },
                  "children": [
                   {

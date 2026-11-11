@@ -98,8 +98,15 @@ function activate(ctx){
       if(action==='setup'){music.show();return;}
       if(action==='retryBrowse'){if(!snapshot?.ready){loadingError='';await navigate('https://music.youtube.com');}else if(lastNavigation)await openURL(lastNavigation.action,lastNavigation.value);return;}
       if(action==='like'){await run(`(${toggleMusicLike.toString()})()`);lastRead=0;return;}
-      // Opening a tile sends the whole item, so the PC knows which album or playlist is open.
-      if(action==='open'&&value&&typeof value==='object'){await openURL('open',String(value.id));browse.open(value);return;}
+      // Taps send only an ID. Resolve metadata here so cached cover bytes never enter a command.
+      // Older screens can still send an item object.
+      if(action==='open'){
+        const id=musicURL('open',typeof value==='object'&&value?value.id:value);
+        const shown=browse.view(snapshot);
+        const item=[...shown.home,...shown.items,...(shown.collection?.songs||[])].find(item=>item.id===id)
+          ||{id,kind:new URL(id).pathname==='/watch'?'Song':new URL(id).pathname==='/playlist'?'Playlist':'Collection',title:typeof value?.title==='string'?value.title.slice(0,180):''};
+        await openURL('open',id);browse.open(item);return;
+      }
       if(action==='play'){await openURL('open',String(value?.id??value));return;}
       if(action==='playCollection'){await openURL('open',browse.pick(value).id);return;}
       if(action==='refreshHome'){browse.reloadHome();await openURL('page','home');return;}
