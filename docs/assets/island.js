@@ -61,7 +61,8 @@ function layout(){
   let k=lerp(heroRest,dock,t);
   if(mode==='player')k=heroOpen;
   if(mode==='menu')k=Math.min(dock,(vw-24)/348);
-  const [w,h,r]=SIZES[mode];
+  const [w,baseHeight,r]=SIZES[mode];
+  const h=mode==='menu'?Math.max(baseHeight,$('.menu').scrollHeight+30):baseHeight;
   island.style.width=w+'px';island.style.height=h+'px';island.style.borderRadius=r+'px';
   island.style.top=lerp(heroTop,12,t)+'px';
   island.style.transform=`translateX(-50%) scale(${k})`;
