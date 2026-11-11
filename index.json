@@ -1,8 +1,104 @@
 {
   "format": "winmore-catalog",
   "formatVersion": 2,
-  "updated": "2026-11-10",
+  "updated": "2026-11-11",
   "apps": [
+    {
+      "id": "agents",
+      "name": "Agent Watch",
+      "version": "1.2.1",
+      "description": "Follow local Codex, Claude Code and OpenCode tasks and approve individual permission requests.",
+      "icon": "apps/agents/icon.svg",
+      "folder": "apps/agents/",
+      "files": [
+        {
+          "path": "assets/backdrop.png",
+          "size": 230,
+          "sha256": "33a2e8a80be4d01d790779e6173a901ec6d91cd136cad898bea2a731c7d46888"
+        },
+        {
+          "path": "assets/claude.png",
+          "size": 4787,
+          "sha256": "733f24f4c52acb15eb0fbded1cf40eb42b4ba8e62b882acac70b6234b50919a8"
+        },
+        {
+          "path": "assets/codex.png",
+          "size": 8351,
+          "sha256": "a18515ecdbf0e51ca9114123cf50ebf2856bf6bce04dfb7a8d597357cc02b5dd"
+        },
+        {
+          "path": "assets/codex.svg",
+          "size": 1770,
+          "sha256": "0dd98226ffe0bdf982325b6c1558846569c44722e116a7eb3921199c58ee5869"
+        },
+        {
+          "path": "assets/opencode.png",
+          "size": 2459,
+          "sha256": "df9b452a523fd39e2c24e4ea48ce00f7b7ccedfaaefea61d0036f4e60810e5d0"
+        },
+        {
+          "path": "assets/SOURCES.md",
+          "size": 819,
+          "sha256": "fbfe3f3dbfe3c23be1895e65df01dc0be63d3ca32bce6df060a9bb8f2e711624"
+        },
+        {
+          "path": "hook.cjs",
+          "size": 2470,
+          "sha256": "1f2a77e1058740f0c799d2cb4ecbd6206286b47590bd9ebe7c0755592353f48a"
+        },
+        {
+          "path": "icon.svg",
+          "size": 203,
+          "sha256": "8163a3b99f07014393c06f341f8ac685f1b9113021b4f2d79c59db6eb459e3df"
+        },
+        {
+          "path": "index.cjs",
+          "size": 9127,
+          "sha256": "92a2bcb9589d661ed7de9673ad3ee78637b8b3bffdb50abaeec38c4e5fdb4506"
+        },
+        {
+          "path": "manifest.json",
+          "size": 281,
+          "sha256": "380b9f27c3fede36db6b227be12f57c6fe2b82f337126bad3ab7d359571af922"
+        },
+        {
+          "path": "opencode.cjs",
+          "size": 5757,
+          "sha256": "0f8141dc0f10b8db1f19aac007c97a4f32b6d167b29ef90108204448722ba1e3"
+        },
+        {
+          "path": "presentation.cjs",
+          "size": 2266,
+          "sha256": "36db30f2c291ce12362f253dc4fbc81d9fc553190cfba97d70278f6a5360fbc0"
+        },
+        {
+          "path": "progress.cjs",
+          "size": 6337,
+          "sha256": "e5d2f105ae0d4ee154e06a4f99cea957fe8fba0b754c819cfc6f72a2d2c90297"
+        },
+        {
+          "path": "README.md",
+          "size": 7863,
+          "sha256": "e63ff5d770ab6b3ff0bfb0628a114be231741c38655daf8533df9d389b8415e3"
+        },
+        {
+          "path": "setup.cjs",
+          "size": 1730,
+          "sha256": "c0fd240f01fc828b114692b7fb168b005b3454381cf499806918ba894c88a3e9"
+        },
+        {
+          "path": "transcripts.cjs",
+          "size": 2524,
+          "sha256": "60ea36f664cf7ae1ba27fed29e891d1145492e5e34614654ab69efb3ea775544"
+        },
+        {
+          "path": "ui/screen.json",
+          "size": 23623,
+          "sha256": "e3aa4e940c3895c3b119a3260ccc3bbc9bcf123f2c524890c819f8f2f55cc57d"
+        }
+      ],
+      "bundle": "bundles/agents.wmapp"
+    },
     {
       "id": "browser",
       "name": "Browser",

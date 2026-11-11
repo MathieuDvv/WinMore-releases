@@ -1,6 +1,17 @@
 {
- "updated": "2026-11-10",
+ "updated": "2026-11-11",
  "apps": [
+  {
+   "id": "agents",
+   "name": "Agent Watch",
+   "shortName": "Agents",
+   "version": "1.2.1",
+   "description": "Follow local Codex, Claude Code and OpenCode tasks and approve individual permission requests.",
+   "icon": "apps/agents.svg",
+   "platforms": null,
+   "size": 80597,
+   "files": 17
+  },
   {
    "id": "browser",
    "name": "Browser",
