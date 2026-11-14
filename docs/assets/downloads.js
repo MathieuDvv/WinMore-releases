@@ -24,6 +24,8 @@ function installer(asset){
  }
  return null;
 }
+// Releases after the rename also carry WinMore-named copies for older installs; show the Onbun file.
+const legacy=asset=>/^WinMore-/i.test(asset.name||'')?1:0;
 function safeAsset(asset){
  try{const url=new URL(asset.browser_download_url);return url.protocol==='https:'&&url.hostname==='github.com'&&url.pathname.startsWith('/MathieuDvv/WinMore-releases/releases/download/')&&!url.username&&!url.password;}catch{return false;}
 }
@@ -36,7 +38,7 @@ function newestFirst(a,b){
 function resolveDownloads(releases){
  const result=Object.fromEntries(systems.map(os=>[os.id,[]]));
  for(const release of releases.filter(r=>!r.draft&&!r.prerelease).sort(newestFirst)){
-  const candidates=(release.assets||[]).filter(safeAsset).map(asset=>({asset,type:installer(asset)})).filter(x=>x.type).sort((a,b)=>a.type.rank-b.type.rank);
+  const candidates=(release.assets||[]).filter(safeAsset).map(asset=>({asset,type:installer(asset)})).filter(x=>x.type).sort((a,b)=>a.type.rank-b.type.rank||legacy(a.asset)-legacy(b.asset));
   for(const {asset,type} of candidates){
    if(result[type.os].some(entry=>entry.key===type.key))continue;
    result[type.os].push({...type,url:asset.browser_download_url,name:asset.name,size:asset.size,version:release.tag_name});

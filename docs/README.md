@@ -60,7 +60,11 @@ Edit `store.json` to curate the store:
   They stay in this collection if the default catalog is later repacked.
 - All other entries in `catalog/index.json` appear as default apps on both pages.
 - `bundles` groups existing app IDs under a theme. These are editorial collections,
-  not an installable package or a popularity ranking.
+  not a popularity ranking. The island's Library offers them as quick installs
+  (`npm run publish:catalog` copies them into the catalog's `index.json`).
+- Every listing gets an **Add to Onbun** button: an `onbun://install?…` link
+  (`app=<id>` for catalog apps, `url=` for developer packages, `github=owner/repo`
+  for community apps) that the desktop app opens and confirms.
 - `communityApps` starts empty. To publish an accepted submission, add a listing
   here and rebuild/publish the site. For example:
 

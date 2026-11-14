@@ -35,7 +35,7 @@ search.value=state.query;
 
 function card(app){
   const cat=categoryOf(app),index=apps.indexOf(app),cover=coverFor(app,cat);
-  return `<article class="app store-app" data-app-category="${cat.id}"><div class="app-cover" data-cover="${cat.id}" style="--cover-bg:${cover.background};--cover-glow:${cover.glow};--ascii-opacity:${cover.fade};--ascii-offset:${cover.offset}px"><canvas class="cover-ascii" data-yokai="${cover.figure}" data-cell="5.5" aria-hidden="true"></canvas><div class="cover-illustration" data-hose="${cat.art}" aria-hidden="true"></div><span class="cover-code">${esc(cat.name)} / ${String(index+1).padStart(2,'0')}</span></div><div class="app-card-body"><div class="app-name-row">${glyph(app)}<div><h4>${esc(app.name)}</h4><span class="app-origin">${esc(app.author||'Community')} ${app.version?`/ v${esc(app.version)}`:''}</span></div></div><p>${esc(app.description)}</p></div><div class="app-card-bottom"><span class="app-platforms">${esc(platforms(app))}</span><button class="app-details" type="button" data-app="${esc(app.id)}" aria-label="View ${esc(app.name)} details">View app ↗</button></div></article>`;
+  return `<article class="app store-app" data-app-category="${cat.id}"><div class="app-cover" data-cover="${cat.id}" style="--cover-bg:${cover.background};--cover-glow:${cover.glow};--ascii-opacity:${cover.fade};--ascii-offset:${cover.offset}px"><canvas class="cover-ascii" data-yokai="${cover.figure}" data-cell="5.5" aria-hidden="true"></canvas><div class="cover-illustration" data-hose="${cat.art}" aria-hidden="true"></div><span class="cover-code">${esc(cat.name)} / ${String(index+1).padStart(2,'0')}</span></div><div class="app-card-body"><div class="app-name-row">${glyph(app)}<div><h4>${esc(app.name)}</h4><span class="app-origin">${esc(app.author||'Community')} ${app.version?`/ v${esc(app.version)}`:''}</span></div></div><p>${esc(app.description)}</p></div><div class="app-card-bottom"><span class="app-platforms">${esc(platforms(app))}</span><span class="app-actions"><button class="app-details" type="button" data-app="${esc(app.id)}" aria-label="View ${esc(app.name)} details">View app ↗</button>${installLink(app)?`<button class="app-add" type="button" data-add="${esc(app.id)}" aria-label="Add ${esc(app.name)} to Onbun">Add to Onbun</button>`:''}</span></div></article>`;
 }
 function renderCategories(){
   $('#category-cards').innerHTML=categories.map((cat,index)=>`<button class="category-card" type="button" data-category="${cat.id}" aria-pressed="${category===cat.id}"><span class="category-art" data-hose="${cat.art}" aria-hidden="true"></span><span class="category-count">${String(apps.filter(app=>categoryOf(app).id===cat.id).length).padStart(2,'0')} APPS</span><span class="category-name">${cat.name}<span aria-hidden="true">↗</span></span><span class="category-index" aria-hidden="true">0${index+1}</span></button>`).join('');
@@ -140,10 +140,27 @@ new ResizeObserver(()=>{if(moving){clearTimeout(animationTimer);queued=0;moving=
 motion.addEventListener('change',()=>{if(motion.matches){userPaused=true;updateRotationButton();}scheduleRotation();});
 updateRotationButton();
 
+// "Add to Onbun": an onbun:// link the desktop app opens. Catalog apps go by id, developer apps by their
+// package file, community apps by their GitHub repository (its newest release's .wmapp).
+function installLink(app){
+  const query=new URLSearchParams();
+  if(app.collection==='default')query.set('app',app.id);
+  else if(app.download)query.set('url',new URL(app.download,location.href).href);
+  else if(app.repository){const repo=new URL(app.repository).pathname.replace(/^\/|\/$/g,'');if(!/^[\w.-]+\/[\w.-]+$/.test(repo))return null;query.set('github',repo);}
+  else return null;
+  return 'onbun://install?'+query.toString();
+}
+function openAdd(id){
+  const app=apps.find(app=>app.id===id),link=app&&installLink(app);if(!link)return;
+  document.querySelector('dialog[open]')?.close();
+  const origin=app.collection==='default'?'From the Onbun catalog.':app.collection==='developer'?'From the developer’s package on this site.':'From the creator’s GitHub releases. Not reviewed by Onbun.';
+  $('#add-detail').innerHTML=`${glyph(app)}<span class="label">Add to Onbun</span><h2 id="add-dialog-title">${esc(app.name)}</h2><p>${esc(app.description)}</p><div class="detail-meta">${app.version?`<span>v${esc(app.version)}</span>`:''}<span>${esc(platforms(app))}</span><span>${esc(origin)}</span></div><ol class="add-steps"><li>Choose <strong>Open in Onbun</strong>. Your browser asks to open the Onbun app.</li><li>Onbun opens its Library on your PC and shows the app.</li><li>Choose <strong>Add to Onbun</strong> there. Your phone shows it right away.</li></ol><a class="btn primary" id="add-open" href="${esc(link)}">Open in Onbun ↗</a><p class="add-fallback">Nothing happened? <a href="index.html#download">Download Onbun</a> for your PC first${app.download?`, or <a href="${esc(app.download)}" download>download the .wmapp file</a> and open it from the island’s Library`:''}.</p>`;
+  $('#add-dialog').showModal();
+}
 function openApp(id){
   const app=apps.find(app=>app.id===id);if(!app)return;
   const isDefault=app.collection==='default';
-  $('#app-detail').innerHTML=`${glyph(app)}<h2 id="app-dialog-title">${esc(app.name)}</h2><p>${esc(app.description)}</p><div class="detail-meta"><span>By ${esc(app.author||'the community')}</span>${app.version?`<span>v${esc(app.version)}</span>`:''}<span>${esc(platforms(app))}</span></div><div class="install-help"><strong>${isDefault?'Add it from the island':app.collection==='developer'?'Install the app file':'Install from GitHub'}</strong><p>${isDefault?'On your PC, open Onbun → Settings → Library, then choose this app.':app.collection==='developer'?'Download the .wmapp file, then open Onbun → Settings → Apps → Install from file… on your PC.':'Visit the creator’s GitHub repository for the app and installation instructions.'}</p></div>${app.download?`<a class="btn primary" href="${esc(app.download)}" download>Download .wmapp ↓</a>`:''}${app.repository?`<a class="btn" href="${esc(app.repository)}" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a>`:''}<p><a href="docs.html#build">Read the app guide →</a></p>`;
+  $('#app-detail').innerHTML=`${glyph(app)}<h2 id="app-dialog-title">${esc(app.name)}</h2><p>${esc(app.description)}</p><div class="detail-meta"><span>By ${esc(app.author||'the community')}</span>${app.version?`<span>v${esc(app.version)}</span>`:''}<span>${esc(platforms(app))}</span></div><div class="install-help"><strong>Add it to Onbun</strong><p>${installLink(app)?'Choose Add to Onbun: Onbun opens on your PC and asks before installing.':'Visit the creator’s GitHub repository for the app and installation instructions.'}${isDefault?' It’s also in Onbun → Settings → Library.':''}</p></div>${installLink(app)?`<button class="btn primary" type="button" data-add="${esc(app.id)}">Add to Onbun</button>`:''}${app.download?`<a class="btn" href="${esc(app.download)}" download>Download .wmapp ↓</a>`:''}${app.repository?`<a class="btn" href="${esc(app.repository)}" target="_blank" rel="noopener noreferrer">View on GitHub ↗</a>`:''}<p><a href="docs.html#build">Read the app guide →</a></p>`;
   $('#app-dialog').showModal();
 }
 document.addEventListener('click',event=>{
@@ -151,6 +168,7 @@ document.addEventListener('click',event=>{
   if(categoryButton){category=category===categoryButton.dataset.category?'all':categoryButton.dataset.category;filter='all';selectedBundle=null;search.value='';updateFilters();render();$('#catalog').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}
   if(event.target.closest('[data-publish]')){$('#publish-status').textContent='';$('#publish-dialog').showModal();}
   const appButton=event.target.closest('[data-app]');if(appButton)openApp(appButton.dataset.app);
+  const addButton=event.target.closest('[data-add]');if(addButton)openAdd(addButton.dataset.add);
   if(event.target.closest('[data-close]'))event.target.closest('dialog').close();
   const bundleButton=event.target.closest('[data-bundle]');
   if(bundleButton){selectedBundle=bundles.find(b=>b.id===bundleButton.dataset.bundle);search.value='';filter='all';category='all';updateFilters();render();$('#catalog').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});}

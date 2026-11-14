@@ -7,12 +7,12 @@
 <meta name="description" content="How Onbun works, how each app works, how to build your own, and an explorer for every Kit component.">
 <meta name="theme-color" content="#060608">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/site.css?v=1794661034537">
-<link rel="stylesheet" href="assets/docs.css?v=1794661034537">
+<link rel="stylesheet" href="assets/site.css?v=mwggb5jo">
+<link rel="stylesheet" href="assets/docs.css?v=mwggb5jo">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300..800&display=swap">
-<link rel="stylesheet" href="assets/night.css?v=1794661034537">
+<link rel="stylesheet" href="assets/night.css?v=mwggb5jo">
 </head>
 <body data-page="docs">
 <a class="skip-link" href="#how">Skip to content</a>
@@ -54,9 +54,9 @@
     </section>
 
     <section id="install">
-      <h2>Install</h2><p>Onbun runs on Windows, macOS, and Linux. Choose your desktop download from the <a href="index.html#download">download section</a>. Current download filenames, package files, and connection identifiers still use WinMore for compatibility. Here’s the Windows setup:</p>
+      <h2>Install</h2><p>Onbun runs on Windows, macOS, and Linux. Choose your desktop download from the <a href="index.html#download">download section</a>. Onbun was called WinMore before 0.9.0; connection identifiers and the <code>.wmapp</code> package format keep that name so older installs keep working. Here’s the Windows setup:</p>
       <ol>
-        <li>Download <code>WinMore-Setup-&lt;version&gt;.exe</code> from the <a href="index.html#download">download section</a>. The installer is not signed yet, so Windows SmartScreen may ask you to confirm.</li>
+        <li>Download <code>Onbun-Setup-&lt;version&gt;.exe</code> from the <a href="index.html#download">download section</a>. The installer is not signed yet, so Windows SmartScreen may ask you to confirm.</li>
         <li>Run it. Onbun installs for your user (no admin needed), adds desktop and Start menu shortcuts, and starts.</li>
         <li>The island appears as a black pill at the top right of your main screen. Allow Onbun through the firewall on <strong>private</strong> networks when Windows asks: the phone reaches it over your network.</li>
       </ol>
@@ -66,7 +66,7 @@
     <section id="pair">
       <h2>Pair your phone</h2>
       <ol>
-        <li>Install the phone app: on Android, download <code>WinMore-Android-&lt;version&gt;.apk</code> from the <a href="index.html#download">download section</a> on the phone and open it (Android asks once to allow installing from your browser); on iPhone, build it from source with Xcode for now.</li>
+        <li>Install the phone app: on Android, download <code>Onbun-Android-&lt;version&gt;.apk</code> from the <a href="index.html#download">download section</a> on the phone and open it (Android asks once to allow installing from your browser); on iPhone, build it from source with Xcode for now.</li>
         <li>Put the phone and the PC on the same trusted Wi-Fi or LAN, and open Onbun on the phone. Allow local network access.</li>
         <li>In the phone's Settings, pick your PC under <strong>Nearby PCs</strong> and request pairing.</li>
         <li>The island opens with a <strong>six-digit code</strong>. Type it on the phone within two minutes (five tries). Decline on the island if you didn't ask for it.</li>
@@ -222,11 +222,11 @@ module.exports = { activate };</pre>
     <section id="web">
       <h2>Web blocks</h2>
       <p>When the components aren't enough, drop in your own HTML: <code>{"type": "web", "src": "ui/chart.html", "props": {"title": "Last hellos"}, "fill": "both"}</code>. The page loads from your package and talks to the app:</p>
-<pre data-lang="js">winmore.onData(({ data, ui, props, params, env }) => render(data));  // now and on every change
-const result = await winmore.command('add', 5);                       // like a command action
-await winmore.set('query', 'cats');                                   // a screen variable
-await winmore.run({ sheet: 'settings' });                             // any Kit action
-winmore.open('https://example.com');                                  // the phone's browser</pre>
+<pre data-lang="js">onbun.onData(({ data, ui, props, params, env }) => render(data));  // now and on every change
+const result = await onbun.command('add', 5);                       // like a command action
+await onbun.set('query', 'cats');                                   // a screen variable
+await onbun.run({ sheet: 'settings' });                             // any Kit action
+onbun.open('https://example.com');                                  // the phone's browser</pre>
       <p>Pages are transparent, so glass controls float over them. If the same web block shows up in several apps, it's a good candidate for a new native component.</p>
     </section>
 
@@ -275,11 +275,11 @@ winmore.open('https://example.com');                                  // the pho
 
 <div class="hose-separator" data-hose="arm" aria-hidden="true"></div><footer class="site-foot"><a class="brand" href="index.html">onbun</a><nav aria-label="Footer"><a href="index.html">Home</a><a href="apps.html">The apps</a><a href="docs.html" aria-current="page">The guide</a><a href="https://github.com/MathieuDvv/WinMore-releases">GitHub ↗</a></nav></footer>
 
-<script src="assets/hose.js?v=1794661034537"></script>
-<script src="assets/yokai-background.js?v=1794661034537"></script>
-<script src="assets/island.js?v=1794661034537"></script>
+<script src="assets/hose.js?v=mwggb5jo"></script>
+<script src="assets/yokai-background.js?v=mwggb5jo"></script>
+<script src="assets/island.js?v=mwggb5jo"></script>
 
-<script src="assets/kit-render.js?v=1794661034537"></script>
-<script src="assets/docs.js?v=1794661034537"></script>
+<script src="assets/kit-render.js?v=mwggb5jo"></script>
+<script src="assets/docs.js?v=mwggb5jo"></script>
 </body>
 </html>

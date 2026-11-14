@@ -18,3 +18,10 @@
 @media(max-width:640px){.store-art{height:245px;top:auto}.category-art{height:140px}.cover-illustration{inset:0 0 -65px 10%;height:265px}.creator-callout .creator-art{height:200px}}
 .category-art{height:143px;top:3px}
 @media(max-width:640px){.category-art{height:113px;top:5px}}
+
+/* Add to Onbun: every app card links to the desktop app through an onbun:// install link. */
+.app-actions{display:flex;align-items:center;gap:12px;margin-left:auto}.app-details{white-space:nowrap}.app-card-bottom{flex-wrap:wrap;row-gap:4px}.app-add{font-size:11px;font-weight:700;min-height:32px;padding:0 13px;border:1.5px solid var(--text);border-radius:20px;white-space:nowrap}.app-add:hover{background:var(--text);color:var(--paper)}
+.add-dialog .label{display:block;margin-top:22px;font:10px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--secondary)}.add-dialog h2{margin-top:8px}
+.add-steps{margin:0 0 22px;padding-left:20px;font-size:13px;line-height:1.7}.add-steps li+li{margin-top:4px}
+.add-dialog #add-open{width:100%}.add-fallback{font-size:12px!important;color:var(--secondary);margin-top:16px}
+@media(max-width:640px){.app-actions{gap:10px}.app-add{font-size:10px;padding:0 10px}.app-card-bottom{flex-wrap:wrap}}
