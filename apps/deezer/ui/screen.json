@@ -1,0 +1,3565 @@
+{
+  "$schema": "../../../docs/apps/screen.schema.json",
+  "type": "screen",
+  "title": "Deezer",
+  "chrome": "fullscreen",
+  "background": "#0E0C12",
+  "surface": "#1C1A22",
+  "accent": "#A238FF",
+  "backdrop": {
+    "if": [
+      {
+        "eq": [
+          "$ui.view",
+          "player"
+        ]
+      },
+      "$song.cover",
+      null
+    ]
+  },
+  "state": {
+    "view": "browse",
+    "tab": "home",
+    "favTab": "playlists",
+    "panel": "controls",
+    "query": "",
+    "notice": null
+  },
+  "persist": [
+    "tab",
+    "favTab"
+  ],
+  "refresh": {
+    "interval": 1,
+    "fast": 0.4,
+    "fastWhen": {
+      "or": [
+        "$loading",
+        "$collection.loading",
+        "$results.loading"
+      ]
+    }
+  },
+  "timelines": {
+    "main": {
+      "track": "$song.id",
+      "position": "$song.current",
+      "duration": "$song.duration",
+      "playing": "$song.playing"
+    }
+  },
+  "let": {
+    "art": {
+      "if": [
+        "$env.landscape",
+        {
+          "min": [
+            {
+              "sub": [
+                "$env.height",
+                150
+              ]
+            },
+            {
+              "mul": [
+                "$env.width",
+                0.4
+              ]
+            }
+          ]
+        },
+        {
+          "min": [
+            {
+              "sub": [
+                "$env.width",
+                48
+              ]
+            },
+            {
+              "mul": [
+                "$env.height",
+                0.42
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "tile": {
+      "if": [
+        "$env.landscape",
+        128,
+        116
+      ]
+    },
+    "favList": {
+      "find": [
+        "$favourites.lists",
+        "id",
+        "$ui.favTab"
+      ]
+    }
+  },
+  "bar": {
+    "leading": [
+      {
+        "type": "picker",
+        "when": {
+          "eq": [
+            "$ui.view",
+            "browse"
+          ]
+        },
+        "value": "$ui.tab",
+        "width": {
+          "if": [
+            "$env.landscape",
+            330,
+            250
+          ]
+        },
+        "action": [
+          {
+            "set": "tab",
+            "value": "$value"
+          },
+          {
+            "haptic": "selection"
+          }
+        ],
+        "options": [
+          {
+            "value": "home",
+            "label": "Home"
+          },
+          {
+            "value": "explore",
+            "label": "Explore"
+          },
+          {
+            "value": "favourites",
+            "label": "Favourites"
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "when": {
+          "eq": [
+            "$ui.view",
+            "player"
+          ]
+        },
+        "variant": "glass",
+        "symbol": "chevron.down",
+        "accessibility": "Close player",
+        "action": [
+          {
+            "set": "view",
+            "value": "browse"
+          },
+          {
+            "set": "panel",
+            "value": "controls"
+          }
+        ]
+      },
+      {
+        "type": "label",
+        "when": {
+          "eq": [
+            "$ui.view",
+            "player"
+          ]
+        },
+        "symbol": {
+          "if": [
+            "$song.inFlow",
+            "waveform",
+            "music.note"
+          ]
+        },
+        "text": "Playing from {{song.context}}",
+        "style": "footnote",
+        "weight": "semibold",
+        "glass": true,
+        "shape": "capsule",
+        "padding": [
+          0,
+          14
+        ],
+        "height": 40
+      }
+    ],
+    "trailing": [
+      {
+        "type": "button",
+        "when": {
+          "and": [
+            "$account.ready",
+            {
+              "not": "$account.signedIn"
+            }
+          ]
+        },
+        "variant": "glass",
+        "label": "Sign in on PC",
+        "symbol": "person.crop.circle",
+        "action": [
+          {
+            "command": "setup"
+          },
+          {
+            "set": "notice",
+            "value": "Sign in to Deezer in the window that opened on your PC."
+          },
+          {
+            "haptic": "light"
+          }
+        ]
+      },
+      {
+        "type": "stack",
+        "axis": "horizontal",
+        "children": [
+          {
+            "type": "image",
+            "src": "$song.image",
+            "width": 34,
+            "height": 34,
+            "corner": 8,
+            "clip": true,
+            "placeholder": "music.note"
+          },
+          {
+            "type": "stack",
+            "children": [
+              {
+                "type": "text",
+                "text": "$song.title",
+                "style": "footnote",
+                "weight": "semibold",
+                "lines": 1
+              },
+              {
+                "type": "text",
+                "text": "$song.artist",
+                "style": "caption2",
+                "color": "secondary",
+                "lines": 1
+              }
+            ],
+            "spacing": 0,
+            "maxWidth": 170
+          },
+          {
+            "type": "symbol",
+            "name": "heart.fill",
+            "size": 14,
+            "color": "accent",
+            "when": "$song.favourite"
+          },
+          {
+            "type": "button",
+            "variant": "plain",
+            "symbol": {
+              "if": [
+                "$song.playing",
+                "pause.fill",
+                "play.fill"
+              ]
+            },
+            "accessibility": {
+              "if": [
+                "$song.playing",
+                "Pause",
+                "Play"
+              ]
+            },
+            "action": {
+              "command": "toggle"
+            }
+          }
+        ],
+        "spacing": 10,
+        "padding": [
+          4,
+          4,
+          4,
+          14
+        ],
+        "glass": true,
+        "shape": "capsule",
+        "action": [
+          {
+            "set": "view",
+            "value": "player"
+          },
+          {
+            "haptic": "light"
+          }
+        ],
+        "accessibility": "Now playing: {{song.title}}",
+        "when": {
+          "and": [
+            "$song",
+            "$env.landscape",
+            {
+              "eq": [
+                "$ui.view",
+                "browse"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "type": "button",
+        "when": {
+          "eq": [
+            "$ui.view",
+            "browse"
+          ]
+        },
+        "variant": "glass",
+        "symbol": "magnifyingglass",
+        "selected": {
+          "eq": [
+            "$ui.tab",
+            "search"
+          ]
+        },
+        "accessibility": "Search",
+        "action": {
+          "set": "tab",
+          "value": {
+            "if": [
+              {
+                "eq": [
+                  "$ui.tab",
+                  "search"
+                ]
+              },
+              "home",
+              "search"
+            ]
+          }
+        }
+      },
+      {
+        "type": "menu",
+        "when": {
+          "and": [
+            {
+              "eq": [
+                "$ui.view",
+                "player"
+              ]
+            },
+            "$song.matched"
+          ]
+        },
+        "symbol": "ellipsis",
+        "items": [
+          {
+            "label": "Go to album",
+            "symbol": "square.stack",
+            "action": [
+              {
+                "command": "open",
+                "value": {
+                  "type": "album",
+                  "id": "$song.albumId"
+                }
+              },
+              {
+                "cover": "collection",
+                "params": {
+                  "type": "album",
+                  "id": "$song.albumId",
+                  "title": "$song.album"
+                }
+              }
+            ]
+          },
+          {
+            "label": "Go to artist",
+            "symbol": "music.mic",
+            "action": [
+              {
+                "command": "open",
+                "value": {
+                  "type": "artist",
+                  "id": "$song.artistId"
+                }
+              },
+              {
+                "cover": "collection",
+                "params": {
+                  "type": "artist",
+                  "id": "$song.artistId",
+                  "title": "$song.artist",
+                  "round": true
+                }
+              }
+            ]
+          },
+          {
+            "label": {
+              "if": [
+                "$song.favourite",
+                "Remove from favourites",
+                "Add to favourites"
+              ]
+            },
+            "symbol": {
+              "if": [
+                "$song.favourite",
+                "heart.slash",
+                "heart"
+              ]
+            },
+            "action": {
+              "command": "favourite",
+              "value": "$song.id",
+              "onError": {
+                "set": "notice",
+                "value": "$error"
+              }
+            }
+          },
+          {
+            "divider": true
+          },
+          {
+            "label": "Copy link",
+            "symbol": "link",
+            "action": {
+              "copy": "https://www.deezer.com/track/{{song.id}}"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "accessory": {
+    "type": "field",
+    "when": {
+      "and": [
+        {
+          "eq": [
+            "$ui.view",
+            "browse"
+          ]
+        },
+        {
+          "eq": [
+            "$ui.tab",
+            "search"
+          ]
+        }
+      ]
+    },
+    "bind": "query",
+    "placeholder": "Artists, tracks, albums",
+    "symbol": "magnifyingglass",
+    "keyboard": "search",
+    "submit": {
+      "command": "search",
+      "value": "$value",
+      "onError": {
+        "set": "notice",
+        "value": "$error"
+      }
+    }
+  },
+  "body": {
+    "type": "layers",
+    "alignment": "top",
+    "fill": "both",
+    "children": [
+      {
+        "type": "if",
+        "test": {
+          "and": [
+            {
+              "eq": [
+                "$ui.view",
+                "player"
+              ]
+            },
+            "$song"
+          ]
+        },
+        "then": {
+          "type": "split",
+          "ratio": 0.44,
+          "spacing": 22,
+          "fill": "both",
+          "padding": {
+            "if": [
+              "$env.landscape",
+              [
+                0,
+                0,
+                56,
+                0
+              ],
+              0
+            ]
+          },
+          "portrait": "stack",
+          "portraitHeight": "$art",
+          "children": [
+            {
+              "type": "stack",
+              "children": [
+                {
+                  "type": "spacer"
+                },
+                {
+                  "type": "image",
+                  "src": "$song.cover",
+                  "width": "$art",
+                  "height": "$art",
+                  "corner": 14,
+                  "clip": true,
+                  "shadow": 24,
+                  "placeholder": "music.note",
+                  "scale": {
+                    "if": [
+                      "$song.playing",
+                      1,
+                      0.92
+                    ]
+                  }
+                },
+                {
+                  "type": "spacer"
+                }
+              ],
+              "alignment": "center",
+              "fill": "both"
+            },
+            {
+              "type": "stack",
+              "children": [
+                {
+                  "type": "spacer"
+                },
+                {
+                  "type": "stack",
+                  "children": [
+                    {
+                      "type": "if",
+                      "test": {
+                        "eq": [
+                          "$ui.panel",
+                          "lyrics"
+                        ]
+                      },
+                      "then": {
+                        "type": "if",
+                        "test": "$lyrics.has",
+                        "then": {
+                          "type": "lyrics",
+                          "lines": "$lyrics.lines",
+                          "window": 5,
+                          "fill": "both",
+                          "action": {
+                            "command": "seek",
+                            "value": "$value",
+                            "onError": {
+                              "set": "notice",
+                              "value": "$error"
+                            }
+                          }
+                        },
+                        "else": {
+                          "type": "empty",
+                          "symbol": "quote.bubble",
+                          "fill": "both",
+                          "loading": {
+                            "eq": [
+                              "$lyrics.status",
+                              "loading"
+                            ]
+                          },
+                          "title": {
+                            "if": [
+                              {
+                                "eq": [
+                                  "$lyrics.status",
+                                  "loading"
+                                ]
+                              },
+                              "Finding lyrics",
+                              {
+                                "if": [
+                                  {
+                                    "eq": [
+                                      "$lyrics.status",
+                                      "instrumental"
+                                    ]
+                                  },
+                                  "Instrumental",
+                                  "No lyrics for this track"
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "else": {
+                        "type": "if",
+                        "test": {
+                          "eq": [
+                            "$ui.panel",
+                            "queue"
+                          ]
+                        },
+                        "then": {
+                          "type": "scroll",
+                          "spacing": 0,
+                          "fill": "both",
+                          "children": [
+                            {
+                              "type": "text",
+                              "text": "Up next",
+                              "style": "headline",
+                              "weight": "heavy",
+                              "padding": [
+                                0,
+                                0,
+                                6,
+                                0
+                              ]
+                            },
+                            {
+                              "type": "each",
+                              "items": "$queue",
+                              "as": "t",
+                              "index": "i",
+                              "template": {
+                                "type": "stack",
+                                "axis": "horizontal",
+                                "children": [
+                                  {
+                                    "type": "image",
+                                    "src": "$t.image",
+                                    "width": 44,
+                                    "height": 44,
+                                    "corner": 6,
+                                    "clip": true,
+                                    "placeholder": "music.note"
+                                  },
+                                  {
+                                    "type": "stack",
+                                    "children": [
+                                      {
+                                        "type": "text",
+                                        "text": "$t.title",
+                                        "style": "subheadline",
+                                        "weight": "semibold",
+                                        "lines": 1,
+                                        "color": {
+                                          "if": [
+                                            {
+                                              "eq": [
+                                                "$t.id",
+                                                "$song.id"
+                                              ]
+                                            },
+                                            "accent",
+                                            "primary"
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "type": "stack",
+                                        "axis": "horizontal",
+                                        "children": [
+                                          {
+                                            "type": "badge",
+                                            "text": "E",
+                                            "variant": "plain",
+                                            "tint": "secondary",
+                                            "when": "$t.explicit"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "text": "$t.artist",
+                                            "style": "caption",
+                                            "color": "secondary",
+                                            "lines": 1
+                                          }
+                                        ],
+                                        "spacing": 4
+                                      }
+                                    ],
+                                    "spacing": 2,
+                                    "fill": "width"
+                                  },
+                                  {
+                                    "type": "symbol",
+                                    "name": "heart.fill",
+                                    "size": 14,
+                                    "color": "accent",
+                                    "opacity": {
+                                      "if": [
+                                        "$t.favourite",
+                                        1,
+                                        0
+                                      ]
+                                    },
+                                    "accessibility": {
+                                      "if": [
+                                        "$t.favourite",
+                                        "In your favourites",
+                                        null
+                                      ]
+                                    }
+                                  },
+                                  {
+                                    "type": "text",
+                                    "text": "{{t.duration|duration}}",
+                                    "style": "caption",
+                                    "color": "secondary",
+                                    "monospaced": true,
+                                    "width": 38,
+                                    "textAlign": "trailing"
+                                  }
+                                ],
+                                "spacing": 12,
+                                "padding": [
+                                  5,
+                                  0
+                                ],
+                                "action": [
+                                  {
+                                    "command": "queue",
+                                    "value": "$i",
+                                    "onError": {
+                                      "set": "notice",
+                                      "value": "$error"
+                                    }
+                                  },
+                                  {
+                                    "haptic": "light"
+                                  }
+                                ],
+                                "accessibility": "{{t.title}}, {{t.artist}}"
+                              },
+                              "empty": {
+                                "type": "empty",
+                                "symbol": "list.bullet",
+                                "title": "Nothing up next"
+                              }
+                            }
+                          ]
+                        },
+                        "else": {
+                          "type": "stack",
+                          "children": [
+                            {
+                              "type": "spacer"
+                            },
+                            {
+                              "type": "stack",
+                              "axis": "horizontal",
+                              "children": [
+                                {
+                                  "type": "stack",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "text": "$song.title",
+                                      "size": 26,
+                                      "weight": "heavy",
+                                      "lines": 2
+                                    },
+                                    {
+                                      "type": "text",
+                                      "text": "$song.artist",
+                                      "style": "callout",
+                                      "color": "#FFFFFFB3",
+                                      "lines": 1,
+                                      "action": {
+                                        "if": "$song.artistId",
+                                        "then": [
+                                          {
+                                            "command": "open",
+                                            "value": {
+                                              "type": "artist",
+                                              "id": "$song.artistId"
+                                            }
+                                          },
+                                          {
+                                            "cover": "collection",
+                                            "params": {
+                                              "type": "artist",
+                                              "id": "$song.artistId",
+                                              "title": "$song.artist",
+                                              "round": true
+                                            }
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  ],
+                                  "spacing": 4,
+                                  "fill": "width"
+                                },
+                                {
+                                  "type": "button",
+                                  "variant": "plain",
+                                  "symbol": {
+                                    "if": [
+                                      "$song.favourite",
+                                      "heart.fill",
+                                      "heart"
+                                    ]
+                                  },
+                                  "symbolSize": 24,
+                                  "tint": "accent",
+                                  "when": "$song.matched",
+                                  "accessibility": {
+                                    "if": [
+                                      "$song.favourite",
+                                      "Remove from favourites",
+                                      "Add to favourites"
+                                    ]
+                                  },
+                                  "action": [
+                                    {
+                                      "command": "favourite",
+                                      "value": "$song.id",
+                                      "onError": {
+                                        "set": "notice",
+                                        "value": "$error"
+                                      }
+                                    },
+                                    {
+                                      "haptic": "light"
+                                    }
+                                  ]
+                                }
+                              ],
+                              "spacing": 16,
+                              "alignment": "bottom"
+                            },
+                            {
+                              "type": "scrubber",
+                              "timeline": "main",
+                              "tint": "white",
+                              "action": {
+                                "if": "$song.canSeek",
+                                "then": {
+                                  "command": "seek",
+                                  "value": "$value",
+                                  "onError": {
+                                    "set": "notice",
+                                    "value": "$error"
+                                  }
+                                },
+                                "else": {
+                                  "set": "notice",
+                                  "value": "Deezer doesn’t let you move through this track."
+                                }
+                              }
+                            },
+                            {
+                              "type": "stack",
+                              "axis": "horizontal",
+                              "children": [
+                                {
+                                  "type": "button",
+                                  "variant": "plain",
+                                  "symbol": "shuffle",
+                                  "symbolSize": 18,
+                                  "selected": "$shuffle",
+                                  "opacity": {
+                                    "if": [
+                                      "$shuffle",
+                                      1,
+                                      0.55
+                                    ]
+                                  },
+                                  "disabled": "$song.inFlow",
+                                  "accessibility": {
+                                    "if": [
+                                      "$shuffle",
+                                      "Shuffle on",
+                                      "Shuffle off"
+                                    ]
+                                  },
+                                  "action": [
+                                    {
+                                      "command": "shuffle",
+                                      "onError": {
+                                        "set": "notice",
+                                        "value": "$error"
+                                      }
+                                    },
+                                    {
+                                      "haptic": "selection"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "spacer"
+                                },
+                                {
+                                  "type": "button",
+                                  "variant": "plain",
+                                  "symbol": "backward.fill",
+                                  "symbolSize": 24,
+                                  "accessibility": "Previous",
+                                  "action": {
+                                    "command": "previous",
+                                    "onError": {
+                                      "set": "notice",
+                                      "value": "$error"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "spacer"
+                                },
+                                {
+                                  "type": "button",
+                                  "variant": "prominent",
+                                  "buttonShape": "circle",
+                                  "size": "large",
+                                  "symbolSize": 28,
+                                  "symbol": {
+                                    "if": [
+                                      "$song.playing",
+                                      "pause.fill",
+                                      "play.fill"
+                                    ]
+                                  },
+                                  "accessibility": {
+                                    "if": [
+                                      "$song.playing",
+                                      "Pause",
+                                      "Play"
+                                    ]
+                                  },
+                                  "action": [
+                                    {
+                                      "command": "toggle",
+                                      "onError": {
+                                        "set": "notice",
+                                        "value": "$error"
+                                      }
+                                    },
+                                    {
+                                      "haptic": "light"
+                                    }
+                                  ]
+                                },
+                                {
+                                  "type": "spacer"
+                                },
+                                {
+                                  "type": "button",
+                                  "variant": "plain",
+                                  "symbol": "forward.fill",
+                                  "symbolSize": 24,
+                                  "accessibility": "Next",
+                                  "action": {
+                                    "command": "next",
+                                    "onError": {
+                                      "set": "notice",
+                                      "value": "$error"
+                                    }
+                                  }
+                                },
+                                {
+                                  "type": "spacer"
+                                },
+                                {
+                                  "type": "button",
+                                  "variant": "plain",
+                                  "symbol": {
+                                    "if": [
+                                      {
+                                        "eq": [
+                                          "$repeat",
+                                          2
+                                        ]
+                                      },
+                                      "repeat.1",
+                                      "repeat"
+                                    ]
+                                  },
+                                  "symbolSize": 18,
+                                  "selected": {
+                                    "ne": [
+                                      "$repeat",
+                                      0
+                                    ]
+                                  },
+                                  "opacity": {
+                                    "if": [
+                                      {
+                                        "eq": [
+                                          "$repeat",
+                                          0
+                                        ]
+                                      },
+                                      0.55,
+                                      1
+                                    ]
+                                  },
+                                  "disabled": "$song.inFlow",
+                                  "accessibility": {
+                                    "if": [
+                                      {
+                                        "eq": [
+                                          "$repeat",
+                                          0
+                                        ]
+                                      },
+                                      "Repeat off",
+                                      {
+                                        "if": [
+                                          {
+                                            "eq": [
+                                              "$repeat",
+                                              1
+                                            ]
+                                          },
+                                          "Repeat all",
+                                          "Repeat one"
+                                        ]
+                                      }
+                                    ]
+                                  },
+                                  "action": [
+                                    {
+                                      "command": "repeat",
+                                      "onError": {
+                                        "set": "notice",
+                                        "value": "$error"
+                                      }
+                                    },
+                                    {
+                                      "haptic": "selection"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ],
+                          "spacing": 12,
+                          "fill": "both"
+                        }
+                      }
+                    },
+                    {
+                      "type": "stack",
+                      "axis": "horizontal",
+                      "children": [
+                        {
+                          "type": "button",
+                          "variant": "glass",
+                          "symbol": "quote.bubble",
+                          "selected": {
+                            "eq": [
+                              "$ui.panel",
+                              "lyrics"
+                            ]
+                          },
+                          "accessibility": "Lyrics",
+                          "action": {
+                            "set": "panel",
+                            "value": {
+                              "if": [
+                                {
+                                  "eq": [
+                                    "$ui.panel",
+                                    "lyrics"
+                                  ]
+                                },
+                                "controls",
+                                "lyrics"
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "type": "symbol",
+                          "name": "speaker.wave.2.fill",
+                          "size": 15,
+                          "color": "#FFFFFFB3"
+                        },
+                        {
+                          "type": "slider",
+                          "accessibility": "Deezer volume",
+                          "value": {
+                            "coalesce": [
+                              "$volume",
+                              0
+                            ]
+                          },
+                          "min": 0,
+                          "max": 100,
+                          "tint": "white",
+                          "fill": "width",
+                          "disabled": {
+                            "eq": [
+                              "$volume",
+                              null
+                            ]
+                          },
+                          "action": {
+                            "command": "volume",
+                            "value": "$value",
+                            "onError": {
+                              "set": "notice",
+                              "value": "$error"
+                            }
+                          }
+                        },
+                        {
+                          "type": "button",
+                          "variant": "glass",
+                          "symbol": "list.bullet",
+                          "selected": {
+                            "eq": [
+                              "$ui.panel",
+                              "queue"
+                            ]
+                          },
+                          "accessibility": "Up next",
+                          "action": {
+                            "set": "panel",
+                            "value": {
+                              "if": [
+                                {
+                                  "eq": [
+                                    "$ui.panel",
+                                    "queue"
+                                  ]
+                                },
+                                "controls",
+                                "queue"
+                              ]
+                            }
+                          }
+                        }
+                      ],
+                      "spacing": 12
+                    }
+                  ],
+                  "spacing": 14,
+                  "height": "$art",
+                  "fill": "width"
+                },
+                {
+                  "type": "spacer"
+                }
+              ],
+              "fill": "both"
+            }
+          ]
+        },
+        "else": {
+          "type": "layers",
+          "alignment": "bottom",
+          "fill": "both",
+          "children": [
+            {
+              "type": "if",
+              "test": {
+                "or": [
+                  "$error",
+                  "$account.error"
+                ]
+              },
+              "then": {
+                "type": "empty",
+                "symbol": "wifi.exclamationmark",
+                "title": "Deezer isn’t answering",
+                "message": {
+                  "coalesce": [
+                    "$account.error",
+                    "$error"
+                  ]
+                },
+                "children": [
+                  {
+                    "type": "button",
+                    "label": "Try again",
+                    "variant": "prominent",
+                    "action": {
+                      "command": "retry",
+                      "onError": {
+                        "set": "notice",
+                        "value": "$error"
+                      }
+                    }
+                  }
+                ]
+              },
+              "else": {
+                "type": "if",
+                "test": {
+                  "and": [
+                    "$loading",
+                    {
+                      "not": {
+                        "has": "$quick"
+                      }
+                    }
+                  ]
+                },
+                "then": {
+                  "type": "empty",
+                  "loading": true,
+                  "title": "Loading Deezer"
+                },
+                "else": {
+                  "type": "if",
+                  "test": {
+                    "eq": [
+                      "$ui.tab",
+                      "explore"
+                    ]
+                  },
+                  "then": {
+                    "type": "scroll",
+                    "spacing": 14,
+                    "fill": "both",
+                    "children": [
+                      {
+                        "type": "text",
+                        "text": "Moods and genres",
+                        "style": "title3",
+                        "weight": "heavy"
+                      },
+                      {
+                        "type": "grid",
+                        "minWidth": 150,
+                        "spacing": 10,
+                        "children": [
+                          {
+                            "type": "each",
+                            "items": "$explore",
+                            "as": "e",
+                            "template": {
+                              "type": "card",
+                              "inset": 14,
+                              "spacing": 4,
+                              "height": 96,
+                              "corner": 18,
+                              "gradient": "$e.colors",
+                              "action": {
+                                "if": {
+                                  "eq": [
+                                    "$e.type",
+                                    "flow"
+                                  ]
+                                },
+                                "then": {
+                                  "if": "$account.signedIn",
+                                  "then": [
+                                    {
+                                      "command": "flow",
+                                      "value": "$e.id",
+                                      "onError": {
+                                        "set": "notice",
+                                        "value": "$error"
+                                      }
+                                    },
+                                    {
+                                      "haptic": "medium"
+                                    },
+                                    {
+                                      "set": "view",
+                                      "value": "player"
+                                    }
+                                  ],
+                                  "else": [
+                                    {
+                                      "command": "setup"
+                                    },
+                                    {
+                                      "set": "notice",
+                                      "value": "Sign in to Deezer in the window that opened on your PC."
+                                    }
+                                  ]
+                                },
+                                "else": [
+                                  {
+                                    "command": "open",
+                                    "value": {
+                                      "type": "$e.type",
+                                      "id": "$e.id"
+                                    },
+                                    "onError": {
+                                      "set": "notice",
+                                      "value": "$error"
+                                    }
+                                  },
+                                  {
+                                    "cover": "collection",
+                                    "params": "$e"
+                                  }
+                                ]
+                              },
+                              "accessibility": "$e.title",
+                              "children": [
+                                {
+                                  "type": "symbol",
+                                  "name": "$e.symbol",
+                                  "size": 16,
+                                  "color": "#FFFFFFB3"
+                                },
+                                {
+                                  "type": "spacer"
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "$e.title",
+                                  "style": "headline",
+                                  "weight": "heavy",
+                                  "lines": 2,
+                                  "color": "white"
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "$e.subtitle",
+                                  "style": "caption2",
+                                  "color": "#FFFFFFB3"
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "type": "spacer",
+                        "min": 72
+                      }
+                    ]
+                  },
+                  "else": {
+                    "type": "if",
+                    "test": {
+                      "eq": [
+                        "$ui.tab",
+                        "favourites"
+                      ]
+                    },
+                    "then": {
+                      "type": "if",
+                      "test": {
+                        "not": "$account.signedIn"
+                      },
+                      "then": {
+                        "type": "if",
+                        "test": "$account.ready",
+                        "then": {
+                          "type": "empty",
+                          "symbol": "person.crop.circle.badge.plus",
+                          "title": "Sign in to Deezer",
+                          "message": "Deezer plays on your PC. Sign in once in the Deezer window there to see your favourites, playlists and Flow.",
+                          "children": [
+                            {
+                              "type": "button",
+                              "label": "Open Deezer on PC",
+                              "symbol": "desktopcomputer",
+                              "variant": "prominent",
+                              "action": [
+                                {
+                                  "command": "setup"
+                                },
+                                {
+                                  "set": "notice",
+                                  "value": "Sign in to Deezer in the window that opened on your PC."
+                                }
+                              ]
+                            }
+                          ]
+                        },
+                        "else": {
+                          "type": "empty",
+                          "loading": true,
+                          "title": "Loading Deezer"
+                        }
+                      },
+                      "else": {
+                        "type": "split",
+                        "ratio": 0.34,
+                        "spacing": 16,
+                        "fill": "both",
+                        "portrait": "stack",
+                        "portraitHeight": 190,
+                        "children": [
+                          {
+                            "type": "card",
+                            "fill": "both",
+                            "minHeight": 150,
+                            "corner": 28,
+                            "inset": 20,
+                            "spacing": 6,
+                            "gradient": [
+                              "#A238FF",
+                              "#4B1A8C"
+                            ],
+                            "action": [
+                              {
+                                "command": "open",
+                                "value": {
+                                  "type": "favourites",
+                                  "id": "favourites"
+                                }
+                              },
+                              {
+                                "cover": "collection",
+                                "params": {
+                                  "type": "favourites",
+                                  "id": "favourites",
+                                  "title": "Favourite tracks"
+                                }
+                              }
+                            ],
+                            "accessibility": "Favourite tracks",
+                            "children": [
+                              {
+                                "type": "symbol",
+                                "name": "heart.fill",
+                                "size": 30,
+                                "color": "white"
+                              },
+                              {
+                                "type": "spacer"
+                              },
+                              {
+                                "type": "text",
+                                "text": "Favourite tracks",
+                                "style": "title2",
+                                "weight": "heavy",
+                                "color": "white"
+                              },
+                              {
+                                "type": "text",
+                                "text": "{{favourites.tracks}} tracks",
+                                "style": "subheadline",
+                                "color": "#FFFFFFCC"
+                              },
+                              {
+                                "type": "stack",
+                                "axis": "horizontal",
+                                "children": [
+                                  {
+                                    "type": "button",
+                                    "variant": "glass",
+                                    "label": "Shuffle",
+                                    "symbol": "shuffle",
+                                    "size": "small",
+                                    "action": [
+                                      {
+                                        "command": "play",
+                                        "value": {
+                                          "list": "favourites",
+                                          "shuffle": true
+                                        },
+                                        "onError": {
+                                          "set": "notice",
+                                          "value": "$error"
+                                        }
+                                      },
+                                      {
+                                        "set": "view",
+                                        "value": "player"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "button",
+                                    "variant": "glass",
+                                    "label": "Play",
+                                    "symbol": "play.fill",
+                                    "size": "small",
+                                    "action": [
+                                      {
+                                        "command": "play",
+                                        "value": {
+                                          "list": "favourites",
+                                          "index": 0
+                                        },
+                                        "onError": {
+                                          "set": "notice",
+                                          "value": "$error"
+                                        }
+                                      },
+                                      {
+                                        "set": "view",
+                                        "value": "player"
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "spacing": 8
+                              }
+                            ]
+                          },
+                          {
+                            "type": "stack",
+                            "children": [
+                              {
+                                "type": "picker",
+                                "value": "$ui.favTab",
+                                "action": {
+                                  "set": "favTab",
+                                  "value": "$value"
+                                },
+                                "options": [
+                                  {
+                                    "value": "playlists",
+                                    "label": "Playlists"
+                                  },
+                                  {
+                                    "value": "albums",
+                                    "label": "Albums"
+                                  },
+                                  {
+                                    "value": "artists",
+                                    "label": "Artists"
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "text",
+                                "text": "$favourites.error",
+                                "style": "footnote",
+                                "color": "orange",
+                                "when": "$favourites.error"
+                              },
+                              {
+                                "type": "scroll",
+                                "fill": "both",
+                                "refresh": {
+                                  "command": "retry"
+                                },
+                                "children": [
+                                  {
+                                    "type": "grid",
+                                    "minWidth": 118,
+                                    "spacing": 14,
+                                    "children": [
+                                      {
+                                        "type": "each",
+                                        "items": "$favList.items",
+                                        "as": "item",
+                                        "template": {
+                                          "type": "stack",
+                                          "children": [
+                                            {
+                                              "type": "image",
+                                              "src": "$item.image",
+                                              "width": 112,
+                                              "height": 112,
+                                              "shape": {
+                                                "if": [
+                                                  "$item.round",
+                                                  "circle",
+                                                  "rounded"
+                                                ]
+                                              },
+                                              "corner": 10,
+                                              "clip": true,
+                                              "placeholder": {
+                                                "if": [
+                                                  {
+                                                    "eq": [
+                                                      "$item.type",
+                                                      "podcast"
+                                                    ]
+                                                  },
+                                                  "mic.fill",
+                                                  "music.note"
+                                                ]
+                                              }
+                                            },
+                                            {
+                                              "type": "text",
+                                              "text": "$item.title",
+                                              "style": "footnote",
+                                              "weight": "semibold",
+                                              "lines": 1,
+                                              "textAlign": {
+                                                "if": [
+                                                  "$item.round",
+                                                  "center",
+                                                  "leading"
+                                                ]
+                                              },
+                                              "fill": "width"
+                                            },
+                                            {
+                                              "type": "text",
+                                              "text": "$item.subtitle",
+                                              "style": "caption",
+                                              "color": "secondary",
+                                              "lines": 1,
+                                              "textAlign": {
+                                                "if": [
+                                                  "$item.round",
+                                                  "center",
+                                                  "leading"
+                                                ]
+                                              },
+                                              "fill": "width"
+                                            }
+                                          ],
+                                          "spacing": 4,
+                                          "width": 112,
+                                          "action": {
+                                            "if": {
+                                              "eq": [
+                                                "$item.type",
+                                                "flow"
+                                              ]
+                                            },
+                                            "then": {
+                                              "if": "$account.signedIn",
+                                              "then": [
+                                                {
+                                                  "command": "flow",
+                                                  "value": "$item.id",
+                                                  "onError": {
+                                                    "set": "notice",
+                                                    "value": "$error"
+                                                  }
+                                                },
+                                                {
+                                                  "haptic": "medium"
+                                                },
+                                                {
+                                                  "set": "view",
+                                                  "value": "player"
+                                                }
+                                              ],
+                                              "else": [
+                                                {
+                                                  "command": "setup"
+                                                },
+                                                {
+                                                  "set": "notice",
+                                                  "value": "Sign in to Deezer in the window that opened on your PC."
+                                                }
+                                              ]
+                                            },
+                                            "else": [
+                                              {
+                                                "command": "open",
+                                                "value": {
+                                                  "type": "$item.type",
+                                                  "id": "$item.id"
+                                                },
+                                                "onError": {
+                                                  "set": "notice",
+                                                  "value": "$error"
+                                                }
+                                              },
+                                              {
+                                                "cover": "collection",
+                                                "params": "$item"
+                                              }
+                                            ]
+                                          },
+                                          "accessibility": "{{item.title}}"
+                                        },
+                                        "empty": {
+                                          "type": "empty",
+                                          "symbol": "heart",
+                                          "loading": "$favourites.loading",
+                                          "title": {
+                                            "if": [
+                                              "$favourites.loading",
+                                              "Loading your favourites",
+                                              "Nothing here yet"
+                                            ]
+                                          },
+                                          "message": "Albums, playlists and artists you add to your Deezer favourites show here."
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "spacer",
+                                    "min": 72
+                                  }
+                                ]
+                              }
+                            ],
+                            "spacing": 12,
+                            "fill": "both"
+                          }
+                        ]
+                      }
+                    },
+                    "else": {
+                      "type": "if",
+                      "test": {
+                        "eq": [
+                          "$ui.tab",
+                          "search"
+                        ]
+                      },
+                      "then": {
+                        "type": "if",
+                        "test": "$results",
+                        "then": {
+                          "type": "scroll",
+                          "spacing": 20,
+                          "fill": "both",
+                          "children": [
+                            {
+                              "type": "if",
+                              "test": "$results.loading",
+                              "then": {
+                                "type": "progress",
+                                "label": "Searching Deezer"
+                              }
+                            },
+                            {
+                              "type": "stack",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "text": "Tracks",
+                                  "style": "title3",
+                                  "weight": "heavy"
+                                },
+                                {
+                                  "type": "each",
+                                  "items": "$results.tracks",
+                                  "as": "t",
+                                  "index": "i",
+                                  "template": {
+                                    "type": "stack",
+                                    "axis": "horizontal",
+                                    "children": [
+                                      {
+                                        "type": "image",
+                                        "src": "$t.image",
+                                        "width": 44,
+                                        "height": 44,
+                                        "corner": 6,
+                                        "clip": true,
+                                        "placeholder": "music.note"
+                                      },
+                                      {
+                                        "type": "stack",
+                                        "children": [
+                                          {
+                                            "type": "text",
+                                            "text": "$t.title",
+                                            "style": "subheadline",
+                                            "weight": "semibold",
+                                            "lines": 1,
+                                            "color": {
+                                              "if": [
+                                                {
+                                                  "eq": [
+                                                    "$t.id",
+                                                    "$song.id"
+                                                  ]
+                                                },
+                                                "accent",
+                                                "primary"
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "type": "stack",
+                                            "axis": "horizontal",
+                                            "children": [
+                                              {
+                                                "type": "badge",
+                                                "text": "E",
+                                                "variant": "plain",
+                                                "tint": "secondary",
+                                                "when": "$t.explicit"
+                                              },
+                                              {
+                                                "type": "text",
+                                                "text": "$t.artist",
+                                                "style": "caption",
+                                                "color": "secondary",
+                                                "lines": 1
+                                              }
+                                            ],
+                                            "spacing": 4
+                                          }
+                                        ],
+                                        "spacing": 2,
+                                        "fill": "width"
+                                      },
+                                      {
+                                        "type": "symbol",
+                                        "name": "heart.fill",
+                                        "size": 14,
+                                        "color": "accent",
+                                        "opacity": {
+                                          "if": [
+                                            "$t.favourite",
+                                            1,
+                                            0
+                                          ]
+                                        },
+                                        "accessibility": {
+                                          "if": [
+                                            "$t.favourite",
+                                            "In your favourites",
+                                            null
+                                          ]
+                                        }
+                                      },
+                                      {
+                                        "type": "text",
+                                        "text": "{{t.duration|duration}}",
+                                        "style": "caption",
+                                        "color": "secondary",
+                                        "monospaced": true,
+                                        "width": 38,
+                                        "textAlign": "trailing"
+                                      }
+                                    ],
+                                    "spacing": 12,
+                                    "padding": [
+                                      5,
+                                      0
+                                    ],
+                                    "action": [
+                                      {
+                                        "command": "play",
+                                        "value": {
+                                          "list": "results",
+                                          "index": "$i"
+                                        }
+                                      },
+                                      {
+                                        "haptic": "light"
+                                      }
+                                    ],
+                                    "accessibility": "{{t.title}}, {{t.artist}}"
+                                  }
+                                }
+                              ],
+                              "spacing": 2,
+                              "when": {
+                                "has": "$results.tracks"
+                              }
+                            },
+                            {
+                              "type": "stack",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "text": "Albums",
+                                  "style": "title3",
+                                  "weight": "heavy"
+                                },
+                                {
+                                  "type": "scroll",
+                                  "axis": "horizontal",
+                                  "spacing": 14,
+                                  "children": [
+                                    {
+                                      "type": "each",
+                                      "items": "$results.albums",
+                                      "as": "item",
+                                      "template": {
+                                        "type": "stack",
+                                        "children": [
+                                          {
+                                            "type": "image",
+                                            "src": "$item.image",
+                                            "width": "$tile",
+                                            "height": "$tile",
+                                            "shape": {
+                                              "if": [
+                                                "$item.round",
+                                                "circle",
+                                                "rounded"
+                                              ]
+                                            },
+                                            "corner": 10,
+                                            "clip": true,
+                                            "placeholder": {
+                                              "if": [
+                                                {
+                                                  "eq": [
+                                                    "$item.type",
+                                                    "podcast"
+                                                  ]
+                                                },
+                                                "mic.fill",
+                                                "music.note"
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "type": "text",
+                                            "text": "$item.title",
+                                            "style": "footnote",
+                                            "weight": "semibold",
+                                            "lines": 1,
+                                            "textAlign": {
+                                              "if": [
+                                                "$item.round",
+                                                "center",
+                                                "leading"
+                                              ]
+                                            },
+                                            "fill": "width"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "text": "$item.subtitle",
+                                            "style": "caption",
+                                            "color": "secondary",
+                                            "lines": 1,
+                                            "textAlign": {
+                                              "if": [
+                                                "$item.round",
+                                                "center",
+                                                "leading"
+                                              ]
+                                            },
+                                            "fill": "width"
+                                          }
+                                        ],
+                                        "spacing": 4,
+                                        "width": "$tile",
+                                        "action": {
+                                          "if": {
+                                            "eq": [
+                                              "$item.type",
+                                              "flow"
+                                            ]
+                                          },
+                                          "then": {
+                                            "if": "$account.signedIn",
+                                            "then": [
+                                              {
+                                                "command": "flow",
+                                                "value": "$item.id",
+                                                "onError": {
+                                                  "set": "notice",
+                                                  "value": "$error"
+                                                }
+                                              },
+                                              {
+                                                "haptic": "medium"
+                                              },
+                                              {
+                                                "set": "view",
+                                                "value": "player"
+                                              }
+                                            ],
+                                            "else": [
+                                              {
+                                                "command": "setup"
+                                              },
+                                              {
+                                                "set": "notice",
+                                                "value": "Sign in to Deezer in the window that opened on your PC."
+                                              }
+                                            ]
+                                          },
+                                          "else": [
+                                            {
+                                              "command": "open",
+                                              "value": {
+                                                "type": "$item.type",
+                                                "id": "$item.id"
+                                              },
+                                              "onError": {
+                                                "set": "notice",
+                                                "value": "$error"
+                                              }
+                                            },
+                                            {
+                                              "cover": "collection",
+                                              "params": "$item"
+                                            }
+                                          ]
+                                        },
+                                        "accessibility": "{{item.title}}"
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "spacing": 10,
+                              "when": {
+                                "has": "$results.albums"
+                              }
+                            },
+                            {
+                              "type": "stack",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "text": "Artists",
+                                  "style": "title3",
+                                  "weight": "heavy"
+                                },
+                                {
+                                  "type": "scroll",
+                                  "axis": "horizontal",
+                                  "spacing": 14,
+                                  "children": [
+                                    {
+                                      "type": "each",
+                                      "items": "$results.artists",
+                                      "as": "item",
+                                      "template": {
+                                        "type": "stack",
+                                        "children": [
+                                          {
+                                            "type": "image",
+                                            "src": "$item.image",
+                                            "width": "$tile",
+                                            "height": "$tile",
+                                            "shape": {
+                                              "if": [
+                                                "$item.round",
+                                                "circle",
+                                                "rounded"
+                                              ]
+                                            },
+                                            "corner": 10,
+                                            "clip": true,
+                                            "placeholder": {
+                                              "if": [
+                                                {
+                                                  "eq": [
+                                                    "$item.type",
+                                                    "podcast"
+                                                  ]
+                                                },
+                                                "mic.fill",
+                                                "music.note"
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "type": "text",
+                                            "text": "$item.title",
+                                            "style": "footnote",
+                                            "weight": "semibold",
+                                            "lines": 1,
+                                            "textAlign": {
+                                              "if": [
+                                                "$item.round",
+                                                "center",
+                                                "leading"
+                                              ]
+                                            },
+                                            "fill": "width"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "text": "$item.subtitle",
+                                            "style": "caption",
+                                            "color": "secondary",
+                                            "lines": 1,
+                                            "textAlign": {
+                                              "if": [
+                                                "$item.round",
+                                                "center",
+                                                "leading"
+                                              ]
+                                            },
+                                            "fill": "width"
+                                          }
+                                        ],
+                                        "spacing": 4,
+                                        "width": "$tile",
+                                        "action": {
+                                          "if": {
+                                            "eq": [
+                                              "$item.type",
+                                              "flow"
+                                            ]
+                                          },
+                                          "then": {
+                                            "if": "$account.signedIn",
+                                            "then": [
+                                              {
+                                                "command": "flow",
+                                                "value": "$item.id",
+                                                "onError": {
+                                                  "set": "notice",
+                                                  "value": "$error"
+                                                }
+                                              },
+                                              {
+                                                "haptic": "medium"
+                                              },
+                                              {
+                                                "set": "view",
+                                                "value": "player"
+                                              }
+                                            ],
+                                            "else": [
+                                              {
+                                                "command": "setup"
+                                              },
+                                              {
+                                                "set": "notice",
+                                                "value": "Sign in to Deezer in the window that opened on your PC."
+                                              }
+                                            ]
+                                          },
+                                          "else": [
+                                            {
+                                              "command": "open",
+                                              "value": {
+                                                "type": "$item.type",
+                                                "id": "$item.id"
+                                              },
+                                              "onError": {
+                                                "set": "notice",
+                                                "value": "$error"
+                                              }
+                                            },
+                                            {
+                                              "cover": "collection",
+                                              "params": "$item"
+                                            }
+                                          ]
+                                        },
+                                        "accessibility": "{{item.title}}"
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "spacing": 10,
+                              "when": {
+                                "has": "$results.artists"
+                              }
+                            },
+                            {
+                              "type": "stack",
+                              "children": [
+                                {
+                                  "type": "text",
+                                  "text": "Playlists",
+                                  "style": "title3",
+                                  "weight": "heavy"
+                                },
+                                {
+                                  "type": "scroll",
+                                  "axis": "horizontal",
+                                  "spacing": 14,
+                                  "children": [
+                                    {
+                                      "type": "each",
+                                      "items": "$results.playlists",
+                                      "as": "item",
+                                      "template": {
+                                        "type": "stack",
+                                        "children": [
+                                          {
+                                            "type": "image",
+                                            "src": "$item.image",
+                                            "width": "$tile",
+                                            "height": "$tile",
+                                            "shape": {
+                                              "if": [
+                                                "$item.round",
+                                                "circle",
+                                                "rounded"
+                                              ]
+                                            },
+                                            "corner": 10,
+                                            "clip": true,
+                                            "placeholder": {
+                                              "if": [
+                                                {
+                                                  "eq": [
+                                                    "$item.type",
+                                                    "podcast"
+                                                  ]
+                                                },
+                                                "mic.fill",
+                                                "music.note"
+                                              ]
+                                            }
+                                          },
+                                          {
+                                            "type": "text",
+                                            "text": "$item.title",
+                                            "style": "footnote",
+                                            "weight": "semibold",
+                                            "lines": 1,
+                                            "textAlign": {
+                                              "if": [
+                                                "$item.round",
+                                                "center",
+                                                "leading"
+                                              ]
+                                            },
+                                            "fill": "width"
+                                          },
+                                          {
+                                            "type": "text",
+                                            "text": "$item.subtitle",
+                                            "style": "caption",
+                                            "color": "secondary",
+                                            "lines": 1,
+                                            "textAlign": {
+                                              "if": [
+                                                "$item.round",
+                                                "center",
+                                                "leading"
+                                              ]
+                                            },
+                                            "fill": "width"
+                                          }
+                                        ],
+                                        "spacing": 4,
+                                        "width": "$tile",
+                                        "action": {
+                                          "if": {
+                                            "eq": [
+                                              "$item.type",
+                                              "flow"
+                                            ]
+                                          },
+                                          "then": {
+                                            "if": "$account.signedIn",
+                                            "then": [
+                                              {
+                                                "command": "flow",
+                                                "value": "$item.id",
+                                                "onError": {
+                                                  "set": "notice",
+                                                  "value": "$error"
+                                                }
+                                              },
+                                              {
+                                                "haptic": "medium"
+                                              },
+                                              {
+                                                "set": "view",
+                                                "value": "player"
+                                              }
+                                            ],
+                                            "else": [
+                                              {
+                                                "command": "setup"
+                                              },
+                                              {
+                                                "set": "notice",
+                                                "value": "Sign in to Deezer in the window that opened on your PC."
+                                              }
+                                            ]
+                                          },
+                                          "else": [
+                                            {
+                                              "command": "open",
+                                              "value": {
+                                                "type": "$item.type",
+                                                "id": "$item.id"
+                                              },
+                                              "onError": {
+                                                "set": "notice",
+                                                "value": "$error"
+                                              }
+                                            },
+                                            {
+                                              "cover": "collection",
+                                              "params": "$item"
+                                            }
+                                          ]
+                                        },
+                                        "accessibility": "{{item.title}}"
+                                      }
+                                    }
+                                  ]
+                                }
+                              ],
+                              "spacing": 10,
+                              "when": {
+                                "has": "$results.playlists"
+                              }
+                            },
+                            {
+                              "type": "if",
+                              "test": {
+                                "and": [
+                                  {
+                                    "not": "$results.loading"
+                                  },
+                                  {
+                                    "not": {
+                                      "has": "$results.tracks"
+                                    }
+                                  },
+                                  {
+                                    "not": {
+                                      "has": "$results.albums"
+                                    }
+                                  }
+                                ]
+                              },
+                              "then": {
+                                "type": "empty",
+                                "symbol": "magnifyingglass",
+                                "title": "No results",
+                                "message": "Try another spelling, or search for an artist."
+                              }
+                            },
+                            {
+                              "type": "spacer",
+                              "min": 72
+                            }
+                          ]
+                        },
+                        "else": {
+                          "type": "scroll",
+                          "spacing": 14,
+                          "fill": "both",
+                          "children": [
+                            {
+                              "type": "text",
+                              "text": "Browse all",
+                              "style": "title3",
+                              "weight": "heavy"
+                            },
+                            {
+                              "type": "grid",
+                              "minWidth": 150,
+                              "spacing": 10,
+                              "children": [
+                                {
+                                  "type": "each",
+                                  "items": "$explore",
+                                  "as": "e",
+                                  "template": {
+                                    "type": "card",
+                                    "inset": 14,
+                                    "spacing": 4,
+                                    "height": 96,
+                                    "corner": 18,
+                                    "gradient": "$e.colors",
+                                    "action": {
+                                      "if": {
+                                        "eq": [
+                                          "$e.type",
+                                          "flow"
+                                        ]
+                                      },
+                                      "then": {
+                                        "if": "$account.signedIn",
+                                        "then": [
+                                          {
+                                            "command": "flow",
+                                            "value": "$e.id",
+                                            "onError": {
+                                              "set": "notice",
+                                              "value": "$error"
+                                            }
+                                          },
+                                          {
+                                            "haptic": "medium"
+                                          },
+                                          {
+                                            "set": "view",
+                                            "value": "player"
+                                          }
+                                        ],
+                                        "else": [
+                                          {
+                                            "command": "setup"
+                                          },
+                                          {
+                                            "set": "notice",
+                                            "value": "Sign in to Deezer in the window that opened on your PC."
+                                          }
+                                        ]
+                                      },
+                                      "else": [
+                                        {
+                                          "command": "open",
+                                          "value": {
+                                            "type": "$e.type",
+                                            "id": "$e.id"
+                                          },
+                                          "onError": {
+                                            "set": "notice",
+                                            "value": "$error"
+                                          }
+                                        },
+                                        {
+                                          "cover": "collection",
+                                          "params": "$e"
+                                        }
+                                      ]
+                                    },
+                                    "accessibility": "$e.title",
+                                    "children": [
+                                      {
+                                        "type": "symbol",
+                                        "name": "$e.symbol",
+                                        "size": 16,
+                                        "color": "#FFFFFFB3"
+                                      },
+                                      {
+                                        "type": "spacer"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "text": "$e.title",
+                                        "style": "headline",
+                                        "weight": "heavy",
+                                        "lines": 2,
+                                        "color": "white"
+                                      },
+                                      {
+                                        "type": "text",
+                                        "text": "$e.subtitle",
+                                        "style": "caption2",
+                                        "color": "#FFFFFFB3"
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
+                            },
+                            {
+                              "type": "spacer",
+                              "min": 72
+                            }
+                          ]
+                        }
+                      },
+                      "else": {
+                        "type": "split",
+                        "ratio": 0.38,
+                        "spacing": 16,
+                        "fill": "both",
+                        "portrait": "stack",
+                        "portraitHeight": 300,
+                        "children": [
+                          {
+                            "type": "layers",
+                            "fill": "both",
+                            "minHeight": 220,
+                            "corner": 28,
+                            "clip": true,
+                            "background": "#16111F",
+                            "children": [
+                              {
+                                "type": "stack",
+                                "children": [],
+                                "width": 190,
+                                "height": 190,
+                                "shape": "circle",
+                                "gradient": [
+                                  "#A238FF",
+                                  "#FF4FA3",
+                                  "#FF9D3C"
+                                ],
+                                "blur": 46,
+                                "opacity": 0.85,
+                                "scale": {
+                                  "if": [
+                                    {
+                                      "and": [
+                                        "$song.playing",
+                                        "$song.inFlow"
+                                      ]
+                                    },
+                                    1.15,
+                                    0.85
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "stack",
+                                "children": [],
+                                "width": 110,
+                                "height": 110,
+                                "shape": "circle",
+                                "gradient": [
+                                  "#FFFFFF66",
+                                  "#FFFFFF00"
+                                ],
+                                "blur": 24,
+                                "scale": {
+                                  "if": [
+                                    {
+                                      "and": [
+                                        "$song.playing",
+                                        "$song.inFlow"
+                                      ]
+                                    },
+                                    1.1,
+                                    0.9
+                                  ]
+                                }
+                              },
+                              {
+                                "type": "stack",
+                                "children": [
+                                  {
+                                    "type": "spacer"
+                                  },
+                                  {
+                                    "type": "text",
+                                    "text": "Flow",
+                                    "size": 50,
+                                    "weight": "heavy",
+                                    "textAlign": "center"
+                                  },
+                                  {
+                                    "type": "text",
+                                    "text": "Your endless mix",
+                                    "style": "subheadline",
+                                    "weight": "medium",
+                                    "color": "#FFFFFFB3",
+                                    "textAlign": "center"
+                                  },
+                                  {
+                                    "type": "button",
+                                    "variant": "prominent",
+                                    "buttonShape": "circle",
+                                    "size": "large",
+                                    "symbolSize": 24,
+                                    "symbol": {
+                                      "if": [
+                                        {
+                                          "and": [
+                                            "$song.playing",
+                                            "$song.inFlow"
+                                          ]
+                                        },
+                                        "pause.fill",
+                                        "play.fill"
+                                      ]
+                                    },
+                                    "accessibility": {
+                                      "if": [
+                                        {
+                                          "and": [
+                                            "$song.playing",
+                                            "$song.inFlow"
+                                          ]
+                                        },
+                                        "Pause Flow",
+                                        "Play Flow"
+                                      ]
+                                    },
+                                    "action": {
+                                      "if": "$song.inFlow",
+                                      "then": [
+                                        {
+                                          "command": "toggle"
+                                        },
+                                        {
+                                          "haptic": "light"
+                                        }
+                                      ],
+                                      "else": {
+                                        "if": "$account.signedIn",
+                                        "then": [
+                                          {
+                                            "command": "flow",
+                                            "value": "",
+                                            "onError": {
+                                              "set": "notice",
+                                              "value": "$error"
+                                            }
+                                          },
+                                          {
+                                            "haptic": "medium"
+                                          },
+                                          {
+                                            "set": "view",
+                                            "value": "player"
+                                          }
+                                        ],
+                                        "else": [
+                                          {
+                                            "command": "setup"
+                                          },
+                                          {
+                                            "set": "notice",
+                                            "value": "Sign in to Deezer in the window that opened on your PC."
+                                          }
+                                        ]
+                                      }
+                                    }
+                                  },
+                                  {
+                                    "type": "spacer"
+                                  },
+                                  {
+                                    "type": "scroll",
+                                    "axis": "horizontal",
+                                    "spacing": 6,
+                                    "children": [
+                                      {
+                                        "type": "each",
+                                        "items": "$moods",
+                                        "as": "m",
+                                        "template": {
+                                          "type": "button",
+                                          "variant": "glass",
+                                          "size": "small",
+                                          "label": "$m.title",
+                                          "symbol": "$m.symbol",
+                                          "selected": {
+                                            "and": [
+                                              "$song.inFlow",
+                                              {
+                                                "eq": [
+                                                  "$song.mood",
+                                                  "$m.id"
+                                                ]
+                                              }
+                                            ]
+                                          },
+                                          "action": {
+                                            "if": "$account.signedIn",
+                                            "then": [
+                                              {
+                                                "command": "flow",
+                                                "value": "$m.id",
+                                                "onError": {
+                                                  "set": "notice",
+                                                  "value": "$error"
+                                                }
+                                              },
+                                              {
+                                                "haptic": "medium"
+                                              },
+                                              {
+                                                "set": "view",
+                                                "value": "player"
+                                              }
+                                            ],
+                                            "else": [
+                                              {
+                                                "command": "setup"
+                                              },
+                                              {
+                                                "set": "notice",
+                                                "value": "Sign in to Deezer in the window that opened on your PC."
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "scroll",
+                                    "axis": "horizontal",
+                                    "spacing": 6,
+                                    "when": "$flow.has",
+                                    "children": [
+                                      {
+                                        "type": "each",
+                                        "items": "$flow.next",
+                                        "as": "t",
+                                        "template": {
+                                          "type": "image",
+                                          "src": "$t.image",
+                                          "width": 38,
+                                          "height": 38,
+                                          "corner": 8,
+                                          "clip": true,
+                                          "accessibility": "{{t.title}}, {{t.artist}}",
+                                          "action": [
+                                            {
+                                              "command": "play",
+                                              "value": {
+                                                "list": "flow",
+                                                "index": "$i"
+                                              },
+                                              "onError": {
+                                                "set": "notice",
+                                                "value": "$error"
+                                              }
+                                            },
+                                            {
+                                              "set": "view",
+                                              "value": "player"
+                                            }
+                                          ]
+                                        },
+                                        "index": "i"
+                                      }
+                                    ]
+                                  }
+                                ],
+                                "spacing": 8,
+                                "alignment": "center",
+                                "padding": [
+                                  14,
+                                  16,
+                                  26,
+                                  16
+                                ],
+                                "fill": "both"
+                              }
+                            ]
+                          },
+                          {
+                            "type": "scroll",
+                            "spacing": 22,
+                            "fill": "both",
+                            "refresh": {
+                              "refresh": true
+                            },
+                            "children": [
+                              {
+                                "type": "grid",
+                                "columns": 2,
+                                "spacing": 8,
+                                "children": [
+                                  {
+                                    "type": "each",
+                                    "items": "$quick",
+                                    "as": "q",
+                                    "template": {
+                                      "type": "stack",
+                                      "axis": "horizontal",
+                                      "alignment": "center",
+                                      "spacing": 10,
+                                      "height": 52,
+                                      "corner": 10,
+                                      "clip": true,
+                                      "background": "card",
+                                      "fill": "width",
+                                      "action": {
+                                        "if": {
+                                          "eq": [
+                                            "$q.type",
+                                            "flow"
+                                          ]
+                                        },
+                                        "then": {
+                                          "if": "$account.signedIn",
+                                          "then": [
+                                            {
+                                              "command": "flow",
+                                              "value": "$q.id",
+                                              "onError": {
+                                                "set": "notice",
+                                                "value": "$error"
+                                              }
+                                            },
+                                            {
+                                              "haptic": "medium"
+                                            },
+                                            {
+                                              "set": "view",
+                                              "value": "player"
+                                            }
+                                          ],
+                                          "else": [
+                                            {
+                                              "command": "setup"
+                                            },
+                                            {
+                                              "set": "notice",
+                                              "value": "Sign in to Deezer in the window that opened on your PC."
+                                            }
+                                          ]
+                                        },
+                                        "else": [
+                                          {
+                                            "command": "open",
+                                            "value": {
+                                              "type": "$q.type",
+                                              "id": "$q.id"
+                                            },
+                                            "onError": {
+                                              "set": "notice",
+                                              "value": "$error"
+                                            }
+                                          },
+                                          {
+                                            "cover": "collection",
+                                            "params": "$q"
+                                          }
+                                        ]
+                                      },
+                                      "accessibility": "$q.title",
+                                      "children": [
+                                        {
+                                          "type": "if",
+                                          "test": {
+                                            "eq": [
+                                              "$q.type",
+                                              "favourites"
+                                            ]
+                                          },
+                                          "then": {
+                                            "type": "layers",
+                                            "width": 52,
+                                            "height": 52,
+                                            "background": "#A238FF",
+                                            "children": [
+                                              {
+                                                "type": "symbol",
+                                                "name": "heart.fill",
+                                                "size": 20,
+                                                "color": "white"
+                                              }
+                                            ]
+                                          },
+                                          "else": {
+                                            "type": "if",
+                                            "test": {
+                                              "eq": [
+                                                "$q.type",
+                                                "flow"
+                                              ]
+                                            },
+                                            "then": {
+                                              "type": "layers",
+                                              "width": 52,
+                                              "height": 52,
+                                              "gradient": [
+                                                "$q.tint",
+                                                "#140F1C"
+                                              ],
+                                              "children": [
+                                                {
+                                                  "type": "symbol",
+                                                  "name": "waveform",
+                                                  "size": 20,
+                                                  "color": "white"
+                                                }
+                                              ]
+                                            },
+                                            "else": {
+                                              "type": "image",
+                                              "src": "$q.image",
+                                              "width": 52,
+                                              "height": 52,
+                                              "shape": {
+                                                "if": [
+                                                  "$q.round",
+                                                  "circle",
+                                                  "rect"
+                                                ]
+                                              },
+                                              "clip": true
+                                            }
+                                          }
+                                        },
+                                        {
+                                          "type": "text",
+                                          "text": "$q.title",
+                                          "style": "footnote",
+                                          "weight": "semibold",
+                                          "lines": 2,
+                                          "fill": "width"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "type": "each",
+                                "items": "$sections",
+                                "as": "sec",
+                                "template": {
+                                  "type": "stack",
+                                  "children": [
+                                    {
+                                      "type": "text",
+                                      "text": "$sec.title",
+                                      "style": "title3",
+                                      "weight": "heavy"
+                                    },
+                                    {
+                                      "type": "scroll",
+                                      "axis": "horizontal",
+                                      "spacing": 14,
+                                      "children": [
+                                        {
+                                          "type": "each",
+                                          "items": "$sec.items",
+                                          "as": "item",
+                                          "template": {
+                                            "type": "stack",
+                                            "children": [
+                                              {
+                                                "type": "image",
+                                                "src": "$item.image",
+                                                "width": "$tile",
+                                                "height": "$tile",
+                                                "shape": {
+                                                  "if": [
+                                                    "$item.round",
+                                                    "circle",
+                                                    "rounded"
+                                                  ]
+                                                },
+                                                "corner": 10,
+                                                "clip": true,
+                                                "placeholder": {
+                                                  "if": [
+                                                    {
+                                                      "eq": [
+                                                        "$item.type",
+                                                        "podcast"
+                                                      ]
+                                                    },
+                                                    "mic.fill",
+                                                    "music.note"
+                                                  ]
+                                                }
+                                              },
+                                              {
+                                                "type": "text",
+                                                "text": "$item.title",
+                                                "style": "footnote",
+                                                "weight": "semibold",
+                                                "lines": 1,
+                                                "textAlign": {
+                                                  "if": [
+                                                    "$item.round",
+                                                    "center",
+                                                    "leading"
+                                                  ]
+                                                },
+                                                "fill": "width"
+                                              },
+                                              {
+                                                "type": "text",
+                                                "text": "$item.subtitle",
+                                                "style": "caption",
+                                                "color": "secondary",
+                                                "lines": 1,
+                                                "textAlign": {
+                                                  "if": [
+                                                    "$item.round",
+                                                    "center",
+                                                    "leading"
+                                                  ]
+                                                },
+                                                "fill": "width"
+                                              }
+                                            ],
+                                            "spacing": 4,
+                                            "width": "$tile",
+                                            "action": {
+                                              "if": {
+                                                "eq": [
+                                                  "$item.type",
+                                                  "flow"
+                                                ]
+                                              },
+                                              "then": {
+                                                "if": "$account.signedIn",
+                                                "then": [
+                                                  {
+                                                    "command": "flow",
+                                                    "value": "$item.id",
+                                                    "onError": {
+                                                      "set": "notice",
+                                                      "value": "$error"
+                                                    }
+                                                  },
+                                                  {
+                                                    "haptic": "medium"
+                                                  },
+                                                  {
+                                                    "set": "view",
+                                                    "value": "player"
+                                                  }
+                                                ],
+                                                "else": [
+                                                  {
+                                                    "command": "setup"
+                                                  },
+                                                  {
+                                                    "set": "notice",
+                                                    "value": "Sign in to Deezer in the window that opened on your PC."
+                                                  }
+                                                ]
+                                              },
+                                              "else": [
+                                                {
+                                                  "command": "open",
+                                                  "value": {
+                                                    "type": "$item.type",
+                                                    "id": "$item.id"
+                                                  },
+                                                  "onError": {
+                                                    "set": "notice",
+                                                    "value": "$error"
+                                                  }
+                                                },
+                                                {
+                                                  "cover": "collection",
+                                                  "params": "$item"
+                                                }
+                                              ]
+                                            },
+                                            "accessibility": "{{item.title}}"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  ],
+                                  "spacing": 10,
+                                  "when": {
+                                    "has": "$sec.items"
+                                  }
+                                }
+                              },
+                              {
+                                "type": "spacer",
+                                "min": 72
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "type": "stack",
+              "axis": "horizontal",
+              "children": [
+                {
+                  "type": "image",
+                  "src": "$song.image",
+                  "width": 34,
+                  "height": 34,
+                  "corner": 8,
+                  "clip": true,
+                  "placeholder": "music.note"
+                },
+                {
+                  "type": "stack",
+                  "children": [
+                    {
+                      "type": "text",
+                      "text": "$song.title",
+                      "style": "footnote",
+                      "weight": "semibold",
+                      "lines": 1
+                    },
+                    {
+                      "type": "text",
+                      "text": "$song.artist",
+                      "style": "caption2",
+                      "color": "secondary",
+                      "lines": 1
+                    }
+                  ],
+                  "spacing": 0,
+                  "maxWidth": 170
+                },
+                {
+                  "type": "symbol",
+                  "name": "heart.fill",
+                  "size": 14,
+                  "color": "accent",
+                  "when": "$song.favourite"
+                },
+                {
+                  "type": "button",
+                  "variant": "plain",
+                  "symbol": {
+                    "if": [
+                      "$song.playing",
+                      "pause.fill",
+                      "play.fill"
+                    ]
+                  },
+                  "accessibility": {
+                    "if": [
+                      "$song.playing",
+                      "Pause",
+                      "Play"
+                    ]
+                  },
+                  "action": {
+                    "command": "toggle"
+                  }
+                }
+              ],
+              "spacing": 10,
+              "padding": [
+                6,
+                6,
+                6,
+                12
+              ],
+              "glass": true,
+              "shape": "capsule",
+              "action": [
+                {
+                  "set": "view",
+                  "value": "player"
+                },
+                {
+                  "haptic": "light"
+                }
+              ],
+              "accessibility": "Now playing: {{song.title}}",
+              "when": {
+                "and": [
+                  "$song",
+                  {
+                    "not": "$env.landscape"
+                  }
+                ]
+              },
+              "maxWidth": 520
+            }
+          ]
+        }
+      },
+      {
+        "type": "stack",
+        "axis": "horizontal",
+        "children": [
+          {
+            "type": "symbol",
+            "name": "exclamationmark.circle.fill",
+            "color": "orange"
+          },
+          {
+            "type": "text",
+            "text": "$ui.notice",
+            "style": "footnote",
+            "weight": "medium",
+            "lines": 2
+          },
+          {
+            "type": "button",
+            "variant": "plain",
+            "symbol": "xmark",
+            "accessibility": "Dismiss",
+            "action": {
+              "set": "notice",
+              "value": null
+            }
+          }
+        ],
+        "when": "$ui.notice",
+        "spacing": 10,
+        "padding": [
+          8,
+          10,
+          8,
+          14
+        ],
+        "glass": true,
+        "shape": "capsule",
+        "maxWidth": 560,
+        "action": {
+          "set": "notice",
+          "value": null
+        }
+      }
+    ]
+  },
+  "covers": {
+    "collection": {
+      "background": "#0E0C12",
+      "let": {
+        "c": {
+          "if": [
+            {
+              "eq": [
+                "$collection.id",
+                "$params.id"
+              ]
+            },
+            "$collection",
+            null
+          ]
+        }
+      },
+      "bar": {
+        "leading": [
+          {
+            "type": "button",
+            "variant": "glass",
+            "symbol": "chevron.left",
+            "accessibility": "Back",
+            "action": {
+              "dismiss": true
+            }
+          }
+        ],
+        "trailing": []
+      },
+      "body": {
+        "type": "split",
+        "ratio": 0.36,
+        "spacing": 22,
+        "fill": "both",
+        "portrait": "stack",
+        "portraitHeight": 250,
+        "children": [
+          {
+            "type": "stack",
+            "children": [
+              {
+                "type": "if",
+                "test": {
+                  "or": [
+                    {
+                      "eq": [
+                        "$params.type",
+                        "favourites"
+                      ]
+                    },
+                    {
+                      "eq": [
+                        "$params.type",
+                        "genre"
+                      ]
+                    }
+                  ]
+                },
+                "then": {
+                  "type": "layers",
+                  "width": 150,
+                  "height": 150,
+                  "corner": 16,
+                  "gradient": {
+                    "if": [
+                      {
+                        "eq": [
+                          "$params.type",
+                          "favourites"
+                        ]
+                      },
+                      [
+                        "#A238FF",
+                        "#4B1A8C"
+                      ],
+                      [
+                        "#3A7BD5",
+                        "#13305E"
+                      ]
+                    ]
+                  },
+                  "children": [
+                    {
+                      "type": "symbol",
+                      "name": {
+                        "if": [
+                          {
+                            "eq": [
+                              "$params.type",
+                              "favourites"
+                            ]
+                          },
+                          "heart.fill",
+                          "music.note"
+                        ]
+                      },
+                      "size": 46,
+                      "color": "white"
+                    }
+                  ]
+                },
+                "else": {
+                  "type": "image",
+                  "src": {
+                    "coalesce": [
+                      "$c.image",
+                      "$params.image"
+                    ]
+                  },
+                  "width": 150,
+                  "height": 150,
+                  "shape": {
+                    "if": [
+                      "$params.round",
+                      "circle",
+                      "rounded"
+                    ]
+                  },
+                  "corner": 16,
+                  "clip": true,
+                  "shadow": 18
+                }
+              },
+              {
+                "type": "text",
+                "text": {
+                  "coalesce": [
+                    "$c.title",
+                    "$params.title"
+                  ]
+                },
+                "style": "title2",
+                "weight": "heavy",
+                "lines": 2
+              },
+              {
+                "type": "text",
+                "text": {
+                  "coalesce": [
+                    "$c.subtitle",
+                    "$params.subtitle"
+                  ]
+                },
+                "style": "subheadline",
+                "color": "secondary",
+                "lines": 1
+              },
+              {
+                "type": "text",
+                "text": "{{c.count}} tracks",
+                "style": "caption",
+                "color": "secondary",
+                "when": "$c"
+              },
+              {
+                "type": "stack",
+                "axis": "horizontal",
+                "children": [
+                  {
+                    "type": "button",
+                    "variant": "prominent",
+                    "label": "Play",
+                    "symbol": "play.fill",
+                    "disabled": {
+                      "not": {
+                        "has": "$c.tracks"
+                      }
+                    },
+                    "action": [
+                      {
+                        "command": "play",
+                        "value": {
+                          "list": "collection"
+                        }
+                      },
+                      {
+                        "dismiss": true
+                      },
+                      {
+                        "set": "view",
+                        "value": "player"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "button",
+                    "variant": "bordered",
+                    "label": "Shuffle",
+                    "symbol": "shuffle",
+                    "disabled": {
+                      "not": {
+                        "has": "$c.tracks"
+                      }
+                    },
+                    "action": [
+                      {
+                        "command": "play",
+                        "value": {
+                          "list": "collection",
+                          "shuffle": true
+                        }
+                      },
+                      {
+                        "dismiss": true
+                      },
+                      {
+                        "set": "view",
+                        "value": "player"
+                      }
+                    ]
+                  }
+                ],
+                "spacing": 8
+              }
+            ],
+            "spacing": 8
+          },
+          {
+            "type": "if",
+            "test": {
+              "not": "$c"
+            },
+            "then": {
+              "type": "empty",
+              "loading": true,
+              "title": "Loading"
+            },
+            "else": {
+              "type": "scroll",
+              "spacing": 0,
+              "fill": "both",
+              "children": [
+                {
+                  "type": "each",
+                  "items": "$c.tracks",
+                  "as": "t",
+                  "index": "i",
+                  "template": {
+                    "type": "stack",
+                    "axis": "horizontal",
+                    "children": [
+                      {
+                        "type": "text",
+                        "text": {
+                          "concat": [
+                            {
+                              "add": [
+                                "$i",
+                                1
+                              ]
+                            }
+                          ]
+                        },
+                        "style": "footnote",
+                        "color": "secondary",
+                        "width": 22,
+                        "textAlign": "trailing",
+                        "monospaced": true
+                      },
+                      {
+                        "type": "image",
+                        "src": "$t.image",
+                        "width": 44,
+                        "height": 44,
+                        "corner": 6,
+                        "clip": true,
+                        "placeholder": "music.note"
+                      },
+                      {
+                        "type": "stack",
+                        "children": [
+                          {
+                            "type": "text",
+                            "text": "$t.title",
+                            "style": "subheadline",
+                            "weight": "semibold",
+                            "lines": 1,
+                            "color": {
+                              "if": [
+                                {
+                                  "eq": [
+                                    "$t.id",
+                                    "$song.id"
+                                  ]
+                                },
+                                "accent",
+                                "primary"
+                              ]
+                            }
+                          },
+                          {
+                            "type": "stack",
+                            "axis": "horizontal",
+                            "children": [
+                              {
+                                "type": "badge",
+                                "text": "E",
+                                "variant": "plain",
+                                "tint": "secondary",
+                                "when": "$t.explicit"
+                              },
+                              {
+                                "type": "text",
+                                "text": "$t.artist",
+                                "style": "caption",
+                                "color": "secondary",
+                                "lines": 1
+                              }
+                            ],
+                            "spacing": 4
+                          }
+                        ],
+                        "spacing": 2,
+                        "fill": "width"
+                      },
+                      {
+                        "type": "symbol",
+                        "name": "heart.fill",
+                        "size": 14,
+                        "color": "accent",
+                        "opacity": {
+                          "if": [
+                            "$t.favourite",
+                            1,
+                            0
+                          ]
+                        },
+                        "accessibility": {
+                          "if": [
+                            "$t.favourite",
+                            "In your favourites",
+                            null
+                          ]
+                        }
+                      },
+                      {
+                        "type": "text",
+                        "text": "{{t.duration|duration}}",
+                        "style": "caption",
+                        "color": "secondary",
+                        "monospaced": true,
+                        "width": 38,
+                        "textAlign": "trailing"
+                      }
+                    ],
+                    "spacing": 12,
+                    "padding": [
+                      5,
+                      0
+                    ],
+                    "action": [
+                      {
+                        "command": "play",
+                        "value": {
+                          "list": "collection",
+                          "index": "$i"
+                        }
+                      },
+                      {
+                        "haptic": "light"
+                      }
+                    ],
+                    "accessibility": "{{t.title}}, {{t.artist}}"
+                  }
+                },
+                {
+                  "type": "spacer",
+                  "min": 24
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}

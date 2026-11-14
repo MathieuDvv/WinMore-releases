@@ -1,0 +1,2066 @@
+{
+  "type": "screen",
+  "title": "Weather",
+  "chrome": "fullscreen",
+  "background": "#121820",
+  "surface": "#FFFFFF0D",
+  "accent": "#FFFFFF",
+  "backdrop": "$backdrop",
+  "state": {
+    "query": "",
+    "results": [],
+    "searched": false,
+    "searching": false,
+    "searchError": ""
+  },
+  "refresh": {
+    "interval": 5,
+    "fast": 0.5,
+    "fastWhen": "$loading"
+  },
+  "let": {
+    "trackWidth": {
+      "min": [
+        92,
+        {
+          "max": [
+            24,
+            {
+              "if": [
+                "$env.landscape",
+                {
+                  "sub": [
+                    {
+                      "mul": [
+                        "$env.width",
+                        {
+                          "if": [
+                            {
+                              "eq": [
+                                "$theme",
+                                "nothing"
+                              ]
+                            },
+                            0.57,
+                            0.64
+                          ]
+                        }
+                      ]
+                    },
+                    250
+                  ]
+                },
+                {
+                  "sub": [
+                    "$env.width",
+                    250
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "bar": {
+    "leading": [
+      {
+        "type": "menu",
+        "label": "Cities",
+        "symbol": "list.bullet",
+        "chevron": true,
+        "variant": "glass",
+        "items": [
+          {
+            "each": "$places",
+            "as": "city",
+            "item": {
+              "label": "$city.name",
+              "checked": "$city.selected",
+              "action": {
+                "command": "select",
+                "value": "$city.id"
+              }
+            }
+          },
+          {
+            "divider": true
+          },
+          {
+            "label": "Manage cities",
+            "action": {
+              "sheet": "places"
+            }
+          }
+        ]
+      }
+    ],
+    "trailing": [
+      {
+        "type": "button",
+        "symbol": "plus",
+        "variant": "glass",
+        "action": {
+          "sheet": "places"
+        },
+        "accessibility": "Search and manage cities"
+      },
+      {
+        "type": "menu",
+        "symbol": "ellipsis",
+        "variant": "glass",
+        "accessibility": "Weather options",
+        "items": [
+          {
+            "label": "Apple theme",
+            "checked": {
+              "eq": [
+                "$theme",
+                "apple"
+              ]
+            },
+            "action": {
+              "command": "theme",
+              "value": "apple"
+            }
+          },
+          {
+            "label": "Nothing theme",
+            "checked": {
+              "eq": [
+                "$theme",
+                "nothing"
+              ]
+            },
+            "action": {
+              "command": "theme",
+              "value": "nothing"
+            }
+          },
+          {
+            "divider": true
+          },
+          {
+            "label": "Refresh weather",
+            "symbol": "arrow.clockwise",
+            "action": {
+              "command": "refresh"
+            }
+          },
+          {
+            "label": "Settings",
+            "symbol": "slider.horizontal.3",
+            "action": {
+              "sheet": "settings"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "body": {
+    "type": "if",
+    "test": {
+      "eq": [
+        "$theme",
+        "nothing"
+      ]
+    },
+    "then": {
+      "type": "if",
+      "test": "$hasWeather",
+      "then": {
+        "type": "split",
+        "ratio": 0.43,
+        "spacing": 24,
+        "portrait": "stack",
+        "portraitHeight": 322,
+        "fill": "both",
+        "children": [
+          {
+            "type": "scroll",
+            "fill": "both",
+            "spacing": 0,
+            "children": [
+              {
+                "type": "stack",
+                "spacing": 7,
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "$place.name",
+                    "color": "primary",
+                    "size": 22,
+                    "weight": "medium",
+                    "fill": "width",
+                    "textAlign": "center",
+                    "lines": 2
+                  },
+                  {
+                    "type": "stack",
+                    "spacing": 12,
+                    "children": [
+                      {
+                        "type": "text",
+                        "text": "$weather.temperature",
+                        "color": "primary",
+                        "size": {
+                          "if": [
+                            "$env.landscape",
+                            48,
+                            56
+                          ]
+                        },
+                        "weight": "light",
+                        "monospaced": true
+                      },
+                      {
+                        "type": "spacer"
+                      },
+                      {
+                        "type": "stack",
+                        "spacing": 4,
+                        "children": [
+                          {
+                            "type": "text",
+                            "text": "$weather.condition",
+                            "color": "primary",
+                            "size": 14,
+                            "lines": 2
+                          },
+                          {
+                            "type": "text",
+                            "text": "↓ {{weather.low}}   ↑ {{weather.high}}",
+                            "color": "secondary",
+                            "style": "caption2",
+                            "monospaced": true,
+                            "size": 12
+                          }
+                        ]
+                      }
+                    ],
+                    "axis": "horizontal",
+                    "fill": "width",
+                    "padding": [
+                      4,
+                      4
+                    ]
+                  },
+                  {
+                    "type": "image",
+                    "src": "$weather.nothingImage",
+                    "fit": "fit",
+                    "width": {
+                      "if": [
+                        "$env.landscape",
+                        194,
+                        220
+                      ]
+                    },
+                    "height": {
+                      "if": [
+                        "$env.landscape",
+                        154,
+                        175
+                      ]
+                    },
+                    "template": true,
+                    "foreground": "primary",
+                    "accessibility": "$weather.condition"
+                  },
+                  {
+                    "type": "text",
+                    "text": "FEELS LIKE {{weather.feelsLike}} · {{weather.localTime}}",
+                    "color": "secondary",
+                    "style": "caption2",
+                    "monospaced": true,
+                    "textAlign": "center",
+                    "fill": "width"
+                  }
+                ],
+                "fill": "width",
+                "alignment": "center",
+                "padding": [
+                  10,
+                  6
+                ],
+                "minHeight": {
+                  "if": [
+                    "$env.landscape",
+                    280,
+                    322
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "type": "scroll",
+            "fill": "both",
+            "spacing": 10,
+            "refresh": {
+              "command": "refresh"
+            },
+            "children": [
+              {
+                "type": "card",
+                "inset": 16,
+                "spacing": 10,
+                "corner": 24,
+                "foreground": "primary",
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "$status",
+                    "color": "#F0B6B8",
+                    "style": "footnote"
+                  },
+                  {
+                    "type": "text",
+                    "text": "$error",
+                    "color": "secondary",
+                    "style": "caption2",
+                    "monospaced": true,
+                    "when": "$error"
+                  },
+                  {
+                    "type": "button",
+                    "label": "Try again",
+                    "variant": "plain",
+                    "tint": "primary",
+                    "action": {
+                      "command": "refresh"
+                    },
+                    "disabled": "$loading"
+                  }
+                ],
+                "when": {
+                  "or": [
+                    "$error",
+                    "$weather.stale"
+                  ]
+                }
+              },
+              {
+                "type": "card",
+                "inset": 16,
+                "spacing": 10,
+                "corner": 24,
+                "foreground": "primary",
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "HOURLY FORECAST",
+                    "color": "secondary",
+                    "style": "caption2",
+                    "monospaced": true,
+                    "weight": "medium"
+                  },
+                  {
+                    "type": "scroll",
+                    "axis": "horizontal",
+                    "spacing": 18,
+                    "height": 104,
+                    "children": [
+                      {
+                        "type": "each",
+                        "items": "$weather.timeline",
+                        "as": "hour",
+                        "template": {
+                          "type": "stack",
+                          "spacing": 7,
+                          "children": [
+                            {
+                              "type": "text",
+                              "text": "$hour.temperature",
+                              "color": "primary",
+                              "size": 19,
+                              "monospaced": true
+                            },
+                            {
+                              "type": "image",
+                              "src": "$hour.nothingImage",
+                              "fit": "fit",
+                              "width": 36,
+                              "height": 36,
+                              "template": true,
+                              "foreground": "primary",
+                              "accessibility": "$hour.condition"
+                            },
+                            {
+                              "type": "text",
+                              "text": "$hour.time",
+                              "color": "secondary",
+                              "style": "caption2",
+                              "monospaced": true
+                            },
+                            {
+                              "type": "text",
+                              "text": "$hour.rain",
+                              "color": "secondary",
+                              "style": "caption2",
+                              "monospaced": true,
+                              "when": "$hour.rainVisible"
+                            }
+                          ],
+                          "alignment": "center",
+                          "width": 46,
+                          "accessibility": "{{hour.time}}, {{hour.condition}}, {{hour.temperature}}, {{hour.rain}} chance of rain"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "type": "chart",
+                    "values": "$weather.chart",
+                    "kind": "line",
+                    "tint": "#D0D0D0",
+                    "height": 22,
+                    "fill": "width",
+                    "accessibility": "Hourly temperature trend"
+                  }
+                ]
+              },
+              {
+                "type": "card",
+                "inset": 16,
+                "spacing": 8,
+                "corner": 24,
+                "foreground": "primary",
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "7 DAYS",
+                    "color": "secondary",
+                    "style": "caption2",
+                    "monospaced": true,
+                    "weight": "medium"
+                  },
+                  {
+                    "type": "each",
+                    "items": "$weather.days",
+                    "as": "day",
+                    "index": "dayIndex",
+                    "template": {
+                      "type": "stack",
+                      "spacing": 5,
+                      "children": [
+                        {
+                          "type": "stack",
+                          "spacing": 8,
+                          "children": [
+                            {
+                              "type": "text",
+                              "text": "$day.name",
+                              "color": "primary",
+                              "size": 15,
+                              "width": 44,
+                              "monospaced": true
+                            },
+                            {
+                              "type": "stack",
+                              "spacing": 0,
+                              "children": [
+                                {
+                                  "type": "image",
+                                  "src": "$day.nothingImage",
+                                  "fit": "fit",
+                                  "width": 30,
+                                  "height": 30,
+                                  "template": true,
+                                  "foreground": "primary",
+                                  "accessibility": "$day.condition"
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "$day.rain",
+                                  "color": "secondary",
+                                  "style": "caption2",
+                                  "monospaced": true,
+                                  "size": 9
+                                }
+                              ],
+                              "alignment": "center",
+                              "width": 32
+                            },
+                            {
+                              "type": "spacer"
+                            },
+                            {
+                              "type": "text",
+                              "text": "$day.low",
+                              "color": "secondary",
+                              "size": 16,
+                              "width": 32,
+                              "textAlign": "trailing",
+                              "monospaced": true
+                            },
+                            {
+                              "type": "layers",
+                              "alignment": "leading",
+                              "width": "$trackWidth",
+                              "height": 5,
+                              "children": [
+                                {
+                                  "type": "stack",
+                                  "spacing": 8,
+                                  "children": [],
+                                  "width": "$trackWidth",
+                                  "height": 4,
+                                  "background": "#FFFFFF20",
+                                  "shape": "capsule"
+                                },
+                                {
+                                  "type": "stack",
+                                  "spacing": 0,
+                                  "children": [
+                                    {
+                                      "type": "stack",
+                                      "spacing": 8,
+                                      "children": [],
+                                      "width": {
+                                        "mul": [
+                                          "$day.rangeStart",
+                                          "$trackWidth"
+                                        ]
+                                      },
+                                      "height": 4
+                                    },
+                                    {
+                                      "type": "stack",
+                                      "spacing": 8,
+                                      "children": [],
+                                      "width": {
+                                        "mul": [
+                                          "$day.rangeSpan",
+                                          "$trackWidth"
+                                        ]
+                                      },
+                                      "height": 4,
+                                      "background": "#F4F4F4",
+                                      "shape": "capsule"
+                                    }
+                                  ],
+                                  "axis": "horizontal",
+                                  "when": "$day.hasRange"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": "$day.high",
+                              "color": "primary",
+                              "size": 16,
+                              "width": 32,
+                              "textAlign": "trailing",
+                              "monospaced": true
+                            }
+                          ],
+                          "axis": "horizontal",
+                          "fill": "width",
+                          "height": 40,
+                          "action": {
+                            "sheet": "day",
+                            "params": "$day"
+                          },
+                          "accessibility": "{{day.date}}, {{day.condition}}, low {{day.low}}, high {{day.high}}, {{day.rain}} chance of rain. Tap for details."
+                        }
+                      ],
+                      "fill": "width"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "grid",
+                "columns": 2,
+                "spacing": 10,
+                "children": [
+                  {
+                    "type": "card",
+                    "inset": 16,
+                    "spacing": 6,
+                    "corner": 24,
+                    "foreground": "primary",
+                    "children": [
+                      {
+                        "type": "text",
+                        "text": "WIND",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": true,
+                        "weight": "medium"
+                      },
+                      {
+                        "type": "text",
+                        "text": "$weather.wind",
+                        "color": "primary",
+                        "size": 28,
+                        "monospaced": true
+                      },
+                      {
+                        "type": "text",
+                        "text": "$weather.windDirection",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": true
+                      }
+                    ],
+                    "minHeight": 100
+                  },
+                  {
+                    "type": "card",
+                    "inset": 16,
+                    "spacing": 6,
+                    "corner": 24,
+                    "foreground": "primary",
+                    "children": [
+                      {
+                        "type": "text",
+                        "text": "HUMIDITY",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": true,
+                        "weight": "medium"
+                      },
+                      {
+                        "type": "text",
+                        "text": "$weather.humidity",
+                        "color": "primary",
+                        "size": 28,
+                        "monospaced": true
+                      },
+                      {
+                        "type": "text",
+                        "text": "Relative humidity",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": true
+                      }
+                    ],
+                    "minHeight": 100
+                  },
+                  {
+                    "type": "card",
+                    "inset": 16,
+                    "spacing": 6,
+                    "corner": 24,
+                    "foreground": "primary",
+                    "children": [
+                      {
+                        "type": "text",
+                        "text": "SUNRISE",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": true,
+                        "weight": "medium"
+                      },
+                      {
+                        "type": "text",
+                        "text": "$weather.sunrise",
+                        "color": "primary",
+                        "size": 28,
+                        "monospaced": true
+                      },
+                      {
+                        "type": "text",
+                        "text": "Local time",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": true
+                      }
+                    ],
+                    "minHeight": 100
+                  },
+                  {
+                    "type": "card",
+                    "inset": 16,
+                    "spacing": 6,
+                    "corner": 24,
+                    "foreground": "primary",
+                    "children": [
+                      {
+                        "type": "text",
+                        "text": "SUNSET",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": true,
+                        "weight": "medium"
+                      },
+                      {
+                        "type": "text",
+                        "text": "$weather.sunset",
+                        "color": "primary",
+                        "size": 28,
+                        "monospaced": true
+                      },
+                      {
+                        "type": "text",
+                        "text": "Local time",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": true
+                      }
+                    ],
+                    "minHeight": 100
+                  },
+                  {
+                    "type": "card",
+                    "inset": 16,
+                    "spacing": 6,
+                    "corner": 24,
+                    "foreground": "primary",
+                    "children": [
+                      {
+                        "type": "text",
+                        "text": "UV INDEX",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": true,
+                        "weight": "medium"
+                      },
+                      {
+                        "type": "text",
+                        "text": "$weather.uv",
+                        "color": "primary",
+                        "size": 28,
+                        "monospaced": true
+                      },
+                      {
+                        "type": "text",
+                        "text": "Daily maximum",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": true
+                      }
+                    ],
+                    "minHeight": 100
+                  },
+                  {
+                    "type": "card",
+                    "inset": 16,
+                    "spacing": 6,
+                    "corner": 24,
+                    "foreground": "primary",
+                    "children": [
+                      {
+                        "type": "text",
+                        "text": "PRECIPITATION",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": true,
+                        "weight": "medium"
+                      },
+                      {
+                        "type": "text",
+                        "text": "$weather.rain",
+                        "color": "primary",
+                        "size": 28,
+                        "monospaced": true
+                      },
+                      {
+                        "type": "text",
+                        "text": "Chance this hour",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": true
+                      }
+                    ],
+                    "minHeight": 100
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "$weather.updated",
+                "color": "secondary",
+                "style": "caption2",
+                "monospaced": true,
+                "padding": [
+                  4,
+                  2
+                ]
+              },
+              {
+                "type": "link",
+                "label": "Open-Meteo · GeoNames",
+                "url": "https://open-meteo.com/",
+                "foreground": "secondary",
+                "padding": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "type": "text",
+                "text": "$notice",
+                "color": "secondary",
+                "style": "caption2",
+                "monospaced": true,
+                "when": "$notice"
+              }
+            ]
+          }
+        ]
+      },
+      "else": {
+        "type": "empty",
+        "symbol": "cloud.sun",
+        "title": {
+          "if": [
+            "$loading",
+            "Loading weather",
+            "Weather unavailable"
+          ]
+        },
+        "message": {
+          "if": [
+            "$error",
+            "$error",
+            "Getting the forecast for {{place.name}}."
+          ]
+        },
+        "loading": "$loading",
+        "foreground": "primary",
+        "fill": "both",
+        "children": [
+          {
+            "type": "button",
+            "label": "Try again",
+            "variant": "plain",
+            "tint": "primary",
+            "action": {
+              "command": "refresh"
+            },
+            "when": {
+              "not": "$loading"
+            }
+          },
+          {
+            "type": "button",
+            "label": "Choose a city",
+            "variant": "plain",
+            "tint": "primary",
+            "action": {
+              "sheet": "places"
+            }
+          }
+        ]
+      }
+    },
+    "else": {
+      "type": "if",
+      "test": "$hasWeather",
+      "then": {
+        "type": "split",
+        "ratio": 0.36,
+        "spacing": 22,
+        "portrait": "stack",
+        "portraitHeight": 286,
+        "fill": "both",
+        "children": [
+          {
+            "type": "scroll",
+            "fill": "both",
+            "spacing": 0,
+            "children": [
+              {
+                "type": "stack",
+                "spacing": 3,
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "$place.name",
+                    "color": "primary",
+                    "size": {
+                      "if": [
+                        "$env.landscape",
+                        29,
+                        32
+                      ]
+                    },
+                    "fill": "width",
+                    "textAlign": "center",
+                    "lines": 2
+                  },
+                  {
+                    "type": "text",
+                    "text": "$weather.temperature",
+                    "color": "primary",
+                    "size": {
+                      "if": [
+                        "$env.landscape",
+                        {
+                          "if": [
+                            {
+                              "lt": [
+                                "$env.width",
+                                720
+                              ]
+                            },
+                            88,
+                            104
+                          ]
+                        },
+                        116
+                      ]
+                    },
+                    "weight": "light",
+                    "monospaced": true,
+                    "fill": "width",
+                    "textAlign": "center",
+                    "accessibility": "{{weather.temperature}} {{weather.unit}}"
+                  },
+                  {
+                    "type": "text",
+                    "text": "$weather.condition",
+                    "color": "primary",
+                    "size": 20,
+                    "fill": "width",
+                    "textAlign": "center"
+                  },
+                  {
+                    "type": "text",
+                    "text": "H:{{weather.high}}  L:{{weather.low}}",
+                    "color": "primary",
+                    "size": 16,
+                    "fill": "width",
+                    "textAlign": "center"
+                  },
+                  {
+                    "type": "text",
+                    "text": "Feels like {{weather.feelsLike}}",
+                    "color": "secondary",
+                    "style": "footnote",
+                    "monospaced": false,
+                    "padding": [
+                      5,
+                      0
+                    ],
+                    "fill": "width",
+                    "textAlign": "center"
+                  },
+                  {
+                    "type": "text",
+                    "text": "{{place.country}} · {{weather.localTime}}",
+                    "color": "secondary",
+                    "style": "caption2",
+                    "monospaced": false,
+                    "padding": [
+                      8,
+                      0,
+                      0,
+                      0
+                    ],
+                    "fill": "width",
+                    "textAlign": "center"
+                  }
+                ],
+                "fill": "width",
+                "alignment": "center",
+                "padding": [
+                  12,
+                  0,
+                  18,
+                  0
+                ],
+                "minHeight": {
+                  "if": [
+                    "$env.landscape",
+                    {
+                      "max": [
+                        220,
+                        {
+                          "sub": [
+                            "$env.height",
+                            80
+                          ]
+                        }
+                      ]
+                    },
+                    286
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "type": "scroll",
+            "fill": "both",
+            "spacing": 10,
+            "refresh": {
+              "command": "refresh"
+            },
+            "children": [
+              {
+                "type": "card",
+                "inset": 14,
+                "spacing": 10,
+                "corner": 20,
+                "foreground": "primary",
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "$status",
+                    "color": "#FFE2B8",
+                    "style": "footnote"
+                  },
+                  {
+                    "type": "text",
+                    "text": "$error",
+                    "color": "secondary",
+                    "style": "caption2",
+                    "monospaced": false,
+                    "when": "$error"
+                  },
+                  {
+                    "type": "button",
+                    "label": "Try again",
+                    "variant": "plain",
+                    "tint": "primary",
+                    "action": {
+                      "command": "refresh"
+                    },
+                    "disabled": "$loading"
+                  }
+                ],
+                "when": {
+                  "or": [
+                    "$error",
+                    "$weather.stale"
+                  ]
+                }
+              },
+              {
+                "type": "card",
+                "inset": 14,
+                "spacing": 10,
+                "corner": 20,
+                "foreground": "primary",
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "$weather.summary",
+                    "color": "primary",
+                    "style": "subheadline",
+                    "lines": 2
+                  },
+                  {
+                    "type": "divider",
+                    "opacity": 0.35
+                  },
+                  {
+                    "type": "scroll",
+                    "axis": "horizontal",
+                    "spacing": 16,
+                    "height": 104,
+                    "children": [
+                      {
+                        "type": "each",
+                        "items": "$weather.timeline",
+                        "as": "hour",
+                        "template": {
+                          "type": "stack",
+                          "spacing": 7,
+                          "children": [
+                            {
+                              "type": "text",
+                              "text": "$hour.time",
+                              "color": "primary",
+                              "style": "caption",
+                              "weight": "medium"
+                            },
+                            {
+                              "type": "image",
+                              "src": "$hour.appleImage",
+                              "fit": "fit",
+                              "width": 28,
+                              "height": 28,
+                              "accessibility": "$hour.condition"
+                            },
+                            {
+                              "type": "text",
+                              "text": "$hour.temperature",
+                              "color": "primary",
+                              "size": 19
+                            },
+                            {
+                              "type": "text",
+                              "text": "$hour.rain",
+                              "color": "#D0EBFF",
+                              "style": "caption2",
+                              "monospaced": false,
+                              "when": "$hour.rainVisible"
+                            }
+                          ],
+                          "alignment": "center",
+                          "width": 46,
+                          "accessibility": "{{hour.time}}, {{hour.condition}}, {{hour.temperature}}, {{hour.rain}} chance of rain"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "card",
+                "inset": 14,
+                "spacing": 6,
+                "corner": 20,
+                "foreground": "primary",
+                "children": [
+                  {
+                    "type": "label",
+                    "text": "7-DAY FORECAST",
+                    "symbol": "calendar",
+                    "style": "caption2",
+                    "color": "secondary"
+                  },
+                  {
+                    "type": "divider",
+                    "opacity": 0.35
+                  },
+                  {
+                    "type": "each",
+                    "items": "$weather.days",
+                    "as": "day",
+                    "index": "dayIndex",
+                    "template": {
+                      "type": "stack",
+                      "spacing": 5,
+                      "children": [
+                        {
+                          "type": "stack",
+                          "spacing": 8,
+                          "children": [
+                            {
+                              "type": "text",
+                              "text": "$day.name",
+                              "color": "primary",
+                              "size": 15,
+                              "width": 44,
+                              "monospaced": false
+                            },
+                            {
+                              "type": "stack",
+                              "spacing": 0,
+                              "children": [
+                                {
+                                  "type": "image",
+                                  "src": "$day.appleImage",
+                                  "fit": "fit",
+                                  "width": 24,
+                                  "height": 24,
+                                  "template": false,
+                                  "foreground": "primary",
+                                  "accessibility": "$day.condition"
+                                },
+                                {
+                                  "type": "text",
+                                  "text": "$day.rain",
+                                  "color": "#D0EBFF",
+                                  "style": "caption2",
+                                  "monospaced": false,
+                                  "size": 9
+                                }
+                              ],
+                              "alignment": "center",
+                              "width": 32
+                            },
+                            {
+                              "type": "spacer"
+                            },
+                            {
+                              "type": "text",
+                              "text": "$day.low",
+                              "color": "secondary",
+                              "size": 16,
+                              "width": 32,
+                              "textAlign": "trailing",
+                              "monospaced": true
+                            },
+                            {
+                              "type": "layers",
+                              "alignment": "leading",
+                              "width": "$trackWidth",
+                              "height": 5,
+                              "children": [
+                                {
+                                  "type": "stack",
+                                  "spacing": 8,
+                                  "children": [],
+                                  "width": "$trackWidth",
+                                  "height": 4,
+                                  "background": "#FFFFFF20",
+                                  "shape": "capsule"
+                                },
+                                {
+                                  "type": "stack",
+                                  "spacing": 0,
+                                  "children": [
+                                    {
+                                      "type": "stack",
+                                      "spacing": 8,
+                                      "children": [],
+                                      "width": {
+                                        "mul": [
+                                          "$day.rangeStart",
+                                          "$trackWidth"
+                                        ]
+                                      },
+                                      "height": 4
+                                    },
+                                    {
+                                      "type": "stack",
+                                      "spacing": 8,
+                                      "children": [],
+                                      "width": {
+                                        "mul": [
+                                          "$day.rangeSpan",
+                                          "$trackWidth"
+                                        ]
+                                      },
+                                      "height": 4,
+                                      "gradient": "$day.rangeColors",
+                                      "shape": "capsule"
+                                    }
+                                  ],
+                                  "axis": "horizontal",
+                                  "when": "$day.hasRange"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "text",
+                              "text": "$day.high",
+                              "color": "primary",
+                              "size": 16,
+                              "width": 32,
+                              "textAlign": "trailing",
+                              "monospaced": true
+                            }
+                          ],
+                          "axis": "horizontal",
+                          "fill": "width",
+                          "height": 40,
+                          "action": {
+                            "sheet": "day",
+                            "params": "$day"
+                          },
+                          "accessibility": "{{day.date}}, {{day.condition}}, low {{day.low}}, high {{day.high}}, {{day.rain}} chance of rain. Tap for details."
+                        },
+                        {
+                          "type": "divider",
+                          "opacity": 0.25,
+                          "when": {
+                            "lt": [
+                              "$dayIndex",
+                              {
+                                "sub": [
+                                  {
+                                    "count": "$weather.days"
+                                  },
+                                  1
+                                ]
+                              }
+                            ]
+                          }
+                        }
+                      ],
+                      "fill": "width"
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "grid",
+                "columns": 2,
+                "spacing": 10,
+                "children": [
+                  {
+                    "type": "card",
+                    "inset": 14,
+                    "spacing": 6,
+                    "corner": 20,
+                    "foreground": "primary",
+                    "children": [
+                      {
+                        "type": "label",
+                        "text": "WIND",
+                        "symbol": "wind",
+                        "style": "caption2",
+                        "color": "secondary"
+                      },
+                      {
+                        "type": "text",
+                        "text": "$weather.wind",
+                        "color": "primary",
+                        "size": 28,
+                        "monospaced": false
+                      },
+                      {
+                        "type": "text",
+                        "text": "$weather.windDirection",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": false
+                      }
+                    ],
+                    "minHeight": 100
+                  },
+                  {
+                    "type": "card",
+                    "inset": 14,
+                    "spacing": 6,
+                    "corner": 20,
+                    "foreground": "primary",
+                    "children": [
+                      {
+                        "type": "label",
+                        "text": "HUMIDITY",
+                        "symbol": "humidity",
+                        "style": "caption2",
+                        "color": "secondary"
+                      },
+                      {
+                        "type": "text",
+                        "text": "$weather.humidity",
+                        "color": "primary",
+                        "size": 28,
+                        "monospaced": false
+                      },
+                      {
+                        "type": "text",
+                        "text": "Relative humidity",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": false
+                      }
+                    ],
+                    "minHeight": 100
+                  },
+                  {
+                    "type": "card",
+                    "inset": 14,
+                    "spacing": 6,
+                    "corner": 20,
+                    "foreground": "primary",
+                    "children": [
+                      {
+                        "type": "label",
+                        "text": "SUNRISE",
+                        "symbol": "sunrise",
+                        "style": "caption2",
+                        "color": "secondary"
+                      },
+                      {
+                        "type": "text",
+                        "text": "$weather.sunrise",
+                        "color": "primary",
+                        "size": 28,
+                        "monospaced": false
+                      },
+                      {
+                        "type": "text",
+                        "text": "Local time",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": false
+                      }
+                    ],
+                    "minHeight": 100
+                  },
+                  {
+                    "type": "card",
+                    "inset": 14,
+                    "spacing": 6,
+                    "corner": 20,
+                    "foreground": "primary",
+                    "children": [
+                      {
+                        "type": "label",
+                        "text": "SUNSET",
+                        "symbol": "sunset",
+                        "style": "caption2",
+                        "color": "secondary"
+                      },
+                      {
+                        "type": "text",
+                        "text": "$weather.sunset",
+                        "color": "primary",
+                        "size": 28,
+                        "monospaced": false
+                      },
+                      {
+                        "type": "text",
+                        "text": "Local time",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": false
+                      }
+                    ],
+                    "minHeight": 100
+                  },
+                  {
+                    "type": "card",
+                    "inset": 14,
+                    "spacing": 6,
+                    "corner": 20,
+                    "foreground": "primary",
+                    "children": [
+                      {
+                        "type": "label",
+                        "text": "UV INDEX",
+                        "symbol": "sun.max",
+                        "style": "caption2",
+                        "color": "secondary"
+                      },
+                      {
+                        "type": "text",
+                        "text": "$weather.uv",
+                        "color": "primary",
+                        "size": 28,
+                        "monospaced": false
+                      },
+                      {
+                        "type": "text",
+                        "text": "Daily maximum",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": false
+                      }
+                    ],
+                    "minHeight": 100
+                  },
+                  {
+                    "type": "card",
+                    "inset": 14,
+                    "spacing": 6,
+                    "corner": 20,
+                    "foreground": "primary",
+                    "children": [
+                      {
+                        "type": "label",
+                        "text": "PRECIPITATION",
+                        "symbol": "drop",
+                        "style": "caption2",
+                        "color": "secondary"
+                      },
+                      {
+                        "type": "text",
+                        "text": "$weather.rain",
+                        "color": "primary",
+                        "size": 28,
+                        "monospaced": false
+                      },
+                      {
+                        "type": "text",
+                        "text": "Chance this hour",
+                        "color": "secondary",
+                        "style": "caption2",
+                        "monospaced": false
+                      }
+                    ],
+                    "minHeight": 100
+                  }
+                ]
+              },
+              {
+                "type": "text",
+                "text": "$weather.updated",
+                "color": "secondary",
+                "style": "caption2",
+                "monospaced": false,
+                "padding": [
+                  4,
+                  2
+                ]
+              },
+              {
+                "type": "link",
+                "label": "Open-Meteo · GeoNames",
+                "url": "https://open-meteo.com/",
+                "foreground": "secondary",
+                "padding": [
+                  0,
+                  2
+                ]
+              },
+              {
+                "type": "text",
+                "text": "$notice",
+                "color": "secondary",
+                "style": "caption2",
+                "monospaced": false,
+                "when": "$notice"
+              }
+            ]
+          }
+        ]
+      },
+      "else": {
+        "type": "empty",
+        "symbol": "cloud.sun",
+        "title": {
+          "if": [
+            "$loading",
+            "Loading weather",
+            "Weather unavailable"
+          ]
+        },
+        "message": {
+          "if": [
+            "$error",
+            "$error",
+            "Getting the forecast for {{place.name}}."
+          ]
+        },
+        "loading": "$loading",
+        "foreground": "primary",
+        "fill": "both",
+        "children": [
+          {
+            "type": "button",
+            "label": "Try again",
+            "variant": "plain",
+            "tint": "primary",
+            "action": {
+              "command": "refresh"
+            },
+            "when": {
+              "not": "$loading"
+            }
+          },
+          {
+            "type": "button",
+            "label": "Choose a city",
+            "variant": "plain",
+            "tint": "primary",
+            "action": {
+              "sheet": "places"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "sheets": {
+    "places": {
+      "title": "Your places",
+      "detents": [
+        "large"
+      ],
+      "body": {
+        "type": "list",
+        "children": [
+          {
+            "type": "section",
+            "title": "FIND A CITY",
+            "footer": "Search by city or postal code. Save up to eight places.",
+            "children": [
+              {
+                "type": "field",
+                "bind": "query",
+                "placeholder": "City or postal code",
+                "symbol": "magnifyingglass",
+                "keyboard": "search",
+                "submit": [
+                  {
+                    "set": "searching",
+                    "value": true
+                  },
+                  {
+                    "set": "searchError",
+                    "value": ""
+                  },
+                  {
+                    "command": "search",
+                    "value": "$ui.query",
+                    "result": "results",
+                    "onError": [
+                      {
+                        "set": "searching",
+                        "value": false
+                      },
+                      {
+                        "set": "searchError",
+                        "value": "$error"
+                      }
+                    ]
+                  },
+                  {
+                    "set": "searched",
+                    "value": true
+                  },
+                  {
+                    "set": "searching",
+                    "value": false
+                  },
+                  {
+                    "keyboard": "hide"
+                  }
+                ]
+              },
+              {
+                "type": "button",
+                "label": {
+                  "if": [
+                    "$ui.searching",
+                    "Searching…",
+                    "Search"
+                  ]
+                },
+                "symbol": "magnifyingglass",
+                "action": [
+                  {
+                    "set": "searching",
+                    "value": true
+                  },
+                  {
+                    "set": "searchError",
+                    "value": ""
+                  },
+                  {
+                    "command": "search",
+                    "value": "$ui.query",
+                    "result": "results",
+                    "onError": [
+                      {
+                        "set": "searching",
+                        "value": false
+                      },
+                      {
+                        "set": "searchError",
+                        "value": "$error"
+                      }
+                    ]
+                  },
+                  {
+                    "set": "searched",
+                    "value": true
+                  },
+                  {
+                    "set": "searching",
+                    "value": false
+                  },
+                  {
+                    "keyboard": "hide"
+                  }
+                ],
+                "disabled": "$ui.searching",
+                "variant": "prominent"
+              },
+              {
+                "type": "text",
+                "text": "$ui.searchError",
+                "when": "$ui.searchError",
+                "color": "#F6CE94",
+                "style": "footnote"
+              },
+              {
+                "type": "each",
+                "items": "$ui.results",
+                "as": "result",
+                "template": {
+                  "type": "row",
+                  "title": "$result.name",
+                  "subtitle": "$result.detail",
+                  "symbol": "plus.circle",
+                  "accessory": "chevron",
+                  "action": [
+                    {
+                      "command": "add",
+                      "value": "$result"
+                    },
+                    {
+                      "dismiss": true
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "text",
+                "text": "No cities found. Try another spelling or a nearby city.",
+                "style": "footnote",
+                "color": "#FFFFFFB8",
+                "when": {
+                  "and": [
+                    "$ui.searched",
+                    {
+                      "not": {
+                        "has": "$ui.results"
+                      }
+                    },
+                    {
+                      "not": "$ui.searching"
+                    },
+                    {
+                      "not": "$ui.searchError"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "title": "SAVED PLACES",
+            "footer": "Your city selection is shared with your other connected phones.",
+            "children": [
+              {
+                "type": "each",
+                "items": "$places",
+                "as": "city",
+                "template": {
+                  "type": "row",
+                  "title": "$city.name",
+                  "subtitle": "$city.detail",
+                  "symbol": "location",
+                  "checked": "$city.selected",
+                  "action": [
+                    {
+                      "command": "select",
+                      "value": "$city.id"
+                    },
+                    {
+                      "dismiss": true
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "settings": {
+      "title": "Weather settings",
+      "detents": [
+        "medium",
+        "large"
+      ],
+      "body": {
+        "type": "list",
+        "children": [
+          {
+            "type": "section",
+            "title": "APPEARANCE",
+            "children": [
+              {
+                "type": "picker",
+                "label": "Theme",
+                "variant": "segmented",
+                "value": "$theme",
+                "options": [
+                  {
+                    "value": "apple",
+                    "label": "Apple"
+                  },
+                  {
+                    "value": "nothing",
+                    "label": "Nothing"
+                  }
+                ],
+                "action": {
+                  "command": "theme",
+                  "value": "$value"
+                }
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "title": "UNITS",
+            "children": [
+              {
+                "type": "picker",
+                "label": "Temperature",
+                "variant": "segmented",
+                "value": "$unit",
+                "options": [
+                  {
+                    "value": "celsius",
+                    "label": "Celsius · °C"
+                  },
+                  {
+                    "value": "fahrenheit",
+                    "label": "Fahrenheit · °F"
+                  }
+                ],
+                "action": {
+                  "command": "unit",
+                  "value": "$value"
+                }
+              },
+              {
+                "type": "text",
+                "text": "Wind uses km/h with Celsius and mph with Fahrenheit.",
+                "style": "footnote",
+                "color": "#FFFFFFB8"
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "title": "CURRENT CITY",
+            "children": [
+              {
+                "type": "row",
+                "title": "$place.name",
+                "subtitle": "$place.country",
+                "symbol": "location",
+                "accessory": "chevron",
+                "action": [
+                  {
+                    "dismiss": true
+                  },
+                  {
+                    "sheet": "places"
+                  }
+                ]
+              },
+              {
+                "type": "button",
+                "label": "Remove this city",
+                "symbol": "trash",
+                "role": "destructive",
+                "variant": "plain",
+                "confirm": "Remove this city from your saved places?",
+                "when": "$canRemove",
+                "action": {
+                  "command": "remove",
+                  "value": "$place.id"
+                }
+              }
+            ]
+          },
+          {
+            "type": "section",
+            "title": "ABOUT THE FORECAST",
+            "children": [
+              {
+                "type": "text",
+                "text": "Weather refreshes every 15 minutes while open. Your latest forecast stays available offline. Times are local to the selected city.",
+                "style": "footnote",
+                "color": "#FFFFFFB8"
+              },
+              {
+                "type": "link",
+                "label": "Weather data · Open-Meteo",
+                "url": "https://open-meteo.com/"
+              },
+              {
+                "type": "link",
+                "label": "City data · GeoNames",
+                "url": "https://www.geonames.org/"
+              },
+              {
+                "type": "text",
+                "text": "Uses Open-Meteo’s free service for personal, non-commercial use. No account or API key is needed.",
+                "style": "caption",
+                "color": "#FFFFFFB8"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "day": {
+      "title": "Daily outlook",
+      "detents": [
+        "medium",
+        "large"
+      ],
+      "body": {
+        "type": "scroll",
+        "padding": 20,
+        "spacing": 18,
+        "children": [
+          {
+            "type": "stack",
+            "spacing": 8,
+            "children": [
+              {
+                "type": "stack",
+                "spacing": 8,
+                "children": [
+                  {
+                    "type": "text",
+                    "text": "$params.date",
+                    "style": "title2",
+                    "weight": "semibold"
+                  },
+                  {
+                    "type": "text",
+                    "text": "$params.condition",
+                    "style": "subheadline",
+                    "color": "#FFFFFFB8"
+                  }
+                ],
+                "fill": "width"
+              },
+              {
+                "type": "image",
+                "src": "$params.image",
+                "fit": "fit",
+                "width": 74,
+                "height": 74,
+                "placeholder": "cloud"
+              }
+            ],
+            "axis": "horizontal"
+          },
+          {
+            "type": "stack",
+            "spacing": 18,
+            "children": [
+              {
+                "type": "text",
+                "text": "$params.high",
+                "size": 50,
+                "weight": "light"
+              },
+              {
+                "type": "text",
+                "text": "Low {{params.low}}",
+                "style": "title3",
+                "color": "#FFFFFFB8"
+              }
+            ],
+            "axis": "horizontal"
+          },
+          {
+            "type": "grid",
+            "columns": 2,
+            "spacing": 12,
+            "children": [
+              {
+                "type": "card",
+                "inset": 14,
+                "spacing": 6,
+                "children": [
+                  {
+                    "type": "label",
+                    "text": "RAIN CHANCE",
+                    "symbol": "drop",
+                    "style": "caption2",
+                    "color": "#FFFFFFA6",
+                    "weight": "medium"
+                  },
+                  {
+                    "type": "text",
+                    "text": "$params.rain",
+                    "size": 28,
+                    "weight": "regular",
+                    "monospaced": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "Daily maximum",
+                    "style": "caption2",
+                    "color": "#FFFFFFB8"
+                  }
+                ],
+                "minHeight": 100
+              },
+              {
+                "type": "card",
+                "inset": 14,
+                "spacing": 6,
+                "children": [
+                  {
+                    "type": "label",
+                    "text": "WIND",
+                    "symbol": "wind",
+                    "style": "caption2",
+                    "color": "#FFFFFFA6",
+                    "weight": "medium"
+                  },
+                  {
+                    "type": "text",
+                    "text": "$params.wind",
+                    "size": 28,
+                    "weight": "regular",
+                    "monospaced": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "Daily maximum",
+                    "style": "caption2",
+                    "color": "#FFFFFFB8"
+                  }
+                ],
+                "minHeight": 100
+              },
+              {
+                "type": "card",
+                "inset": 14,
+                "spacing": 6,
+                "children": [
+                  {
+                    "type": "label",
+                    "text": "SUNRISE",
+                    "symbol": "sunrise",
+                    "style": "caption2",
+                    "color": "#FFFFFFA6",
+                    "weight": "medium"
+                  },
+                  {
+                    "type": "text",
+                    "text": "$params.sunrise",
+                    "size": 28,
+                    "weight": "regular",
+                    "monospaced": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "City local time",
+                    "style": "caption2",
+                    "color": "#FFFFFFB8"
+                  }
+                ],
+                "minHeight": 100
+              },
+              {
+                "type": "card",
+                "inset": 14,
+                "spacing": 6,
+                "children": [
+                  {
+                    "type": "label",
+                    "text": "SUNSET",
+                    "symbol": "sunset",
+                    "style": "caption2",
+                    "color": "#FFFFFFA6",
+                    "weight": "medium"
+                  },
+                  {
+                    "type": "text",
+                    "text": "$params.sunset",
+                    "size": 28,
+                    "weight": "regular",
+                    "monospaced": true
+                  },
+                  {
+                    "type": "text",
+                    "text": "City local time",
+                    "style": "caption2",
+                    "color": "#FFFFFFB8"
+                  }
+                ],
+                "minHeight": 100
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "text": "Peak UV index: {{params.uv}}",
+            "style": "footnote",
+            "color": "#FFFFFFB8"
+          }
+        ]
+      }
+    }
+  }
+}

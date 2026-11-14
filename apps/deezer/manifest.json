@@ -1,0 +1,16 @@
+{
+  "id": "deezer",
+  "name": "Deezer",
+  "shortName": "Deezer",
+  "version": "0.3.4",
+  "description": "Deezer on your PC, played and browsed from your phone: Flow and its moods, your favourites, playlists, search and lyrics.",
+  "entry": "index.cjs",
+  "ui": "kit",
+  "screen": "ui/screen.json",
+  "symbol": "waveform",
+  "icon": "icon.svg",
+  "platforms": [
+    "win32"
+  ],
+  "iconPNG": "icon.png"
+}

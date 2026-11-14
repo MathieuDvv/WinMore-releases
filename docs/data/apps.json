@@ -1,15 +1,15 @@
 {
- "updated": "2026-11-11",
+ "updated": "2026-11-14",
  "apps": [
   {
    "id": "agents",
    "name": "Agent Watch",
    "shortName": "Agents",
-   "version": "1.2.1",
+   "version": "1.2.2",
    "description": "Follow local Codex, Claude Code and OpenCode tasks and approve individual permission requests.",
    "icon": "apps/agents.svg",
    "platforms": null,
-   "size": 80597,
+   "size": 80819,
    "files": 17,
    "collection": "default",
    "author": "MathieuDvv"
@@ -18,11 +18,15 @@
    "id": "browser",
    "name": "Browser",
    "shortName": "Web",
-   "version": "2.0.1",
+   "version": "2.0.2",
    "description": "Drive a PC browser window from your phone using screenshots.",
    "icon": "apps/browser.svg",
-   "platforms": null,
-   "size": 11672,
+   "platforms": [
+    "win32",
+    "darwin",
+    "linux"
+   ],
+   "size": 11771,
    "files": 5,
    "collection": "default",
    "author": "MathieuDvv"
@@ -31,11 +35,15 @@
    "id": "clipboard",
    "name": "Clipboard",
    "shortName": "Clipboard",
-   "version": "2.0.1",
+   "version": "2.0.2",
    "description": "Share text and images with your PC.",
    "icon": "apps/clipboard.svg",
-   "platforms": null,
-   "size": 7555,
+   "platforms": [
+    "win32",
+    "darwin",
+    "linux"
+   ],
+   "size": 7632,
    "files": 4,
    "collection": "default",
    "author": "MathieuDvv"
@@ -44,24 +52,48 @@
    "id": "clock",
    "name": "Clock",
    "shortName": "Clock",
-   "version": "2.0.1",
+   "version": "2.0.2",
    "description": "A customizable bedside clock. Notification mirroring requires a future Bluetooth bridge.",
    "icon": "apps/clock.svg",
-   "platforms": null,
-   "size": 4312,
+   "platforms": [
+    "win32",
+    "darwin",
+    "linux"
+   ],
+   "size": 4389,
    "files": 4,
    "collection": "default",
    "author": "MathieuDvv"
   },
   {
+   "id": "deezer",
+   "name": "Deezer",
+   "shortName": "Deezer",
+   "version": "0.3.4",
+   "description": "Deezer on your PC, played and browsed from your phone: Flow and its moods, your favourites, playlists, search and lyrics.",
+   "icon": "apps/deezer.svg",
+   "platforms": [
+    "win32"
+   ],
+   "size": 187341,
+   "files": 7,
+   "collection": "developer",
+   "author": "MathieuDvv",
+   "download": "packages/deezer.wmapp"
+  },
+  {
    "id": "discord",
    "name": "Discord",
    "shortName": "Calls",
-   "version": "2.1.1",
+   "version": "2.1.2",
    "description": "Voice call controls and the soundboard through the Discord app on your PC.",
    "icon": "apps/discord.svg",
-   "platforms": null,
-   "size": 51201,
+   "platforms": [
+    "win32",
+    "darwin",
+    "linux"
+   ],
+   "size": 51279,
    "files": 6,
    "collection": "default",
    "author": "MathieuDvv"
@@ -85,12 +117,16 @@
    "id": "music",
    "name": "YouTube Music",
    "shortName": "Music",
-   "version": "2.0.1",
+   "version": "2.2.2",
    "description": "Browse, play and queue YouTube Music running on your PC, with synced lyrics.",
    "icon": "apps/music.svg",
-   "platforms": null,
-   "size": 121098,
-   "files": 8,
+   "platforms": [
+    "win32",
+    "darwin",
+    "linux"
+   ],
+   "size": 136552,
+   "files": 9,
    "collection": "default",
    "author": "MathieuDvv"
   },
@@ -98,12 +134,16 @@
    "id": "pc",
    "name": "PC Monitor",
    "shortName": "PC",
-   "version": "2.0.0",
+   "version": "2.1.0",
    "description": "PC master volume, processor and memory load, hardware temperatures, and network transfer rates across three pages.",
    "icon": "apps/pc.svg",
-   "platforms": null,
-   "size": 32009,
-   "files": 10,
+   "platforms": [
+    "win32",
+    "darwin",
+    "linux"
+   ],
+   "size": 38569,
+   "files": 11,
    "collection": "default",
    "author": "MathieuDvv"
   },
@@ -111,11 +151,15 @@
    "id": "reddit",
    "name": "Reddit",
    "shortName": "Reddit",
-   "version": "2.0.1",
+   "version": "2.0.2",
    "description": "A landscape Reddit reader backed by your signed-in Reddit session on the PC.",
    "icon": "apps/reddit.svg",
-   "platforms": null,
-   "size": 55852,
+   "platforms": [
+    "win32",
+    "darwin",
+    "linux"
+   ],
+   "size": 55931,
    "files": 7,
    "collection": "default",
    "author": "MathieuDvv"
@@ -127,8 +171,12 @@
    "version": "2.0.0",
    "description": "Read a Twitch channel's chat, anonymously.",
    "icon": "apps/twitch.svg",
-   "platforms": null,
-   "size": 5602,
+   "platforms": [
+    "win32",
+    "darwin",
+    "linux"
+   ],
+   "size": 5668,
    "files": 5,
    "collection": "default",
    "author": "MathieuDvv"
@@ -150,22 +198,6 @@
    "collection": "developer",
    "author": "MathieuDvv",
    "download": "packages/weather.wmapp"
-  },
-  {
-   "id": "deezer",
-   "name": "Deezer",
-   "shortName": "Deezer",
-   "version": "0.3.4",
-   "description": "Deezer on your PC, played and browsed from your phone: Flow and its moods, your favourites, playlists, search and lyrics.",
-   "icon": "apps/deezer.svg",
-   "platforms": [
-    "win32"
-   ],
-   "size": 187341,
-   "files": 7,
-   "collection": "developer",
-   "author": "MathieuDvv",
-   "download": "packages/deezer.wmapp"
   }
  ],
  "bundles": [

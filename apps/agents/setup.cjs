@@ -16,7 +16,11 @@ function configure(provider,dataDir,enable=true,home=os.homedir()){
   if(enable)kept.push({hooks:[{type:'command',command,timeout:event==='PermissionRequest'?120:3}]});
   if(kept.length)config.hooks[event]=kept;else delete config.hooks[event];
  }
- if(raw)fs.writeFileSync(file+'.winmore-backup-'+Date.now(),raw,{flag:'wx'});
+ // Two changes within the same millisecond would share a backup name: never overwrite, take the next free one.
+ if(raw)for(let n=0;;n++){
+  try{fs.writeFileSync(file+'.winmore-backup-'+Date.now()+(n?'-'+n:''),raw,{flag:'wx'});break;}
+  catch(error){if(error.code!=='EEXIST'||n>=100)throw error;}
+ }
  fs.writeFileSync(file+'.winmore-tmp',JSON.stringify(config,null,2)+'\n');fs.renameSync(file+'.winmore-tmp',file);
 }
 module.exports={configure};

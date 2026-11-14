@@ -7,12 +7,12 @@
 <meta name="description" content="How Onbun works, how each app works, how to build your own, and an explorer for every Kit component.">
 <meta name="theme-color" content="#060608">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/site.css?v=mwggriof">
-<link rel="stylesheet" href="assets/docs.css?v=mwggriof">
+<link rel="stylesheet" href="assets/site.css?v=mwgkvgmr">
+<link rel="stylesheet" href="assets/docs.css?v=mwgkvgmr">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300..800&display=swap">
-<link rel="stylesheet" href="assets/night.css?v=mwggriof">
+<link rel="stylesheet" href="assets/night.css?v=mwgkvgmr">
 </head>
 <body data-page="docs">
 <a class="skip-link" href="#how">Skip to content</a>
@@ -31,6 +31,7 @@
     <a href="#pair">Pair your phone</a>
     <a href="#island">The island</a>
     <a href="#phone">The phone app</a>
+    <a href="#get-apps">Get apps</a>
     <a href="#updates">Updates</a>
     <a href="#privacy">Network and privacy</a>
     <b>Apps</b>
@@ -54,25 +55,28 @@
     </section>
 
     <section id="install">
-      <h2>Install</h2><p>Onbun runs on Windows, macOS, and Linux. Choose your desktop download from the <a href="index.html#download">download section</a>. Onbun was called WinMore before 0.9.0; connection identifiers and the <code>.wmapp</code> package format keep that name so older installs keep working. Here’s the Windows setup:</p>
-      <ol>
-        <li>Download <code>Onbun-Setup-&lt;version&gt;.exe</code> from the <a href="index.html#download">download section</a>. The installer is not signed yet, so Windows SmartScreen may ask you to confirm.</li>
-        <li>Run it. Onbun installs for your user (no admin needed), adds desktop and Start menu shortcuts, and starts.</li>
-        <li>The island appears as a black pill at the top right of your main screen. Allow Onbun through the firewall on <strong>private</strong> networks when Windows asks: the phone reaches it over your network.</li>
-      </ol>
-      <p>Uninstall it from Windows Settings → Apps, like anything else.</p>
+      <h2>Install</h2><p>Onbun runs on Windows, macOS, and Linux. Choose your desktop download from the <a href="index.html#download">download section</a>. Onbun was called WinMore before 0.9.0; connection identifiers and the <code>.wmapp</code> package format keep that name so older installs keep working.</p>
+      <ul>
+        <li><strong>Windows:</strong> run <code>Onbun-Setup-&lt;version&gt;.exe</code>. It installs for your user (no admin needed), adds desktop and Start menu shortcuts, and starts. The installer is not signed yet, so SmartScreen may ask you to confirm. Allow Onbun through the firewall on <strong>private</strong> networks when Windows asks: the phone reaches it over your network.</li>
+        <li><strong>macOS:</strong> open the <code>.dmg</code> (<code>arm64</code> for Apple silicon, <code>x64</code> for Intel) and drag Onbun to Applications. It isn't notarized yet: the first time, right-click it and choose <em>Open</em>. Onbun lives in the menu bar, with no Dock icon.</li>
+        <li><strong>Linux:</strong> use the <code>.AppImage</code> (make it executable and run it; this is the one that updates itself) or install the <code>.deb</code>. On Wayland desktops the island runs through XWayland so it can stay on top and follow the pointer.</li>
+      </ul>
+      <p>The first time Onbun starts, a cartoon arm pulls the island down from the top of your screen and welcomes you. Until a phone is paired, the resting island says <em>Open Onbun to start pairing</em>. Turn on <strong>Open at sign-in</strong> in the island's Settings → General to start it with your computer.</p>
+      <p>Uninstall it like any other app (on Windows, from Settings → Apps).</p>
     </section>
 
     <section id="pair">
       <h2>Pair your phone</h2>
       <ol>
-        <li>Install the phone app: on Android, download <code>Onbun-Android-&lt;version&gt;.apk</code> from the <a href="index.html#download">download section</a> on the phone and open it (Android asks once to allow installing from your browser); on iPhone, build it from source with Xcode for now.</li>
-        <li>Put the phone and the PC on the same trusted Wi-Fi or LAN, and open Onbun on the phone. Allow local network access.</li>
-        <li>In the phone's Settings, pick your PC under <strong>Nearby PCs</strong> and request pairing.</li>
-        <li>The island opens with a <strong>six-digit code</strong>. Type it on the phone within two minutes (five tries). Decline on the island if you didn't ask for it.</li>
-        <li>That's it: the phone remembers the PC and reconnects by itself, even when its address changes. Rotate to landscape.</li>
+        <li>Install the phone app: on Android, download <code>Onbun-Android-&lt;version&gt;.apk</code> from the <a href="index.html#download">download section</a> on the phone and open it (Android asks once to allow installing from your browser). On iPhone, install the IPA when a release has one (it's an Ad Hoc build, so your iPhone has to be registered for it), or build the app from source with Xcode.</li>
+        <li>Put the phone and the PC on the same trusted Wi-Fi or LAN, and open Onbun on the phone.</li>
+        <li>The first launch plays a short welcome on a black screen: turn the phone sideways, with its top on the left, and cartoon arms set out the app's navigation while Settings walks in on its own legs.</li>
+        <li><strong>Connect to your PC</strong> then lists the PCs running Onbun nearby. Allow local network access when the phone asks, and choose yours.</li>
+        <li>The island opens with a <strong>six-digit code</strong>, shown as <code>123 456</code>. Type it on the phone within two minutes (five tries). Decline on the island if you didn't ask for it.</li>
+        <li>That's it: the app slides in from the edges of the screen, and from then on the phone remembers the PC and reconnects by itself, even when its address changes.</li>
       </ol>
-      <p>To unpair everything, use <strong>Forget phones</strong> in the island's settings: the PC gets a new key and every phone has to pair again.</p>
+      <p>If the phone can't find the PC (some networks block discovery), tap <em>Use a pairing link instead</em> and use the link from the island's Settings → General → <strong>Pairing link</strong>. Keep that link private. To add another phone later, choose <strong>Connect</strong> in the same place.</p>
+      <p>To unpair everything, use <strong>Forget phones</strong> in Settings → General: the PC gets a new key and every phone has to pair again.</p>
     </section>
 
     <section id="island">
@@ -82,7 +86,10 @@
         <li><strong>Move it:</strong> drag the pill (or the expanded header). It snaps to one of eight docks, the corners and edge midpoints, on any monitor, and remembers where you left it.</li>
         <li><strong>Hide it:</strong> the × button dismisses it while music and the phone keep working. Bring it back with <code>Ctrl</code>+<code>Alt</code>+<code>W</code> or the tray icon.</li>
         <li><strong>Type from the PC:</strong> every text field on the phone has a keyboard icon. Tap it and the island opens <em>Typing to phone</em>: what you type on the PC appears in the phone field live. <code>Enter</code> submits, <code>Esc</code> stops.</li>
-        <li><strong>Notifications from apps:</strong> apps can briefly take over the island, like Clipboard showing something sent from the phone with Copy and Dismiss. It goes back to your music after 30 seconds.</li>
+        <li><strong>Apps on the island:</strong> apps can briefly take over the island, like Clipboard showing something sent from the phone with Copy and Dismiss. It goes back to your music after 30 seconds.</li>
+        <li><strong>Notifications:</strong> when an app has something new for you, a dot appears on the island and on the app's icon on the phone. Open the island to read the list and clear it; opening the app on the phone marks them seen.</li>
+        <li><strong>Install prompts:</strong> when a website's <em>Add to Onbun</em> button asks for an app, the island turns into a small prompt (<em>Add Weather</em>, with Install and Cancel). Nothing installs until you choose Install. Apps from outside the Onbun catalog get a warning that names where they come from.</li>
+        <li><strong>Settings:</strong> the gear opens <em>General</em> (start at sign-in, connect a phone, pairing link, forget phones, Onbun updates), <em>Apps</em> (what's installed, app updates, the apps folder), <em>Library</em> (<a href="#get-apps">get apps</a>), and a page for each app that has its own settings.</li>
       </ul>
     </section>
 
@@ -95,13 +102,29 @@
       </ul>
       <p>Both draw the same screens: an app is written once, and each phone gives it its own native look.</p>
       <p>Pick which apps sit in the rail in the phone's Settings → Navigation. Every screen in the app, the built-in ones included, is drawn from the JSON its app sends, so new apps show up on the phone as soon as they're installed on the PC.</p>
+      <ul>
+        <li><strong>Settings is a page like the others:</strong> it opens in place of the current app, with the rail still beside it.</li>
+        <li><strong>Apps stay where you left them:</strong> switch apps and come back, and each one is still scrolled to the same place.</li>
+        <li><strong>Dots:</strong> an app with unseen notifications shows a dot on its icon, and Settings shows one when an update is waiting.</li>
+      </ul>
+    </section>
+
+    <section id="get-apps">
+      <h2>Get apps</h2>
+      <p>Everything Onbun does comes from apps. Find them in the island's <strong>Settings → Library</strong>:</p>
+      <ul>
+        <li><strong>Onbun app store:</strong> <em>Open store</em> shows every app on <a href="apps.html">this site</a>. Each app's page has an <strong>Add to Onbun</strong> button; it hands the app to Onbun on your computer, and the island asks before installing.</li>
+        <li><strong>Quick install:</strong> bundles add several apps at once: <em>Audio essentials</em> (Music, Mixer, Deezer), <em>Desktop control</em> (PC, Clipboard, Browser) and <em>Stay connected</em> (Discord, Reddit, Twitch). <em>More apps</em> lists the rest.</li>
+        <li><strong>For developers:</strong> install an app folder, a <code>.wmapp</code> file, or the newest release from a GitHub repository (<code>owner/app</code>). An app from GitHub keeps updating from that repository.</li>
+      </ul>
+      <p>Apps run on your PC with Onbun's access to it. The catalog is reviewed; for anything else, install only apps you trust. Remove an app from Settings → Apps.</p>
     </section>
 
     <section id="updates">
       <h2>Updates</h2>
       <ul>
-        <li><strong>Onbun for Windows</strong> checks a few seconds after launch and every six hours. When there's a new release, the island shows <em>Update to &lt;version&gt;</em>: one click downloads it, installs it silently and restarts.</li>
-        <li><strong>Apps</strong> update themselves from the catalog (Settings → Apps → <em>Update apps automatically</em>), or one by one with <em>Update</em> and <em>Check now</em>.</li>
+        <li><strong>Onbun on your computer</strong> checks a few seconds after launch and every six hours. When there's a new release, the island shows <em>Update to &lt;version&gt;</em>: one click downloads it, installs it and restarts. This works on Windows, on macOS, and on Linux with the AppImage (a <code>.deb</code> install updates through a new <code>.deb</code>). Settings → General → <em>Check now</em> checks right away.</li>
+        <li><strong>Apps</strong> update themselves (Settings → Apps → <em>Update apps automatically</em>), or with <em>Update</em>, <em>Update all</em> and <em>Check now</em>. Catalog apps update from the catalog. Apps installed from GitHub or a link update from where they came from, and say so under their name.</li>
         <li><strong>The Android app</strong> shows <em>Update to &lt;version&gt;</em> in Settings when a new build exists; it downloads the APK and Android installs it over the current one.</li>
         <li><strong>The iPhone app</strong> shows a blue dot on Settings when a new build exists. Ad Hoc builds install in place; builds from Xcode are reinstalled from Xcode.</li>
       </ul>
@@ -111,8 +134,9 @@
       <h2>Network and privacy</h2>
       <ul>
         <li>Everything stays on your network. The PC listens on port <code>4317</code> and announces itself over Bonjour as <code>_winmore._tcp</code>.</li>
-        <li>The pairing key is random and stored encrypted with your Windows account. Logins (YouTube Music, Reddit) live in Onbun's own browser profile on the PC; secrets like Discord's never reach the phone.</li>
+        <li>The pairing key is random and stored encrypted with your account (Windows' data protection, the macOS Keychain, or the Linux keyring). Logins (YouTube Music, Reddit) live in Onbun's own browser profile on the PC; secrets like Discord's never reach the phone.</li>
         <li>Apps run inside Onbun with its access to your PC. The catalog is published only by its owner; for anything from elsewhere, Onbun asks before installing.</li>
+        <li><em>Add to Onbun</em> buttons only reach Onbun on the same computer: the website sends the link to <code>127.0.0.1</code>, or opens an <code>onbun://</code> link, and the island always asks first.</li>
       </ul>
     </section>
 
@@ -149,7 +173,7 @@
   "icon": "icon.svg",
   "iconPNG": "icon.png"
 }</pre>
-      <p><code>symbol</code> is the SF Symbol the phone shows until <code>iconPNG</code> arrives. <code>platforms: ["win32"]</code> limits an app to Windows. <code>icon</code> is a black SVG glyph (Onbun shows it grey); <code>npm run render:icons</code> makes the white 120 px PNG from it.</p>
+      <p><code>symbol</code> is the SF Symbol the phone shows until <code>iconPNG</code> arrives. <code>platforms: ["win32"]</code> limits an app to Windows. <code>icon</code> is a black SVG glyph (Onbun shows it grey); <code>npm run render:icons</code> makes the white 120 px PNG from it. Apps published outside the catalog add <code>"updates": "your-name/hello"</code> (a GitHub repository) so installed copies update from its releases.</p>
       <h3>The backend: index.cjs</h3>
 <pre data-lang="js">function activate(ctx){
   // ctx.dataDir: a folder for this app's files. ctx.electron, ctx.log, ctx.app.version too.
@@ -168,8 +192,15 @@ module.exports = { activate };</pre>
         <li><code>data()</code> is called while your screen is open, every 1.5 s by default. The PC only sends it when it changed; for big data, include a <code>revision</code> that changes when the data does.</li>
         <li><code>command()</code> may be <code>async</code>. What it returns reaches the phone. Throw an <code>Error</code> with a readable message and the phone shows it.</li>
         <li>Keep slow work in the background and report progress through <code>data()</code> (a <code>loading</code> flag), so commands answer quickly.</li>
-        <li>Optional: <code>state()</code> adds keys for the PC island, <code>settings.describe()</code> gives the app its own category in the island's settings, and <code>ctx.island.present()</code> briefly takes over the island.</li>
+        <li>Optional: <code>island()</code> puts your app on the PC island, <code>settings.describe()</code> gives the app its own category in the island's settings, and <code>ctx.island.present()</code> briefly takes over the island.</li>
       </ul>
+      <h3>Notifications</h3>
+      <p>Tell the user something happened while your app isn't open:</p>
+<pre data-lang="js">ctx.notifications.post({ title: 'Build finished', body: 'main · 2 min' }); // returns its id
+ctx.notifications.post({ id: 'inbox', title: '3 new messages' });         // the same id replaces it
+ctx.notifications.clear('inbox');   // one of them; clear() with no id removes them all
+ctx.notifications.count;            // how many are unseen</pre>
+      <p>Unseen notifications show as a dot on your app's icon on the phone and on the island, which lists them. Opening the app on the phone marks them seen. Onbun keeps the 20 newest per app. Only <code>title</code> is required; write it so it makes sense on its own.</p>
     </section>
 
     <section id="screen">
@@ -236,8 +267,16 @@ onbun.open('https://example.com');                                  // the phone
         <li>Open your apps folder from the island: Settings → Apps → <em>Open folder</em> (<code>%APPDATA%\WinMore\apps</code>) and drop your folder in. Onbun loads it right away and the phone adds it to its rail.</li>
         <li>Edit any file. Onbun reloads the app within a second and the phone reloads its screen. No restart.</li>
         <li>If the screen has a mistake, the phone says exactly what to fix. Add <code>"$schema"</code> pointing to <code>screen.schema.json</code> for autocomplete in your editor.</li>
-        <li>Share it as a folder (Settings → Apps → <em>Install folder…</em>) or a <code>.wmapp</code> file. Bump <code>version</code> on every release so installed copies update.</li>
+        <li>Share it as a folder or a <code>.wmapp</code> file (Settings → Library → <em>For developers</em>). Bump <code>version</code> on every release so installed copies update.</li>
       </ol>
+      <h3>Publish on GitHub</h3>
+      <p>Attach the app's <code>.wmapp</code> to each GitHub release and tag it with the version (<code>v1.2.0</code>). Installed copies pick up the newest release like a catalog update. Then put an <strong>Add to Onbun</strong> button on your page that opens one of these links:</p>
+      <ul>
+        <li><code>onbun://install?github=your-name/hello</code>: the newest GitHub release (the app then updates from there)</li>
+        <li><code>onbun://install?url=https://example.com/hello.wmapp</code>: a package file over HTTPS</li>
+        <li><code>onbun://install?app=hello</code>: an app from the Onbun catalog</li>
+      </ul>
+      <p>The island shows the app and where it comes from, and installs only after a yes.</p>
     </section>
   </article>
 </div>
@@ -275,11 +314,11 @@ onbun.open('https://example.com');                                  // the phone
 
 <div class="hose-separator" data-hose="arm" aria-hidden="true"></div><footer class="site-foot"><a class="brand" href="index.html">onbun</a><nav aria-label="Footer"><a href="index.html">Home</a><a href="apps.html">The apps</a><a href="docs.html" aria-current="page">The guide</a><a href="https://github.com/MathieuDvv/WinMore-releases">GitHub ↗</a></nav></footer>
 
-<script src="assets/hose.js?v=mwggriof"></script>
-<script src="assets/yokai-background.js?v=mwggriof"></script>
-<script src="assets/island.js?v=mwggriof"></script>
+<script src="assets/hose.js?v=mwgkvgmr"></script>
+<script src="assets/yokai-background.js?v=mwgkvgmr"></script>
+<script src="assets/island.js?v=mwgkvgmr"></script>
 
-<script src="assets/kit-render.js?v=mwggriof"></script>
-<script src="assets/docs.js?v=mwggriof"></script>
+<script src="assets/kit-render.js?v=mwgkvgmr"></script>
+<script src="assets/docs.js?v=mwgkvgmr"></script>
 </body>
 </html>

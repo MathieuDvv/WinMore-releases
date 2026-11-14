@@ -1,0 +1,14 @@
+{
+  "id": "weather",
+  "name": "Weather",
+  "shortName": "Weather",
+  "version": "1.3.1",
+  "description": "Current weather and forecasts with separate Apple and Nothing themes.",
+  "entry": "index.cjs",
+  "ui": "kit",
+  "screen": "ui/screen.json",
+  "symbol": "cloud.sun",
+  "icon": "icon.svg",
+  "iconPNG": "icon.png",
+  "platforms": ["win32", "darwin", "linux"]
+}

@@ -1,12 +1,12 @@
 {
   "format": "winmore-catalog",
   "formatVersion": 2,
-  "updated": "2026-11-11",
+  "updated": "2026-11-14",
   "apps": [
     {
       "id": "agents",
       "name": "Agent Watch",
-      "version": "1.2.1",
+      "version": "1.2.2",
       "description": "Follow local Codex, Claude Code and OpenCode tasks and approve individual permission requests.",
       "icon": "apps/agents/icon.svg",
       "folder": "apps/agents/",
@@ -59,7 +59,7 @@
         {
           "path": "manifest.json",
           "size": 281,
-          "sha256": "380b9f27c3fede36db6b227be12f57c6fe2b82f337126bad3ab7d359571af922"
+          "sha256": "a0740ffa9c49f2d5b1728e255f17ffe004f04be7a05f636426eb3be836b2dbb1"
         },
         {
           "path": "opencode.cjs",
@@ -83,8 +83,8 @@
         },
         {
           "path": "setup.cjs",
-          "size": 1730,
-          "sha256": "c0fd240f01fc828b114692b7fb168b005b3454381cf499806918ba894c88a3e9"
+          "size": 1952,
+          "sha256": "f2ac4d8e3c6a1bb56a9980a930b3e2f96ae67fb2f796b9e2a54b186a2e7cca32"
         },
         {
           "path": "transcripts.cjs",
@@ -119,18 +119,18 @@
         },
         {
           "path": "icon.svg",
-          "size": 242,
-          "sha256": "ba26d7537a6598cd20fe04ca4c7028d3a894f0573e998cfc5ba335cea6bc943b"
+          "size": 243,
+          "sha256": "803fc131d66ba4689468f7913002a5bcfe5674ea93835044fd3fc4b162438c8e"
         },
         {
           "path": "index.cjs",
-          "size": 2668,
-          "sha256": "0c2fbe36fee5a8da4ac462e227a2bac3ff75d87f77b21de916c648e6369bfec8"
+          "size": 2706,
+          "sha256": "4b4053291cf94b854f7f7d19a6a078cef9fa8d17b02e4253da85256bf2d481ea"
         },
         {
           "path": "manifest.json",
-          "size": 356,
-          "sha256": "62a6d0e11cf3e3fbd1b1555f0eeec62e9cc82da3c43734ba76de27f44562dd07"
+          "size": 374,
+          "sha256": "d3838c13cd7f423d146d41df9da975af08e47e80b18899372b4b85dc04897c2d"
         },
         {
           "path": "ui/screen.json",
@@ -165,8 +165,8 @@
         },
         {
           "path": "manifest.json",
-          "size": 307,
-          "sha256": "7c5e5ee149e4f8efeaf4f33923834ceaff7a807f3106fa916ebdf6762259265c"
+          "size": 323,
+          "sha256": "dd62306d91c8c2351b70269742c3ae031bee41d5d0e083f9294c04c13ffbf6ca"
         },
         {
           "path": "ui/screen.json",
@@ -201,8 +201,8 @@
         },
         {
           "path": "manifest.json",
-          "size": 337,
-          "sha256": "b54177af5ffaed36edf74e6dfe625870927faa3613e81853ca9a5fcf20b2bb0c"
+          "size": 353,
+          "sha256": "b06d63d81c78af01399e04a58a9241a56c83ec7ea05dc1419d842bb7bd542afb"
         },
         {
           "path": "ui/screen.json",
@@ -211,6 +211,55 @@
         }
       ],
       "bundle": "bundles/clock.wmapp"
+    },
+    {
+      "id": "deezer",
+      "name": "Deezer",
+      "version": "0.3.4",
+      "description": "Deezer on your PC, played and browsed from your phone: Flow and its moods, your favourites, playlists, search and lyrics.",
+      "platforms": [
+        "win32"
+      ],
+      "icon": "apps/deezer/icon.svg",
+      "folder": "apps/deezer/",
+      "files": [
+        {
+          "path": "icon.png",
+          "size": 3413,
+          "sha256": "cfe7266a63fa4ffa3fc89d02da2efeaaadae29abf52a855fb5c54f1b1dc659d2"
+        },
+        {
+          "path": "icon.svg",
+          "size": 3853,
+          "sha256": "eb86ee42e1137ee8381aa89e8fe685bc959b7f1ce9afde20ad8c469bd07c9e3f"
+        },
+        {
+          "path": "index.cjs",
+          "size": 20120,
+          "sha256": "28276a875025a125757fdbcad033441ac6cb567a3e605b0acab141d28aaf5906"
+        },
+        {
+          "path": "lyrics.cjs",
+          "size": 3147,
+          "sha256": "ac2342c816233750aa9ea148779d39cf1f5df8dbae5fed166b62f35234d9b694"
+        },
+        {
+          "path": "manifest.json",
+          "size": 404,
+          "sha256": "8f83975a2c3c8397b6327d1677da6ea341f2f0566bd3f1b4e30e3833295804fc"
+        },
+        {
+          "path": "player.cjs",
+          "size": 8680,
+          "sha256": "2d0b934165005f4463e6cdab55d5fc1702d56e701d87dc0a3ad86360d457d0c1"
+        },
+        {
+          "path": "ui/screen.json",
+          "size": 147724,
+          "sha256": "1329d30ba01e7f53c243c18f164bc6b0b6b59caafcba5e1830d78bbe21a476b2"
+        }
+      ],
+      "bundle": "bundles/deezer.wmapp"
     },
     {
       "id": "discord",
@@ -247,13 +296,13 @@
         },
         {
           "path": "manifest.json",
-          "size": 357,
-          "sha256": "a75909af4dc0e1dc45162bee24b3e73cbf47dcaab9db1883390d63da2a75eedd"
+          "size": 374,
+          "sha256": "d5e8f9a714bba97abb9398a2ac23e1599f007b9179f27a26860490eda86fec0c"
         },
         {
           "path": "ui/screen.json",
-          "size": 24331,
-          "sha256": "3e21dda968b1a1d3bff8ab49643588d87a275a3387cf1801ff2401cf4ff6e041"
+          "size": 24332,
+          "sha256": "57a6bab2f39b3282b22ca2b50a6709b15d149ef7587870b4af706ccfe4a2504b"
         }
       ],
       "bundle": "bundles/discord.wmapp"
@@ -276,13 +325,13 @@
         },
         {
           "path": "icon.svg",
-          "size": 351,
-          "sha256": "c3f00bf81a18bc19e50c8f7d135fd9f239a9b3cf6d984c6234d43de19c4c6f64"
+          "size": 352,
+          "sha256": "bb304cc6780195b353b8679bd7e01dc734b2689b0690983890dc4feb82c2b321"
         },
         {
           "path": "index.cjs",
-          "size": 482,
-          "sha256": "9f9ead4cad845b3d33813cd93a9dfa486f133e83e72367ad6943aec1e8cbd606"
+          "size": 494,
+          "sha256": "a0ea0b50a3ec24e430e51b14485aae1f9479d503fcf27287d25bde817f26abe1"
         },
         {
           "path": "manifest.json",
@@ -291,13 +340,13 @@
         },
         {
           "path": "mixer.cjs",
-          "size": 4268,
-          "sha256": "265470d2768e7827d36106bd1f30bd6413f4bfd71b4b3a5821016b4baa6a7b02"
+          "size": 4340,
+          "sha256": "9db9549a9ffd9e452cb2ff415f062ff7d4fd79015347471657c454b35afee96e"
         },
         {
           "path": "mixer.ps1",
-          "size": 12246,
-          "sha256": "18c4446ce4c84a4098aef15b05784b4bc21fd719d972bc7d0d52aff4b15ab1e6"
+          "size": 12451,
+          "sha256": "a4c66d1123701293ad5932482e3b607f076e1ba6684bdba27c569d3a71be8809"
         },
         {
           "path": "ui/screen.json",
@@ -388,28 +437,28 @@
         },
         {
           "path": "icon.svg",
-          "size": 235,
-          "sha256": "47f9c2463b4d834167cbd3aaa884fb64ab43d76e21257b74194ddc988ea10011"
+          "size": 236,
+          "sha256": "90300ddfe408dfb63d57f0a58157bad607b7afb12cd0ae190acf59fb0de68fa9"
         },
         {
           "path": "index.cjs",
-          "size": 3593,
-          "sha256": "3ca2d2cf1af16d4643fcf171848fa976d6e9109be490bca13b6b1014c175ec15"
+          "size": 3648,
+          "sha256": "2d711e3f61182aff5fb6659a48bede26a5769fb3a60a7e43c839a8c3a45852a8"
         },
         {
           "path": "manifest.json",
-          "size": 397,
-          "sha256": "0f9ef356cc7e5c92203509a0f2bd8012753c80b156ecf8ddeea2dbf85173d20d"
+          "size": 414,
+          "sha256": "4d6e1a8cffb1d10e36f6ca17894369a75cbb73b714f05997dd5adf4860bdb362"
         },
         {
           "path": "mixer.cjs",
-          "size": 4268,
-          "sha256": "265470d2768e7827d36106bd1f30bd6413f4bfd71b4b3a5821016b4baa6a7b02"
+          "size": 4340,
+          "sha256": "9db9549a9ffd9e452cb2ff415f062ff7d4fd79015347471657c454b35afee96e"
         },
         {
           "path": "mixer.ps1",
-          "size": 12246,
-          "sha256": "18c4446ce4c84a4098aef15b05784b4bc21fd719d972bc7d0d52aff4b15ab1e6"
+          "size": 12451,
+          "sha256": "a4c66d1123701293ad5932482e3b607f076e1ba6684bdba27c569d3a71be8809"
         },
         {
           "path": "README.md",
@@ -418,8 +467,8 @@
         },
         {
           "path": "telemetry.cjs",
-          "size": 2104,
-          "sha256": "3e81c5826c3a1182ad01fb58348871a12edb940accf42792cf0b28f94968da73"
+          "size": 2148,
+          "sha256": "65c9b62e03f343917c2a6c171e581ffc8d1046b844990e3ebce131400a1f0a67"
         },
         {
           "path": "telemetry.ps1",
@@ -433,8 +482,8 @@
         },
         {
           "path": "unix.cjs",
-          "size": 5705,
-          "sha256": "ccd68dd8f56552b24957d2ff880740a3e44ffa3046d18ea2f7cdf1c2b972ccf0"
+          "size": 5808,
+          "sha256": "0acf384fa712b2f15007a4fb8007320a113ce3e65dbb902362a8bed06ee64996"
         }
       ],
       "bundle": "bundles/pc.wmapp"
@@ -459,8 +508,8 @@
         },
         {
           "path": "icon.svg",
-          "size": 1240,
-          "sha256": "36ade222aecd81ba963fa73b353e41f8d98e83be6bdcc9a1a2e599d350271d05"
+          "size": 1241,
+          "sha256": "079e17d296af06907fe49be4ed782204377834a405f3671b5bba9b0b4bfcd5fb"
         },
         {
           "path": "index.cjs",
@@ -469,18 +518,18 @@
         },
         {
           "path": "manifest.json",
-          "size": 389,
-          "sha256": "e92c05d0750b545d22dca2abca086cda0cd83700a5caa8f870d2f6c8659f1f1d"
+          "size": 407,
+          "sha256": "0b976048bbbe76458627fa289d85b13dd05a67b5e257d82da35cfc35224509cf"
         },
         {
           "path": "reddit.cjs",
-          "size": 25966,
-          "sha256": "75bfdd15f32a9b73720911c7406d4f549c09761d0a69736aeceb8c3d413e62cf"
+          "size": 26369,
+          "sha256": "a45f515152d5b95f92c7ca602e1fd771cd614c38d2e4690fc3dec390383209fb"
         },
         {
           "path": "redgifs.cjs",
-          "size": 2692,
-          "sha256": "c5d26eefe6545740483110212104e04923adb98f8fa6a0dff48a368c9197c5d4"
+          "size": 2747,
+          "sha256": "f7637f85196bbcca76b1cea428260d388e0e57791640e57b717192cac14bb56b"
         },
         {
           "path": "ui/screen.json",
@@ -510,18 +559,18 @@
         },
         {
           "path": "icon.svg",
-          "size": 226,
-          "sha256": "1e743dc25838d55758da786b71783c245ce4b263ada267275288458534051a83"
+          "size": 227,
+          "sha256": "5685e1e27a31585bb12c3498a5326542c3833902027442c88b39a615011e528a"
         },
         {
           "path": "index.cjs",
-          "size": 1565,
-          "sha256": "dc87553898394e67ab70e52f8963ee418b811e346bd7d38a36133cb02386a422"
+          "size": 1592,
+          "sha256": "8cca3de59dda9013f99e30fedaabb38b1800d9424785b561912fe3914c39d280"
         },
         {
           "path": "manifest.json",
-          "size": 340,
-          "sha256": "9f1c111ef986788a331378057b992102c3dbc07923f550cc4f3815ba6f2cbdb7"
+          "size": 357,
+          "sha256": "1db31b9514517a8bc625b435374bb937d8667e00a0939618d57001de8b1347e2"
         },
         {
           "path": "ui/screen.json",
@@ -530,6 +579,554 @@
         }
       ],
       "bundle": "bundles/twitch.wmapp"
+    },
+    {
+      "id": "weather",
+      "name": "Weather",
+      "version": "1.3.1",
+      "description": "Current weather and forecasts with separate Apple and Nothing themes.",
+      "platforms": [
+        "win32",
+        "darwin",
+        "linux"
+      ],
+      "icon": "apps/weather/icon.svg",
+      "folder": "apps/weather/",
+      "files": [
+        {
+          "path": "assets/apple-cloud.png",
+          "size": 6411,
+          "sha256": "f8e464cf37e64be46d0a577823a5a1e5791c172f63a8a167d14c2ef235caff5e"
+        },
+        {
+          "path": "assets/apple-cloud.svg",
+          "size": 441,
+          "sha256": "5e1d43cd346625ebaf1356ad7b06fafb4bbc12f9278e7aa81f0975a6226b627d"
+        },
+        {
+          "path": "assets/apple-fog.png",
+          "size": 6954,
+          "sha256": "7553cb5d0323d88d412b57fcef18f33de3ae745cf7db3d872b95678a8f3c7093"
+        },
+        {
+          "path": "assets/apple-fog.svg",
+          "size": 476,
+          "sha256": "1397f5373930337fb2c8512244d613707a8b98022b960ebc12d29f2cd38d637e"
+        },
+        {
+          "path": "assets/apple-moon.png",
+          "size": 7012,
+          "sha256": "261ac3f476fbcd722f43088cf46a478a7a5a15fc13e334b91f78fba38a008e2a"
+        },
+        {
+          "path": "assets/apple-moon.svg",
+          "size": 409,
+          "sha256": "a087e10676c62c1126f64c525475c90084c0b40a7ee61f43be09854f975a3966"
+        },
+        {
+          "path": "assets/apple-night-cloudy.png",
+          "size": 8972,
+          "sha256": "0d58f75619204103f712426338345955f880842800cc718d31ec4ed055f04721"
+        },
+        {
+          "path": "assets/apple-night-cloudy.svg",
+          "size": 499,
+          "sha256": "b76c72aef338f3b9ad3cbd5de35bcd56274505963c4433f11835a7b668206bf8"
+        },
+        {
+          "path": "assets/apple-partly-cloudy.png",
+          "size": 9108,
+          "sha256": "f27f17eb6098037296b3d9b70045631af5250f379a2cfb71a7c5170cdc9977c2"
+        },
+        {
+          "path": "assets/apple-partly-cloudy.svg",
+          "size": 843,
+          "sha256": "d7423bab7b6b14c69267baa9fab28f4f289be541dbdf629ffa780b265b2fbd86"
+        },
+        {
+          "path": "assets/apple-rain.png",
+          "size": 7453,
+          "sha256": "f54ce91f26600fe7c4f3a7a5add60317ac86e10abfee512240bc4b9393441479"
+        },
+        {
+          "path": "assets/apple-rain.svg",
+          "size": 498,
+          "sha256": "453acd76b73139dfb1b3a2df196d3f006d537f382a6b99f0bf8be4befc991923"
+        },
+        {
+          "path": "assets/apple-snow.png",
+          "size": 7950,
+          "sha256": "6b9c39bc7e8f2240b2e9f29a68fdbdbe8429b33893de8ff4bb6869b0ca7337a8"
+        },
+        {
+          "path": "assets/apple-snow.svg",
+          "size": 519,
+          "sha256": "be29592871007175c41847d5ec6091f2ee838e881bf4565c494af845df2eb7cf"
+        },
+        {
+          "path": "assets/apple-storm.png",
+          "size": 7746,
+          "sha256": "524680cc12fd6c1cdc2048a6a92e75a12237362775ac62772555aa2834581aa3"
+        },
+        {
+          "path": "assets/apple-storm.svg",
+          "size": 521,
+          "sha256": "f08d25d5be2b28d1d25a5f846d446ff092f1a89c9b00d9bd903f7f7cd2941f32"
+        },
+        {
+          "path": "assets/apple-sun.png",
+          "size": 8574,
+          "sha256": "5281a50e84457bcc943d05d8117d4da083064a9b7d6f61921685d92d7751e607"
+        },
+        {
+          "path": "assets/apple-sun.svg",
+          "size": 803,
+          "sha256": "5c7acde0da6867ac787ed5d4267c4871ccf39fae64299e74bdcda25cf07c4df6"
+        },
+        {
+          "path": "assets/cloud.png",
+          "size": 8568,
+          "sha256": "cc4713f108cd6b7b17ffb1cb1c6ca89ecc9fd138aea48edd8060758735ceb1a1"
+        },
+        {
+          "path": "assets/cloud.svg",
+          "size": 522,
+          "sha256": "5e7d24db5dce45ceb2d818f82aab32ffebce05076f222a6fe3f7ad8c380a81d7"
+        },
+        {
+          "path": "assets/fog.png",
+          "size": 8948,
+          "sha256": "bf5f670f897a517c2e3d0dc82b600023d1960c527782923c85f8d68dbfcd0a36"
+        },
+        {
+          "path": "assets/fog.svg",
+          "size": 557,
+          "sha256": "714015aa26ece8857363ddc091429035f04d53f0e341ed3e690f82cb24a704fb"
+        },
+        {
+          "path": "assets/matrix-cloud.png",
+          "size": 4657,
+          "sha256": "cc3105f39ad6ecf3f35f09bd076c13454cc28d9ab315ccd4bd60953db80ebaac"
+        },
+        {
+          "path": "assets/matrix-cloud.svg",
+          "size": 1616,
+          "sha256": "dca3a860f5ba21b864271d8e2f53c296c853401c33c300f68cbb7cdf4b1a0143"
+        },
+        {
+          "path": "assets/matrix-fog.png",
+          "size": 5686,
+          "sha256": "ab369ccf08da9b196e88342897eeadf143250f5bfd99791b32f7df61108aff4d"
+        },
+        {
+          "path": "assets/matrix-fog.svg",
+          "size": 2241,
+          "sha256": "92edff64c0f674fdf753ab6c0e452a379b059ebcdc3c0923c8387b66d5ac6cd3"
+        },
+        {
+          "path": "assets/matrix-moon.png",
+          "size": 5555,
+          "sha256": "2f98eb7d49a77540783cabb24ca9a5b65bdc449cae7854edce1a0a7243743fe0"
+        },
+        {
+          "path": "assets/matrix-moon.svg",
+          "size": 829,
+          "sha256": "41ea7c51099acb8316fdbf3235e8d4f9a498c9d660f8609dfea9d4f9bde8014f"
+        },
+        {
+          "path": "assets/matrix-night-cloudy.png",
+          "size": 5495,
+          "sha256": "2507a5618b9c6120e9e35308720a3a758ef382f0f2f9df74d6ab16132c7e69f6"
+        },
+        {
+          "path": "assets/matrix-night-cloudy.svg",
+          "size": 1752,
+          "sha256": "e64da838fdd0dfaa255be27d51fb0110c4d4119685f79f6d57c628fa91c51eed"
+        },
+        {
+          "path": "assets/matrix-partly-cloudy.png",
+          "size": 5746,
+          "sha256": "962933a208573fc06062a4aa2ce43d8ac377ef8d22596eb6e7f301db97777505"
+        },
+        {
+          "path": "assets/matrix-partly-cloudy.svg",
+          "size": 1956,
+          "sha256": "286d66389d257a94efc887fa5dddc94aa78c6d6097b4105014be642a45e2b353"
+        },
+        {
+          "path": "assets/matrix-rain.png",
+          "size": 5940,
+          "sha256": "b0a6578b7d191326993f0335c845ace0bd75bfb9bb996fe48c703ef77d7e79dd"
+        },
+        {
+          "path": "assets/matrix-rain.svg",
+          "size": 1789,
+          "sha256": "9f7ba74e539cdfc22cbf557ec8c1c1d9ed0b2feb93de3aa14d619e05559e2d3b"
+        },
+        {
+          "path": "assets/matrix-snow.png",
+          "size": 6252,
+          "sha256": "c98ded4f5929f78eb75563520f0c507268d54262feabfa156e473a85fa9a0853"
+        },
+        {
+          "path": "assets/matrix-snow.svg",
+          "size": 1961,
+          "sha256": "e74fe191851a88ceff8162affbf1418cf9326be7cab1b3ed8b334ecb68b507d5"
+        },
+        {
+          "path": "assets/matrix-storm.png",
+          "size": 6236,
+          "sha256": "dbb894f50d09d3701235fdba1124e3a76faf1d0ce79ead2b39545836b78b0c6d"
+        },
+        {
+          "path": "assets/matrix-storm.svg",
+          "size": 1826,
+          "sha256": "bfff0c9f8fc7149f8ed07bfa2908087d6fa506ac64532a6c7d41f7fc3a858aa2"
+        },
+        {
+          "path": "assets/matrix-sun.png",
+          "size": 6167,
+          "sha256": "25e42d3ea08e29c3029a25a77d06fc95ab1ce34b0a59f3644553895626b606b7"
+        },
+        {
+          "path": "assets/matrix-sun.svg",
+          "size": 1110,
+          "sha256": "54b7a9d706499f352f1284d77026975138e10cf4c456660f339839fa118f0553"
+        },
+        {
+          "path": "assets/moon.png",
+          "size": 9263,
+          "sha256": "7cf5ceb5654ee1771a57ada03b3f8a4b9ca6f7118984e989a3e28d590734edb7"
+        },
+        {
+          "path": "assets/moon.svg",
+          "size": 490,
+          "sha256": "9568251ff870009672852cdc30402b5fd4f265d6254376906cdcb6feb553ebd7"
+        },
+        {
+          "path": "assets/night-cloudy.png",
+          "size": 10933,
+          "sha256": "e53df6e53a31abc016d50f23e284b981138c350d7f969d755e92a67cf9b9d878"
+        },
+        {
+          "path": "assets/night-cloudy.svg",
+          "size": 607,
+          "sha256": "9d3ad664746d5ce8f2631afaa86f53fc99928fbd6decb547cea477c2ba811037"
+        },
+        {
+          "path": "assets/nothing-cloud.png",
+          "size": 5103,
+          "sha256": "2e368efea94f0936bb7ccadd58e6d809112361ec18e99e6c831bc3ea39c9b460"
+        },
+        {
+          "path": "assets/nothing-cloud.svg",
+          "size": 1619,
+          "sha256": "fa762ca1be80b5fbe3d6da37caf7277b9a7d2e5338cd9e4b737a9274629d34c9"
+        },
+        {
+          "path": "assets/nothing-fog.png",
+          "size": 6300,
+          "sha256": "9dd06d58c4da23c73228b4cb8304ae3836acf34de3d0bf19d8c4a132e815b61e"
+        },
+        {
+          "path": "assets/nothing-fog.svg",
+          "size": 2244,
+          "sha256": "6651c926bbe5dab9fc2fefb1f1ceb36d549b9d5246c3e39c4ad4b0b9dcb3ed69"
+        },
+        {
+          "path": "assets/nothing-moon.png",
+          "size": 6222,
+          "sha256": "d3f666a0b37ddfb23ceb7f71531aad88d329ae0bdf334b5950d34370ac6afb92"
+        },
+        {
+          "path": "assets/nothing-moon.svg",
+          "size": 832,
+          "sha256": "d7bb7a45426e090244973a16d58cf649baeb908f2b363d00781deee472e17651"
+        },
+        {
+          "path": "assets/nothing-night-cloudy.png",
+          "size": 6107,
+          "sha256": "d9d74eb8995c5993f9c3cb752f1ee4dded916830b5aaa2deb51d14a4ed669b63"
+        },
+        {
+          "path": "assets/nothing-night-cloudy.svg",
+          "size": 1755,
+          "sha256": "f9c8d393f2b1dc9814cffcaa9479372d86453ab86d66cd2e29de42bd6a6b16e1"
+        },
+        {
+          "path": "assets/nothing-partly-cloudy.png",
+          "size": 6357,
+          "sha256": "57a8502c98817f01cc61c2a0b68173e08f521d7051e55ad88370fa96e9964cd1"
+        },
+        {
+          "path": "assets/nothing-partly-cloudy.svg",
+          "size": 1959,
+          "sha256": "5de1f5c0c895002f08587a0ee9c3cf5514d2dacd1c360e4a5cc5c7b1ff25e14b"
+        },
+        {
+          "path": "assets/nothing-rain.png",
+          "size": 6625,
+          "sha256": "652f99629f71c90122fc1182d2455e05aab928ab81f64a56373d849b11212b21"
+        },
+        {
+          "path": "assets/nothing-rain.svg",
+          "size": 1792,
+          "sha256": "5fa3b94e6135b1acfee23ffb109e2a4ef4e08fe1577b4276687f7e4b06d79425"
+        },
+        {
+          "path": "assets/nothing-snow.png",
+          "size": 6935,
+          "sha256": "3eed7f7b0ccb90fffacf8c76c55372df47037417c07b132db167c9d937a59f88"
+        },
+        {
+          "path": "assets/nothing-snow.svg",
+          "size": 1964,
+          "sha256": "0013eea42760fc0fdaacba489de0c8e203b8135c1340eee0d7039cfa59759678"
+        },
+        {
+          "path": "assets/nothing-storm.png",
+          "size": 7004,
+          "sha256": "cbdaf9593e8eda8a73fbb22f34a01717fce7ac3b88a87e3d5918d928238eace5"
+        },
+        {
+          "path": "assets/nothing-storm.svg",
+          "size": 1829,
+          "sha256": "32779c9572b45f0716ee84a7a0755733a8b27e727d63bb06fdcae8ce2c4e9ee5"
+        },
+        {
+          "path": "assets/nothing-sun.png",
+          "size": 6915,
+          "sha256": "fbb0f58b3ce3eda8224d1fd0d0c4c55e8a8f2a0016d5b850619206a0ef649d48"
+        },
+        {
+          "path": "assets/nothing-sun.svg",
+          "size": 1113,
+          "sha256": "8af8df14d9c3043a9268b3a1b2614d0ad1a547d5193142ff25288443d46b6fa8"
+        },
+        {
+          "path": "assets/partly-cloudy.png",
+          "size": 11070,
+          "sha256": "264c726f9b214bebce6826029c86619f7347b87c13f1731622d78dce3e0e269f"
+        },
+        {
+          "path": "assets/partly-cloudy.svg",
+          "size": 951,
+          "sha256": "313e09db8ed4f7d077f17612d124b7ba37a03f840edc4073afbcc79266ce80d2"
+        },
+        {
+          "path": "assets/rain.png",
+          "size": 9340,
+          "sha256": "9593cb3f8a27455f5997f8e18cda9d833e57e9c23457955415cee82f69d77805"
+        },
+        {
+          "path": "assets/rain.svg",
+          "size": 579,
+          "sha256": "672cf57b473f59671be56c244c68a60a86fd56f608e0e6122dfb46177771e779"
+        },
+        {
+          "path": "assets/sky-clear.png",
+          "size": 69442,
+          "sha256": "3d6a3bd8d5086e9cff889336629ec34f8275d3f4c9dc5d1e8fed17ffeeed34ab"
+        },
+        {
+          "path": "assets/sky-clear.svg",
+          "size": 376,
+          "sha256": "528b388f41a753f27ca24758977bf9c36ffc2f69f0296bf5efb0d9c92227184f"
+        },
+        {
+          "path": "assets/sky-cloud.png",
+          "size": 88952,
+          "sha256": "1aae65070795acba8815fd034073daecaf0bd60d3210baf251480780bc133309"
+        },
+        {
+          "path": "assets/sky-cloud.svg",
+          "size": 564,
+          "sha256": "42e7e78e7f958b4891a08cdf67981d06d95e6c78e194535852492dd160059538"
+        },
+        {
+          "path": "assets/sky-dawn.png",
+          "size": 69442,
+          "sha256": "3d6a3bd8d5086e9cff889336629ec34f8275d3f4c9dc5d1e8fed17ffeeed34ab"
+        },
+        {
+          "path": "assets/sky-dawn.svg",
+          "size": 376,
+          "sha256": "528b388f41a753f27ca24758977bf9c36ffc2f69f0296bf5efb0d9c92227184f"
+        },
+        {
+          "path": "assets/sky-dusk.png",
+          "size": 69442,
+          "sha256": "3d6a3bd8d5086e9cff889336629ec34f8275d3f4c9dc5d1e8fed17ffeeed34ab"
+        },
+        {
+          "path": "assets/sky-dusk.svg",
+          "size": 376,
+          "sha256": "528b388f41a753f27ca24758977bf9c36ffc2f69f0296bf5efb0d9c92227184f"
+        },
+        {
+          "path": "assets/sky-fog.png",
+          "size": 88952,
+          "sha256": "1aae65070795acba8815fd034073daecaf0bd60d3210baf251480780bc133309"
+        },
+        {
+          "path": "assets/sky-fog.svg",
+          "size": 564,
+          "sha256": "42e7e78e7f958b4891a08cdf67981d06d95e6c78e194535852492dd160059538"
+        },
+        {
+          "path": "assets/sky-night-cloud.png",
+          "size": 22505,
+          "sha256": "ef499563da7a56559206bd837a68d904420cb70c8ad8e49fa12e278dc2d4fe56"
+        },
+        {
+          "path": "assets/sky-night-cloud.svg",
+          "size": 499,
+          "sha256": "fb07e4a5609c759e0671bbb965bf349a1be7a717a585b0d05ccc37675bcea8c1"
+        },
+        {
+          "path": "assets/sky-night.png",
+          "size": 6530,
+          "sha256": "6c559f78e435e4fd65395912684a7755db022ad146af0e4dbdf581274ae8332b"
+        },
+        {
+          "path": "assets/sky-night.svg",
+          "size": 2596,
+          "sha256": "d5cfd9c782c0147829cfc53c23deed3d7f8f98fe30b4426415d6a4d22d4b091c"
+        },
+        {
+          "path": "assets/sky-rain.png",
+          "size": 95706,
+          "sha256": "29ad55889bee68455f54f7b8c58e5553633e049c8b18ee34842a06408226f207"
+        },
+        {
+          "path": "assets/sky-rain.svg",
+          "size": 2751,
+          "sha256": "44b354eb5934c6c8db668f23eb9512a6b3f0bd07fba46a63b5d55365c9ebd674"
+        },
+        {
+          "path": "assets/sky-snow.png",
+          "size": 90326,
+          "sha256": "bc5329a0c331384200fd6d31e1cd1c4469bf282b257a47e018a8cd38008a94f2"
+        },
+        {
+          "path": "assets/sky-snow.svg",
+          "size": 2335,
+          "sha256": "ec22164e29dc09c572624ee2bbe567a125a3bc4d4a7460e01065bf00bb849bf0"
+        },
+        {
+          "path": "assets/sky-storm.png",
+          "size": 95706,
+          "sha256": "29ad55889bee68455f54f7b8c58e5553633e049c8b18ee34842a06408226f207"
+        },
+        {
+          "path": "assets/sky-storm.svg",
+          "size": 2751,
+          "sha256": "44b354eb5934c6c8db668f23eb9512a6b3f0bd07fba46a63b5d55365c9ebd674"
+        },
+        {
+          "path": "assets/snow.png",
+          "size": 9890,
+          "sha256": "7a51fe2b03f84141601e73b999fd3c5ef3fb8a1adec3eaac2c3a35c94a0becff"
+        },
+        {
+          "path": "assets/snow.svg",
+          "size": 600,
+          "sha256": "d0c438791886bd387d9371afd3bf8a3dc718ba3ec601af2c5512324aad82dbf1"
+        },
+        {
+          "path": "assets/storm.png",
+          "size": 9553,
+          "sha256": "77543d6ab5313cd9b15e15ff4e4e6f7bcea0582c4be87fb704bc9a6c03821936"
+        },
+        {
+          "path": "assets/storm.svg",
+          "size": 607,
+          "sha256": "7ce4ec340fa8afea35678183bd547cd66e288cbedcbc3809f9f4ac5f94b833ce"
+        },
+        {
+          "path": "assets/sun.png",
+          "size": 8899,
+          "sha256": "22b33eb3ddabc106482540de75b166dd6e79bf1754e17a88ae555eb64915eb10"
+        },
+        {
+          "path": "assets/sun.svg",
+          "size": 884,
+          "sha256": "06f2da05754db8d864e77dd74f7ace3a47825fb267e86782d3f929f907f6e059"
+        },
+        {
+          "path": "backdrop.cjs",
+          "size": 1571,
+          "sha256": "ecdf8073d0dc71a62bbb648fdfbbb6dbb42db292163e340b2ab6d90fc8a3bcb3"
+        },
+        {
+          "path": "icon.png",
+          "size": 3228,
+          "sha256": "673a40275b819377dfdb30e9de60fbc3e6e358a8e24f257b199bb78395bd9262"
+        },
+        {
+          "path": "icon.svg",
+          "size": 332,
+          "sha256": "5563150c9106504efb8c64003f8d37d63df8dfb945c324610c8a99ae6753e7ba"
+        },
+        {
+          "path": "index.cjs",
+          "size": 252,
+          "sha256": "f9b006532f2ceba9682a7ba4bdcfad72b34cb7a0ba5a90f3c0f4d7a9e09553e0"
+        },
+        {
+          "path": "manifest.json",
+          "size": 367,
+          "sha256": "314758136fdac4be5bc7c57db7db4d2ae1e6ddaf6d0b75ad240fb25aa0e9195d"
+        },
+        {
+          "path": "README.md",
+          "size": 5177,
+          "sha256": "009780ef9e2cf069dc252a76546f573f251fa2e7940c54a56dad204b1c370f2d"
+        },
+        {
+          "path": "ui/screen.json",
+          "size": 67555,
+          "sha256": "02644ffc404e88c310ae0ae024683eda2e79b1638b56d4b7c773a189d9e90f30"
+        },
+        {
+          "path": "weather.cjs",
+          "size": 18489,
+          "sha256": "98043690412d1944d23d85d49da6f94b3f9f9263f794a2f4105f343be62af01e"
+        }
+      ],
+      "bundle": "bundles/weather.wmapp"
+    }
+  ],
+  "bundles": [
+    {
+      "id": "listening",
+      "title": "Audio essentials",
+      "description": "YouTube Music. Deezer. Total volume control.",
+      "apps": [
+        "music",
+        "mixer",
+        "deezer"
+      ]
+    },
+    {
+      "id": "desktop",
+      "title": "Desktop control",
+      "description": "Your browser, clipboard, and PC stats. All within reach.",
+      "apps": [
+        "pc",
+        "clipboard",
+        "browser"
+      ]
+    },
+    {
+      "id": "together",
+      "title": "Stay connected",
+      "description": "Voice calls, communities, and live chat on your phone.",
+      "apps": [
+        "discord",
+        "reddit",
+        "twitch"
+      ]
     }
   ]
 }
