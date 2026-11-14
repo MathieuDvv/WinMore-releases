@@ -154,8 +154,22 @@ function openAdd(id){
   const app=apps.find(app=>app.id===id),link=app&&installLink(app);if(!link)return;
   document.querySelector('dialog[open]')?.close();
   const origin=app.collection==='default'?'From the Onbun catalog.':app.collection==='developer'?'From the developer’s package on this site.':'From the creator’s GitHub releases. Not reviewed by Onbun.';
-  $('#add-detail').innerHTML=`${glyph(app)}<span class="label">Add to Onbun</span><h2 id="add-dialog-title">${esc(app.name)}</h2><p>${esc(app.description)}</p><div class="detail-meta">${app.version?`<span>v${esc(app.version)}</span>`:''}<span>${esc(platforms(app))}</span><span>${esc(origin)}</span></div><ol class="add-steps"><li>Choose <strong>Open in Onbun</strong>. Your browser asks to open the Onbun app.</li><li>Onbun opens its Library on your PC and shows the app.</li><li>Choose <strong>Add to Onbun</strong> there. Your phone shows it right away.</li></ol><a class="btn primary" id="add-open" href="${esc(link)}">Open in Onbun ↗</a><p class="add-fallback">Nothing happened? <a href="index.html#download">Download Onbun</a> for your PC first${app.download?`, or <a href="${esc(app.download)}" download>download the .wmapp file</a> and open it from the island’s Library`:''}.</p>`;
+  $('#add-detail').innerHTML=`${glyph(app)}<span class="label">Add to Onbun</span><h2 id="add-dialog-title">${esc(app.name)}</h2><p>${esc(app.description)}</p><div class="detail-meta">${app.version?`<span>v${esc(app.version)}</span>`:''}<span>${esc(platforms(app))}</span><span>${esc(origin)}</span></div><ol class="add-steps"><li>Choose <strong>Open in Onbun</strong>. Onbun must be running on this PC; your browser may ask first.</li><li>Onbun opens its Library on your PC and shows the app.</li><li>Choose <strong>Add to Onbun</strong> there. Your phone shows it right away.</li></ol><a class="btn primary" id="add-open" href="${esc(link)}">Open in Onbun ↗</a><p class="add-status" id="add-status" role="status"></p><p class="add-fallback">Nothing happened? <a href="index.html#download">Download Onbun</a> for your PC first${app.download?`, or <a href="${esc(app.download)}" download>download the .wmapp file</a> and open it from the island’s Library`:''}.</p>`;
   $('#add-dialog').showModal();
+  $('#add-open').addEventListener('click',event=>{event.preventDefault();sendToOnbun(link);});
+}
+// Hands the link to the Onbun running on this PC (its local server answers only this store). Browsers
+// that ignore onbun:// links (Dia, for one) still reach it; without a running Onbun, the link is opened.
+async function sendToOnbun(link){
+  const status=$('#add-status');status.textContent='Opening Onbun…';
+  try{
+    const response=await fetch('http://127.0.0.1:4317/link',{method:'POST',headers:{'Content-Type':'text/plain'},body:link,signal:AbortSignal.timeout(2500)});
+    if(!response.ok)throw Error(String(response.status));
+    status.textContent='Onbun opened its Library on your PC. Choose Add to Onbun there.';
+  }catch{
+    status.textContent='If your browser asks, allow it to open Onbun.';
+    location.href=link;
+  }
 }
 function openApp(id){
   const app=apps.find(app=>app.id===id);if(!app)return;

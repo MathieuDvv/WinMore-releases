@@ -25,3 +25,4 @@
 .add-steps{margin:0 0 22px;padding-left:20px;font-size:13px;line-height:1.7}.add-steps li+li{margin-top:4px}
 .add-dialog #add-open{width:100%}.add-fallback{font-size:12px!important;color:var(--secondary);margin-top:16px}
 @media(max-width:640px){.app-actions{gap:10px}.app-add{font-size:10px;padding:0 10px}.app-card-bottom{flex-wrap:wrap}}
+.add-status{font-size:13px!important;margin:12px 0 0;min-height:0}.add-status:empty{display:none}
