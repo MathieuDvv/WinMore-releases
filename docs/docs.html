@@ -7,12 +7,12 @@
 <meta name="description" content="How Onbun works, how each app works, how to build your own, and an explorer for every Kit component.">
 <meta name="theme-color" content="#060608">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/site.css?v=mwgkvntg">
-<link rel="stylesheet" href="assets/docs.css?v=mwgkvntg">
+<link rel="stylesheet" href="assets/site.css?v=mwgljrly">
+<link rel="stylesheet" href="assets/docs.css?v=mwgljrly">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300..800&display=swap">
-<link rel="stylesheet" href="assets/night.css?v=mwgkvntg">
+<link rel="stylesheet" href="assets/night.css?v=mwgljrly">
 </head>
 <body data-page="docs">
 <a class="skip-link" href="#how">Skip to content</a>
@@ -37,9 +37,14 @@
     <b>Apps</b>
     <a href="#apps">The catalog</a>
     <a href="#build">Build an app</a>
+    <a href="#agent-prompt">Prompt for coding agents</a>
     <a href="#screen">The screen</a>
+    <a href="#layout">Layout rules</a>
     <a href="#bindings">Bindings and actions</a>
+    <a href="#data">Data and refresh</a>
     <a href="#web">Web blocks</a>
+    <a href="#pc-side">Island and PC settings</a>
+    <a href="#debug">Check and debug</a>
     <a href="#develop">Develop and publish</a>
     <b>Reference</b>
     <a href="#explorer">Component explorer</a>
@@ -149,6 +154,105 @@
     <section id="build">
       <h2>Build an app</h2>
       <p>An app is a <strong>folder</strong>. It runs on the PC; its phone screen is JSON each phone draws natively. Copy this, change the names, and you have an app.</p>
+      <p>The same guide is available as plain files, for reading offline or handing to a coding agent: the <a href="data/app-guide.md">app guide</a>, the <a href="data/components.md">component reference</a>, and the <a href="data/screen.schema.json">JSON Schema</a> for <code>ui/screen.json</code>. The catalog apps' full source is public too, at <code>raw.githubusercontent.com/MathieuDvv/WinMore-releases/main/apps/&lt;id&gt;/</code>.</p>
+
+      <details class="agent-prompt" id="agent-prompt">
+        <summary><span><strong>Prompt for coding agents</strong><small>Paste it into Claude Code, Codex or any agent, then describe your app on the first line.</small></span><i aria-hidden="true">+</i></summary>
+<pre data-lang="text">Build an Onbun app: &lt;DESCRIBE THE APP: what it shows, what it controls, which service or PC feature it uses&gt;.
+
+Onbun runs apps on the user's computer (Windows, macOS, Linux). Each app's phone screen is a JSON file that the
+iPhone app (SwiftUI, Liquid Glass) and the Android app (Compose, Material 3 Expressive) draw with native
+components. Taps come back to the computer as commands. Make the app complete and polished, like the apps in
+the Onbun catalog.
+
+READ FIRST. These are the source of truth. Never guess a component, prop, action or operator.
+- Guide: https://mathieudvv.github.io/WinMore-releases/docs.html
+- Full app guide: https://mathieudvv.github.io/WinMore-releases/data/app-guide.md
+- Every component, prop, action, operator and filter: https://mathieudvv.github.io/WinMore-releases/data/components.md
+- JSON Schema for ui/screen.json: https://mathieudvv.github.io/WinMore-releases/data/screen.schema.json
+- Real apps to learn from (read a few before writing anything):
+  https://raw.githubusercontent.com/MathieuDvv/WinMore-releases/main/apps/&lt;id&gt;/ui/screen.json
+  https://raw.githubusercontent.com/MathieuDvv/WinMore-releases/main/apps/&lt;id&gt;/index.cjs
+  https://raw.githubusercontent.com/MathieuDvv/WinMore-releases/main/apps/&lt;id&gt;/manifest.json
+  Good ids: weather (backdrop, sheets, menus, landscape/portrait split), agents (backdrop, cards, sheet),
+  reddit (feed, paging cards, covers, optimistic votes), music (media, timelines, island), discord, clock, mixer.
+  Every file of every app is listed in https://raw.githubusercontent.com/MathieuDvv/WinMore-releases/main/index.json
+
+DELIVER a folder named exactly like the app id:
+  manifest.json      id, name, shortName, version, description, entry "index.cjs", ui "kit",
+                     screen "ui/screen.json", symbol (an SF Symbol), icon "icon.svg"
+  index.cjs          activate(ctx) returns { data(context), command(action, value), close() }
+  lib/               other backend code, if any
+  ui/screen.json     the phone screen
+  assets/            images the screen uses (assets/backdrop.png, …)
+  icon.svg           a single black glyph on a transparent background
+
+ARCHITECTURE
+1. All logic runs on the computer in index.cjs: network calls, files, logins, secrets, timers. Store files in
+   ctx.dataDir. The phone never runs your code and never sees secrets.
+2. data() returns plain JSON that the screen binds to. It runs about every 1.5 s while the app is open, so it
+   must be cheap: fetch from services in the background (timers, with backoff), cache, and return the cache.
+   Add a "loading" flag while work is running and a "revision" for large data.
+3. command() answers quickly. On failure, throw new Error("A readable sentence") and the phone shows it.
+4. What only the phone cares about (is a search open, a field's text, a pending vote) goes in the screen's
+   "state" ($ui.name, changed with the set / toggle actions), not in the backend.
+5. Write the screen once for every phone. Never read $env.platform to change the layout, and never add
+   iPhone-only or Android-only props or workarounds. Each phone draws its own native version of each component.
+
+COMPONENTS FIRST
+6. Build only from Kit components, and check every prop in components.md. Unknown props are errors.
+   Layout: stack layers split scroll grid list section card each if pager spacer divider
+   Content: text label symbol image gallery video media badge stat progress gauge chart avatar row comment
+            empty lyrics clock web
+   Controls: button pill menu toggle slider scrubber stepper picker field link
+7. Use the component made for the job instead of rebuilding it from stacks: row for list rows, stat, gauge and
+   chart for numbers, media, gallery and video for media, scrubber and lyrics with screen "timelines" for
+   playback, empty for empty states, picker, menu, toggle and stepper for choices, field for text input.
+8. "web" is a last resort for a visual no component can draw. Never use it for whole screens, lists, buttons
+   or forms.
+9. Symbols are SF Symbol names (Android maps them to Material Symbols). Prefer common ones.
+
+LAYOUT TRAPS (the usual mistakes)
+10. Full-app background: set the screen-level "background" (a color) and, for an image or glow, the
+    screen-level "backdrop" ("assets/backdrop.png" or a binding like "$artwork"). The phone draws it behind
+    the whole app, under the bar and to every edge. Do NOT draw the app background inside "body" (an image
+    as the first child of "layers", or a stack with a background or gradient): the body starts below the
+    floating bar, so it leaves a band at the top and never reaches the edges.
+11. Use "chrome": "fullscreen" for a designed app. It gets the whole content area down to the bottom edge;
+    a scroll keeps the bottom margin as space after its last item.
+12. The bar floats over the content. Only a body whose top-level type is "scroll" or "list" starts below the
+    bar and scrolls beneath it. Any other body (stack, split, if, layers) is placed below the bar. Don't add
+    your own top padding to clear the bar, and don't wrap the main scroll in another container.
+13. height: "screen" is the whole content height, including the strip behind the bar. Subtract the bar and
+    your spacing with "screenOffset" (Reddit's paging cards use 106) so nothing hides under it.
+14. Glass ("glass": true, "variant": "glass") is only for floating controls in the bar and over media.
+    Content sits on flat "card" and "section" surfaces, colored by the screen's "surface". Set "accent".
+15. The phone is sideways (landscape, with a navigation rail on the left), but portrait must work too. Use
+    "$env.landscape", "split" with "portrait": "stack", "grid", "fill" and "maxWidth". Never use fixed widths
+    that can overflow.
+16. Use text "style" (largeTitle, title2, headline, body, caption…) and the semantic colors primary,
+    secondary and tertiary rather than fixed sizes and hex colors everywhere.
+17. Put settings and forms in "sheets" (open with {"sheet": "name"}) and detail pages in "covers"
+    ({"cover": "name", "params": item}). Give each cover a bar with a glass back button ({"dismiss": true}).
+18. Instant feedback: set a $ui variable, send the command with an onError that resets it, clear it, and show
+    {"coalesce": ["$ui.pending", "$saved"]}.
+19. Give every icon-only button an "accessibility" label. Give items in "each" a stable "key".
+20. Only ui/, assets/ and the icons reach the phone. Reference images as "assets/name.png" or https URLs.
+
+OPTIONAL
+- island(): put the app on the computer's island (see the guide's "Island and PC settings" part).
+- settings: { describe(), action() }: a settings page for the app in the island's settings.
+- ctx.notifications.post({ title, body, id }): a dot on the app's icon and on the island.
+
+BEFORE YOU FINISH
+- Every binding in ui/screen.json exists in data() (or in $ui, $env, $params, or a let/each name).
+- ui/screen.json validates against the JSON Schema. With the Onbun source, run: npm run check:apps -- path/to/app
+- Empty, loading and error states all look intentional (use "empty", "progress" and readable errors).
+- Bump "version" on every change.
+- Tell the user to drop the folder into Onbun's apps folder (island → Settings → Apps → Open folder). It loads
+  at once, reloads on every save, and the phone shows exactly what to fix if the screen has a mistake.</pre>
+        <p class="prompt-note">The prompt is plain text: edit it freely. Its links point to this site and to the public catalog, so agents without access to Onbun's source can still read everything.</p>
+      </details>
 <pre class="tree">hello/                     <span class="c">the folder name must equal the app id</span>
 ├── manifest.json          <span class="c">id, name, version, entry, "ui": "kit"</span>
 ├── index.cjs              <span class="c">activate(): data() and command(), runs on the PC</span>
@@ -173,7 +277,20 @@
   "icon": "icon.svg",
   "iconPNG": "icon.png"
 }</pre>
-      <p><code>symbol</code> is the SF Symbol the phone shows until <code>iconPNG</code> arrives. <code>platforms: ["win32"]</code> limits an app to Windows. <code>icon</code> is a black SVG glyph (Onbun shows it grey); <code>npm run render:icons</code> makes the white 120 px PNG from it. Apps published outside the catalog add <code>"updates": "your-name/hello"</code> (a GitHub repository) so installed copies update from its releases.</p>
+      <table>
+        <thead><tr><th>Field</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td><code>id</code></td><td>A lowercase letter, then lowercase letters, digits or dashes (40 at most). Must equal the folder name.</td></tr>
+          <tr><td><code>version</code></td><td>Semver. Installed copies update when it goes up, so bump it on every release.</td></tr>
+          <tr><td><code>ui</code> · <code>screen</code></td><td><code>"kit"</code> and the path of the screen file.</td></tr>
+          <tr><td><code>symbol</code></td><td>The SF Symbol the phone shows until <code>iconPNG</code> arrives (Android draws the matching Material Symbol).</td></tr>
+          <tr><td><code>icon</code> · <code>iconPNG</code></td><td>A black SVG glyph (Onbun shows it grey) and the white 120 px PNG made from it with <code>npm run render:icons</code>.</td></tr>
+          <tr><td><code>platforms</code></td><td>Any of <code>"win32"</code>, <code>"darwin"</code>, <code>"linux"</code>. Leave it out for all three. The app can't be installed on a system it doesn't list.</td></tr>
+          <tr><td><code>updates</code></td><td>A GitHub repository (<code>owner/name</code>). Installed copies update from its releases. Catalog apps leave it out.</td></tr>
+          <tr><td><code>public</code></td><td>Folders the phone may load. Default <code>["ui", "assets"]</code> plus the icons.</td></tr>
+          <tr><td><code>required</code></td><td><code>true</code> hides the Remove button (for an app that must always be there).</td></tr>
+        </tbody>
+      </table>
       <h3>The backend: index.cjs</h3>
 <pre data-lang="js">function activate(ctx){
   // ctx.dataDir: a folder for this app's files. ctx.electron, ctx.log, ctx.app.version too.
@@ -233,6 +350,39 @@ ctx.notifications.count;            // how many are unseen</pre>
       </ul>
     </section>
 
+    <section id="layout">
+      <h2>Layout rules</h2>
+      <p>These rules behave the same on iPhone and Android. Most layout bugs come from one of them.</p>
+      <h3>The app background</h3>
+      <p>The phone draws each app's background <strong>behind the whole app</strong>: under the floating bar, beside the rail, and to every edge of the screen. Set it on the screen, never inside <code>body</code>:</p>
+      <ul>
+        <li><code>background</code>: the screen color. Default black.</li>
+        <li><code>backdrop</code>: an image (<code>"assets/backdrop.png"</code>, or a binding like <code>"$artwork"</code> for album art). The phone builds a soft gradient from its colors, darkened toward the bottom so controls stay readable, and cross-fades when it changes. Music, Agent Watch and Weather use it; Weather even generates its backdrop PNG on the PC to match the sky.</li>
+        <li><code>surface</code> and <code>accent</code>: the color of <code>card</code> and <code>section</code> surfaces, and of selected states.</li>
+      </ul>
+      <p>A background drawn inside <code>body</code> (an image as the first child of <code>layers</code>, or a stack with a <code>background</code> or <code>gradient</code>) starts below the bar, so it leaves a band at the top and never reaches the edges.</p>
+      <h3>The floating bar</h3>
+      <p><code>bar</code> floats over the content, with an optional <code>accessory</code> (like a search field) under it. Where the body goes depends on its top-level type:</p>
+      <ul>
+        <li>A body that <strong>is</strong> a <code>scroll</code> or a <code>list</code> starts below the bar and scrolls beneath it, so content slides under the glass.</li>
+        <li>Any other body (<code>stack</code>, <code>split</code>, <code>if</code>, <code>layers</code>…) is placed below the bar.</li>
+      </ul>
+      <p>So don't add top padding to clear the bar yourself, and keep the main <code>scroll</code> as the body instead of wrapping it in a stack.</p>
+      <h3>Chrome and edges</h3>
+      <ul>
+        <li><code>"chrome": "standard"</code> (the default) keeps Onbun's margins and its music volume bar.</li>
+        <li><code>"chrome": "fullscreen"</code> gives the app the whole content area, down to the bottom edge. A scroll runs under the edge and keeps the margin as space after its last item. An element that fills the height with a <code>background</code> or <code>gradient</code> extends it to the edge while its content stays inside the margin (Discord's call glow).</li>
+      </ul>
+      <h3>Full-screen pages</h3>
+      <p><code>height: "screen"</code> is the visible content height, <em>including</em> the strip behind the bar. Subtract the bar and your spacing with <code>screenOffset</code>: Reddit's paging cards use <code>"height": "screen", "screenOffset": 106</code> with <code>"snap": true</code> on the scroll.</p>
+      <h3>Landscape and portrait</h3>
+      <p>The phone app is built for landscape (a rail on the left), but portrait works too, and each app has to look right in both. Read <code>$env.landscape</code>, <code>$env.width</code> and <code>$env.height</code>. A <code>split</code> sits side by side in landscape and stacks in portrait (<code>"portrait": "stack"</code>, <code>portraitHeight</code>). Use <code>fill</code>, <code>maxWidth</code> and <code>grid</code> rather than fixed widths.</p>
+      <h3>Glass and surfaces</h3>
+      <p>The floating material (<code>"glass": true</code> or <code>"variant": "glass"</code>) is Liquid Glass on iPhone and a tonal surface on Android. Use it only for floating controls: the bar's buttons, menus and pills, and controls over media. Content sits on flat <code>card</code> and <code>section</code> surfaces. Text reads best with <code>style</code> (<code>largeTitle</code> to <code>caption2</code>) and the semantic colors <code>primary</code>, <code>secondary</code> and <code>tertiary</code>.</p>
+      <h3>Never by platform</h3>
+      <p><code>$env.platform</code> exists for analytics-style labels, not layout. An app never changes its layout per phone: if a component looks wrong on one phone, that phone's renderer gets fixed, so every app benefits.</p>
+    </section>
+
     <section id="bindings">
       <h2>Bindings and actions</h2>
       <h3>Bindings read data</h3>
@@ -248,6 +398,24 @@ ctx.notifications.count;            // how many are unseen</pre>
   { "set": "pending", "value": null }
 ]</pre>
       <p>…and show <code>{"coalesce": ["$ui.pending", "$saved"]}</code>. Every action, operator and filter is in the <a href="#reference">reference</a>.</p>
+      <h3>Where names come from</h3>
+      <p>A binding looks its name up in this order: names from <code>each</code> and <code>let</code> and the control's <code>$value</code>, then the roots <code>ui</code> (screen variables), <code>params</code> (what opened a sheet or cover), <code>env</code> (<code>landscape</code>, <code>width</code>, <code>height</code>, <code>connected</code>, <code>error</code>, <code>platform</code>) and <code>data</code>. Any other name reads your app's data. Start with <code>$$</code> for a literal <code>$</code>.</p>
+    </section>
+
+    <section id="data">
+      <h2>Data and refresh</h2>
+      <p>The phone asks the PC for your app's data while its screen is open. The PC calls <code>data(context)</code>, compares the answer with the last one, and sends it only when it changed.</p>
+      <ul>
+        <li><strong>Pace:</strong> <code>"refresh": {"interval": 1.5, "fast": 0.45, "fastWhen": "$loading"}</code> (seconds) asks every 1.5 s, and faster while <code>$loading</code> is true. Agent Watch uses <code>{"interval": 2}</code>; Weather <code>{"interval": 5, "fast": 0.5, "fastWhen": "$loading"}</code>.</li>
+        <li><strong>Keep data() cheap:</strong> it runs every time the phone asks. Fetch from services in the background (a timer, with backoff when a service fails), keep the result, and return the cached copy. Return a <code>loading</code> flag while work runs, and an <code>error</code> string the screen can show.</li>
+        <li><strong>Large data:</strong> include a <code>revision</code> that changes whenever the data does. When the phone already has that revision, only the revision travels.</li>
+        <li><strong>Derived values:</strong> the screen's <code>let</code> names values worked out on the phone, like <code>{"unread": {"count": "$messages"}}</code>, read as <code>$unread</code>. Sheets and covers can have their own.</li>
+        <li><strong>Moving media:</strong> playback positions keep moving between updates with <code>timelines</code>: <code>{"main": {"track": "$song.id", "position": "$song.current", "duration": "$song.duration", "playing": "$song.playing"}}</code>. <code>scrubber</code> and <code>lyrics</code> follow them, so data doesn't need to arrive every second.</li>
+        <li><strong>Remembered choices:</strong> <code>"persist": ["theme"]</code> keeps those screen variables on the phone between launches.</li>
+        <li><strong>Lists:</strong> give items in <code>each</code> a stable <code>key</code> so animations and control state follow the right item. A <code>scroll</code> can run an action at its <code>end</code> (load more) and on pull to <code>refresh</code>.</li>
+      </ul>
+      <h3>Commands</h3>
+      <p><code>command(action, value)</code> gets what an action sent. Return a result (the action can read it), or throw an <code>Error</code> with a sentence the user can act on. Keep it fast: start long work, return, and let <code>data()</code> report progress. Controls send their new value as <code>value</code>.</p>
     </section>
 
     <section id="web">
@@ -259,6 +427,55 @@ await onbun.set('query', 'cats');                                   // a screen 
 await onbun.run({ sheet: 'settings' });                             // any Kit action
 onbun.open('https://example.com');                                  // the phone's browser</pre>
       <p>Pages are transparent, so glass controls float over them. If the same web block shows up in several apps, it's a good candidate for a new native component.</p>
+      <p>Web blocks are a last resort: they don't get each phone's native look, controls or accessibility. Use them for a visual no component can draw, never for whole screens, lists, buttons or forms. The page inspector works on development builds: Safari → Develop → your iPhone, or <code>chrome://inspect</code> for Android.</p>
+    </section>
+
+    <section id="pc-side">
+      <h2>Island and PC settings</h2>
+      <h3>On the island</h3>
+      <p>Return <code>island(context)</code> from <code>activate</code> and your app can show on the PC's island. The island asks every app about once a second and draws the answers itself, so apps never ship island HTML.</p>
+<pre data-lang="js">island(){
+  return {
+    priority: 20,      // higher wins the resting pill: e.g. 20 while playing, 10 when paused
+    compact: { title: 'Song', image: 'https://…/cover.jpg', accent: '#ff5a36', activity: true },
+    expanded: {
+      title: 'Song', subtitle: 'Artist', image: 'https://…/cover.jpg', placeholder: 'note',
+      buttons: [{ symbol: 'previous', action: 'previous', label: 'Previous' },
+                { symbol: 'pause', action: 'toggle', label: 'Pause' }],
+      slider: { action: 'volume', value: 60, label: 'Volume', symbol: 'speaker', display: '60%' },
+      footer: { label: 'Open YouTube Music', action: 'setup', note: 'Runs on PC' }
+    }
+  };
+}</pre>
+      <p>Buttons, the slider (0 to 100) and the footer call your <code>command(action, value)</code>, just as the phone does. Symbols: <code>play</code>, <code>pause</code>, <code>next</code>, <code>previous</code>, <code>speaker</code>, <code>note</code>, <code>open</code>, <code>mic</code>, <code>mic-off</code>, <code>headphones</code>, <code>bell</code>. Images must be <code>https:</code> or <code>data:image/…</code>. An app whose <code>island()</code> throws is simply left out. <code>ctx.island.present()</code> takes over the island briefly, like Clipboard does.</p>
+      <h3>A settings page</h3>
+      <p>Return <code>settings: {describe(), action(action, values)}</code> and the app gets its own page in the island's settings. <code>describe()</code> returns <code>{status: {label, tone}, items: […]}</code>, and the page refreshes while it's open.</p>
+      <table>
+        <thead><tr><th>Item</th><th>Shows</th><th><code>action</code> receives</th></tr></thead>
+        <tbody>
+          <tr><td><code>text</code> · <code>note</code></td><td>A paragraph, or a small grey note</td><td></td></tr>
+          <tr><td><code>steps</code></td><td>A numbered list (<code>items</code>)</td><td></td></tr>
+          <tr><td><code>link</code></td><td>An <code>https:</code> link (<code>label</code>, <code>url</code>)</td><td></td></tr>
+          <tr><td><code>input</code></td><td>A one-line field (<code>id</code>, <code>label</code>, <code>placeholder</code>, <code>secret</code>, <code>value</code>). Buttons send every field by its <code>id</code>.</td><td></td></tr>
+          <tr><td><code>toggle</code></td><td>A switch (<code>label</code>, <code>detail</code>, <code>value</code>, <code>action</code>)</td><td><code>{on}</code></td></tr>
+          <tr><td><code>slider</code></td><td>A slider (<code>min</code>, <code>max</code>, <code>step</code>, <code>display</code>)</td><td><code>{value}</code> when released</td></tr>
+          <tr><td><code>editor</code></td><td>A row whose button opens a text editor (Save, or Ctrl+Enter)</td><td><code>{text}</code></td></tr>
+          <tr><td><code>button</code></td><td>A wide button (<code>primary</code>, <code>danger</code>)</td><td>the fields</td></tr>
+        </tbody>
+      </table>
+      <p>Text values are cut to 2000 characters. Keep secrets like API keys here (an <code>input</code> with <code>secret: true</code>), on the PC, rather than on the phone.</p>
+    </section>
+
+    <section id="debug">
+      <h2>Check and debug</h2>
+      <ul>
+        <li><strong>Live reload:</strong> apps in the apps folder reload within a second of any save, on the PC and on the phone.</li>
+        <li><strong>Screen errors:</strong> the PC checks every <code>screen.json</code> against the component library before sending it. On a mistake the phone names the exact spot, like <code>screen: &lt;text&gt;.colour: … is not a text property</code>.</li>
+        <li><strong>From a terminal</strong> (in Onbun's source): <code>npm run check:apps -- path/to/your-app</code> checks the manifest and the screen.</li>
+        <li><strong>In your editor:</strong> add <code>"$schema"</code> pointing to <a href="data/screen.schema.json">screen.schema.json</a> for autocomplete and inline errors.</li>
+        <li><strong>Backend logs:</strong> <code>ctx.log</code> writes to Onbun's log on the PC. Errors thrown from <code>command()</code> reach the phone as messages.</li>
+        <li><strong>Try components first:</strong> the <a href="#explorer">component explorer</a> below renders any snippet, on an iPhone or Android frame, and shows what each tap would send.</li>
+      </ul>
     </section>
 
     <section id="develop">
@@ -314,11 +531,11 @@ onbun.open('https://example.com');                                  // the phone
 
 <div class="hose-separator" data-hose="arm" aria-hidden="true"></div><footer class="site-foot"><a class="brand" href="index.html">onbun</a><nav aria-label="Footer"><a href="index.html">Home</a><a href="apps.html">The apps</a><a href="docs.html" aria-current="page">The guide</a><a href="https://github.com/MathieuDvv/WinMore-releases">GitHub ↗</a></nav></footer>
 
-<script src="assets/hose.js?v=mwgkvntg"></script>
-<script src="assets/yokai-background.js?v=mwgkvntg"></script>
-<script src="assets/island.js?v=mwgkvntg"></script>
+<script src="assets/hose.js?v=mwgljrly"></script>
+<script src="assets/yokai-background.js?v=mwgljrly"></script>
+<script src="assets/island.js?v=mwgljrly"></script>
 
-<script src="assets/kit-render.js?v=mwgkvntg"></script>
-<script src="assets/docs.js?v=mwgkvntg"></script>
+<script src="assets/kit-render.js?v=mwgljrly"></script>
+<script src="assets/docs.js?v=mwgljrly"></script>
 </body>
 </html>

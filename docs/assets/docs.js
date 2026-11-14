@@ -8,7 +8,7 @@ for(const pre of document.querySelectorAll('pre[data-lang]')){
   const raw=pre.textContent;
   let html=esc(raw);
   if(pre.dataset.lang==='json')html=html.replace(/(&#34;(?:[^&]|&(?!#34;))*?&#34;)(\s*:)?|\b(-?\d+(?:\.\d+)?|true|false|null)\b/g,(m,str,colon,num)=>str?`<span class="${colon?'k-key':'k-str'}">${str}</span>${colon||''}`:`<span class="k-num">${num}</span>`);
-  else html=html.replace(/(\/\/.*)$/gm,'<span class="k-com">$1</span>').replace(/(&#39;[^&]*?&#39;)/g,'<span class="k-str">$1</span>');
+  else if(pre.dataset.lang==='js')html=html.replace(/(\/\/.*)$/gm,'<span class="k-com">$1</span>').replace(/(&#39;[^&]*?&#39;)/g,'<span class="k-str">$1</span>');
   pre.innerHTML=`<code>${html}</code><button class="copy" type="button">Copy</button>`;
   pre.querySelector('.copy').onclick=e=>{navigator.clipboard?.writeText(raw);e.target.textContent='Copied';setTimeout(()=>e.target.textContent='Copy',1200);};
 }
