@@ -87,6 +87,7 @@ code,pre,.tree{background:#121218;color:#d6d6df;border-color:#ffffff24}.tree{bac
 .ex-items button[aria-current=true] small{color:#33333d}.ex-device{background:#0b0b10}
 .ex-code textarea,.ex-log{background:#0c0c11;color:#c6c6d1}.ex-code .err{background:#211c24;color:#efaaaa}
 .ex-side{background:#121218}.prop .vals button:hover{background:#2a2a33}.ex-tabs button[aria-selected=true]{border-color:#d6d6e3}
+.ex-platform button[aria-checked=true],.ex-platform button[aria-checked=true]:hover,.ex-platform button[aria-checked=true]:focus-visible{background:#dddde6;color:#101014}
 @media(max-width:1000px){.store-head{padding-top:125px}.store-heading h1{max-width:none;font-size:55px}.docs-head{padding-top:130px}.docs-head h1{max-width:none}.origin{gap:40px}}
 @media(max-width:640px){.background-figure{top:11svh;height:78svh;width:70vw}.background-figure[data-yokai=ashinaga]{left:-21vw}.background-figure[data-yokai=tenaga]{right:-21vw}.background-figure[data-ready=true]{opacity:.13}
  .hero{height:180svh}.hero-scene{height:100svh;min-height:0}.hero-bottom{bottom:20px}
