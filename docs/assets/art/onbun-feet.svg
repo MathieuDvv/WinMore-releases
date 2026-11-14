@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 200" fill="none">
+ <!-- Each ankle enters the center of its shoe, following the cuff's angle. -->
+ <g id="legs" stroke="#0e0e12" stroke-width="17" stroke-linecap="round"><path d="M76-16C29 42 111 68 75 116C63 135 68 137 68 162"/><path d="M165-12C213 49 130 68 167 117C172 125 174.6 133 176 153"/></g>
+ <g id="left-shoe" transform="translate(68 162) scale(-1 1)" fill="#0e0e12" stroke="#eeeef0" stroke-width="1.7" stroke-linejoin="round"><path d="M-12-15h23l5 14c23-5 36 3 34 15-1 11-53 14-69 6-7-4-3-18 4-23Z"/><path d="M-19 17c22 7 46 4 68-3M22 3q14-3 20 3" fill="none" stroke-width="2.5"/></g>
+ <g id="right-shoe" transform="translate(176 153) rotate(-4)" fill="#0e0e12" stroke="#eeeef0" stroke-width="1.7" stroke-linejoin="round"><path d="M-12-15h23l5 14c23-5 36 3 34 15-1 11-53 14-69 6-7-4-3-18 4-23Z"/><path d="M-19 17c22 7 46 4 68-3M22 3q14-3 20 3" fill="none" stroke-width="2.5"/></g>
+</svg>

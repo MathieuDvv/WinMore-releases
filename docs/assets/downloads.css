@@ -1,0 +1,23 @@
+.get{padding-top:38px;padding-bottom:16px}.get h2{margin:0 0 30px;font-size:clamp(36px,4vw,48px)}
+.download-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:18px}
+.download-card{grid-column:span 2;min-width:0;background:#0e0e12;border:1px solid var(--line);overflow:hidden}
+.download-card:nth-last-child(-n+2){grid-column:span 3}
+.download-art{position:relative;isolation:isolate;height:188px;overflow:hidden;background:radial-gradient(ellipse at 0 0,#ffffff12,transparent 80%),var(--os-color)}
+.download-art>img{display:block;position:absolute;top:0;left:50%;width:min(100%,240px);height:100%;object-fit:contain;object-position:top;transform:translateX(-50%)}
+.download-body .os-mark{position:absolute;right:15px;top:17px;display:grid;place-items:center;width:32px;height:32px;background:var(--os-color);border:1px solid #ffffff25;border-radius:9px;color:#f2f2f5;pointer-events:none}
+.download-body .os-mark svg{width:18px;height:18px;fill:currentColor}
+.download-body{position:relative;padding:22px;display:grid;grid-template-columns:1fr;align-content:start}
+.download-body h3{font:500 23px/1.2 var(--font);letter-spacing:-.6px;margin:0 0 18px;padding-right:42px}
+.download-format,.download-body select{font:11px var(--font);color:#d1d1d9;min-height:38px;line-height:1.5}
+.download-format{display:flex;align-items:center}
+.download-body select{width:100%;background:#1b1b22;border:1px solid var(--line-2);border-radius:5px;padding:8px 30px 8px 10px;color-scheme:dark;cursor:pointer}
+.download-version{font:10px/1.5 var(--mono);color:#92929f;margin:12px 0 21px}
+.download-body .download-button{width:100%;display:flex;justify-content:space-between;min-height:44px;padding:10px 16px;border-radius:0;background:#eeeeef;border-color:#eeeeef;color:#101014;font-size:12px}
+.download-body .download-button:hover{background:#fff;color:#101014}
+.download-body .download-button:disabled{background:#1b1b22;color:#8b8b98;border-color:#ffffff20}
+.download-help{font-size:10px;margin:0;color:#a2a2af;justify-self:start;text-underline-offset:4px}
+.download-card[data-os=android] .download-art>img,.download-card[data-os=ios] .download-art>img{object-position:bottom}
+.get .download-status{font-size:11px;color:#92929f;margin:18px 0 0;max-width:none}.download-status button{text-decoration:underline;text-underline-offset:3px;color:#eee;padding:4px}
+@media(min-width:1100px){.download-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}.download-card,.download-card:nth-last-child(-n+2){grid-column:auto}.download-body{padding:18px}.download-art{height:180px}}
+@media(max-width:640px){.download-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.download-card,.download-card:nth-last-child(-n+2){grid-column:auto}.download-card:last-child{grid-column:span 2}.download-art{height:115px}.download-body{padding:16px 12px 12px}.download-body h3{font-size:20px;margin-bottom:12px}.download-format,.download-body select{font-size:10px;min-height:42px}.download-body select{padding-left:6px;padding-right:15px}.download-version{font-size:9px;margin:10px 0 16px}.download-body .download-button{font-size:11px;padding:10px}.download-card:last-child .download-body{grid-template-columns:1fr 1fr;column-gap:24px}.download-card:last-child h3{grid-column:1}.download-card:last-child .download-format,.download-card:last-child .download-version{grid-column:1}.download-card:last-child .download-button{grid-column:2;grid-row:1 / 3;align-self:center}}
+@media(max-width:640px){.download-body h3{font-size:19px;padding-right:27px}.download-body .os-mark{top:14px;right:9px;width:24px;height:26px;border-radius:7px}.download-body .os-mark svg{width:15px;height:15px}.download-card:last-child .os-mark{right:auto;left:64px;top:12px}}

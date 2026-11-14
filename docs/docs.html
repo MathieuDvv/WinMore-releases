@@ -3,28 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WinMore Docs</title>
-<meta name="description" content="How WinMore works, how each app works, how to build your own, and an explorer for every Kit component.">
-<meta name="theme-color" content="#000000">
+<title>Onbun Docs</title>
+<meta name="description" content="How Onbun works, how each app works, how to build your own, and an explorer for every Kit component.">
+<meta name="theme-color" content="#060608">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/site.css?v=nav-fit-2">
-<link rel="stylesheet" href="assets/docs.css?v=mwc6m4rp">
+<link rel="stylesheet" href="assets/site.css?v=1794661034537">
+<link rel="stylesheet" href="assets/docs.css?v=1794661034537">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300..800&display=swap">
+<link rel="stylesheet" href="assets/night.css?v=1794661034537">
 </head>
 <body data-page="docs">
-
+<a class="skip-link" href="#how">Skip to content</a>
 <header class="docs-head">
-  <canvas class="head-art" data-dots="planet" data-step="7" aria-hidden="true"></canvas>
-  <span class="label">Docs</span>
+  
+  
   <h1>Documentation</h1>
-  <p>How WinMore and its apps work, and how to build your own.</p>
+  <p>Using Onbun. Building apps.</p>
 </header>
 
 <div class="docs">
   <nav class="toc" aria-label="On this page">
-    <b>Using WinMore</b>
+    <b>Using Onbun</b>
     <a href="#how">How it works</a>
     <a href="#install">Install</a>
     <a href="#pair">Pair your phone</a>
@@ -47,17 +48,17 @@
   <article class="prose">
     <section id="how">
       <h2>How it works</h2>
-      <p>WinMore is two programs. On Windows, a small companion owns everything: it plays your music, holds your logins, talks to Discord and Windows audio, and runs the apps. On your iPhone or Android phone, a native app turns sideways into a control surface for it.</p>
+      <p>Onbun is two programs. On your computer, a small companion owns everything: it plays your music, holds your logins, talks to Discord and Windows audio, and runs the apps. On your iPhone or Android phone, a native app turns sideways into a control surface for it.</p>
       <p>The phone never runs an app's logic. Each app sends the phone a <strong>screen</strong> described in JSON, the phone draws it with native components, and taps come back to the PC as commands: <code>{module, action, value}</code>. That is why installing or updating an app never needs a new phone build, and why every app works the same on iPhone and Android.</p>
       <p>The PC does the work and the phone shows it. Close the phone app and the music keeps playing on the PC.</p>
     </section>
 
     <section id="install">
-      <h2>Install on Windows</h2>
+      <h2>Install</h2><p>Onbun runs on Windows, macOS, and Linux. Choose your desktop download from the <a href="index.html#download">download section</a>. Current download filenames, package files, and connection identifiers still use WinMore for compatibility. Here’s the Windows setup:</p>
       <ol>
-        <li>Download <code>WinMore-Setup-&lt;version&gt;.exe</code> from the <a href="https://github.com/MathieuDvv/WinMore-releases/releases/latest">latest release</a>. The installer is not signed yet, so Windows SmartScreen may ask you to confirm.</li>
-        <li>Run it. WinMore installs for your user (no admin needed), adds desktop and Start menu shortcuts, and starts.</li>
-        <li>The island appears as a black pill at the top right of your main screen. Allow WinMore through the firewall on <strong>private</strong> networks when Windows asks: the phone reaches it over your network.</li>
+        <li>Download <code>WinMore-Setup-&lt;version&gt;.exe</code> from the <a href="index.html#download">download section</a>. The installer is not signed yet, so Windows SmartScreen may ask you to confirm.</li>
+        <li>Run it. Onbun installs for your user (no admin needed), adds desktop and Start menu shortcuts, and starts.</li>
+        <li>The island appears as a black pill at the top right of your main screen. Allow Onbun through the firewall on <strong>private</strong> networks when Windows asks: the phone reaches it over your network.</li>
       </ol>
       <p>Uninstall it from Windows Settings → Apps, like anything else.</p>
     </section>
@@ -65,8 +66,8 @@
     <section id="pair">
       <h2>Pair your phone</h2>
       <ol>
-        <li>Install the phone app: on Android, download <code>WinMore-Android-&lt;version&gt;.apk</code> from the <a href="https://github.com/MathieuDvv/WinMore-releases/releases/latest">latest release</a> on the phone and open it (Android asks once to allow installing from your browser); on iPhone, build it from source with Xcode for now.</li>
-        <li>Put the phone and the PC on the same trusted Wi-Fi or LAN, and open WinMore on the phone. Allow local network access.</li>
+        <li>Install the phone app: on Android, download <code>WinMore-Android-&lt;version&gt;.apk</code> from the <a href="index.html#download">download section</a> on the phone and open it (Android asks once to allow installing from your browser); on iPhone, build it from source with Xcode for now.</li>
+        <li>Put the phone and the PC on the same trusted Wi-Fi or LAN, and open Onbun on the phone. Allow local network access.</li>
         <li>In the phone's Settings, pick your PC under <strong>Nearby PCs</strong> and request pairing.</li>
         <li>The island opens with a <strong>six-digit code</strong>. Type it on the phone within two minutes (five tries). Decline on the island if you didn't ask for it.</li>
         <li>That's it: the phone remembers the PC and reconnects by itself, even when its address changes. Rotate to landscape.</li>
@@ -76,7 +77,7 @@
 
     <section id="island">
       <h2>The island</h2>
-      <p>The island is WinMore's face on the PC: always on top, OLED black, and out of the way until you need it. The menu at the top of this site is a copy of it.</p>
+      <p>The island is Onbun's face on the PC: always on top, OLED black, and out of the way until you need it. The menu at the top of this site is a copy of it.</p>
       <ul>
         <li><strong>Move it:</strong> drag the pill (or the expanded header). It snaps to one of eight docks, the corners and edge midpoints, on any monitor, and remembers where you left it.</li>
         <li><strong>Hide it:</strong> the × button dismisses it while music and the phone keep working. Bring it back with <code>Ctrl</code>+<code>Alt</code>+<code>W</code> or the tray icon.</li>
@@ -99,7 +100,7 @@
     <section id="updates">
       <h2>Updates</h2>
       <ul>
-        <li><strong>WinMore for Windows</strong> checks a few seconds after launch and every six hours. When there's a new release, the island shows <em>Update to &lt;version&gt;</em>: one click downloads it, installs it silently and restarts.</li>
+        <li><strong>Onbun for Windows</strong> checks a few seconds after launch and every six hours. When there's a new release, the island shows <em>Update to &lt;version&gt;</em>: one click downloads it, installs it silently and restarts.</li>
         <li><strong>Apps</strong> update themselves from the catalog (Settings → Apps → <em>Update apps automatically</em>), or one by one with <em>Update</em> and <em>Check now</em>.</li>
         <li><strong>The Android app</strong> shows <em>Update to &lt;version&gt;</em> in Settings when a new build exists; it downloads the APK and Android installs it over the current one.</li>
         <li><strong>The iPhone app</strong> shows a blue dot on Settings when a new build exists. Ad Hoc builds install in place; builds from Xcode are reinstalled from Xcode.</li>
@@ -110,14 +111,14 @@
       <h2>Network and privacy</h2>
       <ul>
         <li>Everything stays on your network. The PC listens on port <code>4317</code> and announces itself over Bonjour as <code>_winmore._tcp</code>.</li>
-        <li>The pairing key is random and stored encrypted with your Windows account. Logins (YouTube Music, Reddit) live in WinMore's own browser profile on the PC; secrets like Discord's never reach the phone.</li>
-        <li>Apps run inside WinMore with its access to your PC. The catalog is published only by its owner; for anything from elsewhere, WinMore asks before installing.</li>
+        <li>The pairing key is random and stored encrypted with your Windows account. Logins (YouTube Music, Reddit) live in Onbun's own browser profile on the PC; secrets like Discord's never reach the phone.</li>
+        <li>Apps run inside Onbun with its access to your PC. The catalog is published only by its owner; for anything from elsewhere, Onbun asks before installing.</li>
       </ul>
     </section>
 
     <section id="apps">
       <h2>The catalog</h2>
-      <p>Every feature in WinMore is an app, installed from <strong>Settings → Apps</strong> on the island. Here's what each one does and what it needs.</p>
+      <p>Every feature in Onbun is an app, installed from <strong>Settings → Apps</strong> on the island. Here's what each one does and what it needs.</p>
       <div class="app-docs" id="app-docs"></div>
     </section>
 
@@ -148,7 +149,7 @@
   "icon": "icon.svg",
   "iconPNG": "icon.png"
 }</pre>
-      <p><code>symbol</code> is the SF Symbol the phone shows until <code>iconPNG</code> arrives. <code>platforms: ["win32"]</code> limits an app to Windows. <code>icon</code> is a black SVG glyph (WinMore shows it grey); <code>npm run render:icons</code> makes the white 120 px PNG from it.</p>
+      <p><code>symbol</code> is the SF Symbol the phone shows until <code>iconPNG</code> arrives. <code>platforms: ["win32"]</code> limits an app to Windows. <code>icon</code> is a black SVG glyph (Onbun shows it grey); <code>npm run render:icons</code> makes the white 120 px PNG from it.</p>
       <h3>The backend: index.cjs</h3>
 <pre data-lang="js">function activate(ctx){
   // ctx.dataDir: a folder for this app's files. ctx.electron, ctx.log, ctx.app.version too.
@@ -232,8 +233,8 @@ winmore.open('https://example.com');                                  // the pho
     <section id="develop">
       <h2>Develop and publish</h2>
       <ol>
-        <li>Open your apps folder from the island: Settings → Apps → <em>Open folder</em> (<code>%APPDATA%\WinMore\apps</code>) and drop your folder in. WinMore loads it right away and the phone adds it to its rail.</li>
-        <li>Edit any file. WinMore reloads the app within a second and the phone reloads its screen. No restart.</li>
+        <li>Open your apps folder from the island: Settings → Apps → <em>Open folder</em> (<code>%APPDATA%\WinMore\apps</code>) and drop your folder in. Onbun loads it right away and the phone adds it to its rail.</li>
+        <li>Edit any file. Onbun reloads the app within a second and the phone reloads its screen. No restart.</li>
         <li>If the screen has a mistake, the phone says exactly what to fix. Add <code>"$schema"</code> pointing to <code>screen.schema.json</code> for autocomplete in your editor.</li>
         <li>Share it as a folder (Settings → Apps → <em>Install folder…</em>) or a <code>.wmapp</code> file. Bump <code>version</code> on every release so installed copies update.</li>
       </ol>
@@ -272,14 +273,13 @@ winmore.open('https://example.com');                                  // the pho
   </article>
 </div>
 
-<footer class="site-foot">
-  <span>WinMore docs</span>
-  <nav><a href="./">Home</a><a href="https://github.com/MathieuDvv/WinMore-releases/releases/latest">Download</a><a href="https://github.com/MathieuDvv/WinMore-releases">GitHub</a></nav>
-</footer>
+<div class="hose-separator" data-hose="arm" aria-hidden="true"></div><footer class="site-foot"><a class="brand" href="index.html">onbun</a><nav aria-label="Footer"><a href="index.html">Home</a><a href="apps.html">The apps</a><a href="docs.html" aria-current="page">The guide</a><a href="https://github.com/MathieuDvv/WinMore-releases">GitHub ↗</a></nav></footer>
 
-<script src="assets/island.js?v=nav-fit-2"></script>
-<script src="assets/dots.js?v=mwc6m4rp"></script>
-<script src="assets/kit-render.js?v=mwc6m4rp"></script>
-<script src="assets/docs.js?v=mwc6m4rp"></script>
+<script src="assets/hose.js?v=1794661034537"></script>
+<script src="assets/yokai-background.js?v=1794661034537"></script>
+<script src="assets/island.js?v=1794661034537"></script>
+
+<script src="assets/kit-render.js?v=1794661034537"></script>
+<script src="assets/docs.js?v=1794661034537"></script>
 </body>
 </html>

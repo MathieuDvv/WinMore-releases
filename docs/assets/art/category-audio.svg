@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240" fill="none">
+<title>Onbun audio category</title>
+<desc>Editable monochrome rubber hose illustration. Named groups separate the object, limbs, hands, and details.</desc>
+<g id="artwork" stroke-linecap="round" stroke-linejoin="round">
+<g id="music-notes" stroke="#f1f0e9" stroke-width="3" fill="none"><path d="M59 74V54l16-4v20"/><ellipse cx="53" cy="75" rx="6" ry="4" fill="#f1f0e9"/><ellipse cx="69" cy="71" rx="6" ry="4" fill="#f1f0e9"/></g>
+<g id="rubber-arm"><path d="M82 229C45 199 88 165 120 196S217 229 268 157" fill="none" stroke="#e0dfe1" stroke-width="16" stroke-linecap="round"/><path d="M82 229C45 199 88 165 120 196S217 229 268 157" fill="none" stroke="#141418" stroke-width="13" stroke-linecap="round"/></g>
+<g id="record"><circle cx="173" cy="124" r="69" fill="#141418" stroke="#f1f0e9" stroke-width="3"/><g fill="none" stroke="#f1f0e9" stroke-width="1.2" opacity=".32"><circle cx="173" cy="124" r="56"/><circle cx="173" cy="124" r="48"/><circle cx="173" cy="124" r="40"/></g><path d="M121 107a55 55 0 0 1 30-33m42 99a55 55 0 0 0 31-32" fill="none" stroke="#f1f0e9" stroke-width="3" stroke-linecap="round"/><circle cx="173" cy="124" r="24" fill="#f1f0e9"/><circle cx="173" cy="124" r="5" fill="#141418"/></g>
+<g id="headphones" stroke="#f1f0e9" stroke-width="8" fill="none"><path d="M94 112v-7c0-104 159-104 159 0v7"/><path d="M102 108v-7c0-92 143-92 143 0v7" stroke-width="2" opacity=".5"/></g>
+<g id="ear-cups" fill="#f1f0e9" stroke="#141418" stroke-width="3"><rect x="84" y="102" width="25" height="56" rx="11" transform="rotate(-10 96 130)"/><rect x="238" y="102" width="25" height="56" rx="11" transform="rotate(10 250 130)"/><path d="M94 115v29m158-29v29" fill="none" stroke-width="2"/></g>
+<g id="holding-hand"><g transform="translate(276 135) rotate(26) scale(0.82)" fill="#f1f0e9" stroke="#141418" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M-15 15c-8-2-15-12-14-19 1-6 8-6 11 0l-2-20c-1-8 8-9 10-2l4 16-1-24c0-8 9-8 10-1l2 23 4-17c2-7 10-5 9 2l-2 22c4-4 10-4 13 0 5 8-3 17-12 23Z"/><path d="m-8 7 3-10M3 5 4-6M14 4l3-9" fill="none" stroke-width="2"/><path d="M-15 14 17 17 15 27-17 24Z"/></g></g><path transform="translate(299 62) scale(0.8)" d="M0-10 2-2 10 0 2 2 0 10-2 2-10 0-2-2Z" fill="#f1f0e9" stroke="none"/>
+</g>
+</svg>

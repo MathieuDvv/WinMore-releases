@@ -1,9 +1,9 @@
-// The site's navigation is a copy of the WinMore island (public/island.html), drawn at the real
+// The site's navigation follows the Onbun island (public/island.html), drawn at the real
 // island's sizes and scaled up. On the landing page it starts as a large resting pill and docks at
 // the top centre as you scroll. Hovering expands it the way the PC island expands: into the music
 // controls while it is in the hero, into the site menu once docked.
 (()=>{
-const GHOST='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M4 11.2a8 8 0 0 1 16 0v7c-1.34 0-1.34-1.25-2.67-1.25s-1.33 1.25-2.66 1.25-1.34-1.25-2.67-1.25-1.33 1.25-2.67 1.25-1.33-1.25-2.66-1.25S5.34 18.2 4 18.2z"/><rect x="7.6" y="11.3" width="2.6" height="1.5" rx=".75" fill="var(--logo)"/><rect x="13.8" y="11.3" width="2.6" height="1.5" rx=".75" fill="var(--logo)"/></svg>';
+const GHOST='<svg viewBox="0 0 28 28" aria-hidden="true"><ellipse cx="10" cy="12" rx="3" ry="5" fill="#25251f"/><ellipse cx="18" cy="12" rx="3" ry="5" fill="#25251f"/><path d="m8 8 4 3-5 1m9-4 4 3-5 1" fill="#ededf0"/><path d="M9 20q5 5 10-1" fill="none" stroke="#25251f" stroke-width="1.5" stroke-linecap="round"/></svg>';
 // Same stroke icons as the island.
 const I={
   play:'<path d="m8 5 11 7-11 7Z" fill="currentColor" stroke="none"/>',
@@ -16,27 +16,27 @@ const I={
   download:'<path d="M12 4v11m-4.5-4.5L12 15l4.5-4.5M5 19h14"/>',
 };
 const icon=name=>`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${I[name]}</svg>`;
-window.WinMoreIcons={icon,GHOST};
+window.OnbunIcons={icon,GHOST};
 
-const page=document.body.dataset.page;               // "home" or "docs"
+const page=document.body.dataset.page;
 const home=page==='home'?'./':'index.html';
-const RELEASES='https://github.com/MathieuDvv/WinMore-releases/releases/latest';
+const RELEASES='index.html#download';
 const SIZES={rest:[232,48,25],player:[348,194,26],menu:[348,174,26]};
 
 const island=document.createElement('nav');
-island.className='island';island.dataset.mode='rest';island.setAttribute('aria-label','WinMore');
+island.className='island';island.dataset.mode='rest';island.setAttribute('aria-label','Onbun island navigation');
 island.innerHTML=`
-  <div class="rest"><a class="rest-open" href="${home}" aria-label="WinMore"><span class="rest-cover">${GHOST}</span><strong>WinMore</strong><span class="activity playing" aria-hidden="true"><i></i><i></i><i></i></span></a></div>
+  <div class="rest"><button type="button" class="rest-open" aria-label="Open Onbun island" aria-expanded="false"><span class="rest-cover">${GHOST}</span><strong>onbun</strong><span class="activity playing" aria-hidden="true"><i></i><i></i><i></i></span></button></div>
   <div class="details player" aria-label="Example music">
-    <header><span class="wordmark">WinMore</span><span class="status">Example</span><button type="button" data-act="collapse" aria-label="Collapse">${icon('collapse')}</button></header>
+    <header><span class="wordmark">onbun</span><span class="status">Give it a try</span><button type="button" data-act="collapse" aria-label="Collapse">${icon('collapse')}</button></header>
     <div class="song"><span class="cover"></span><div class="metadata"><strong>Night Drive</strong><span>Ghost Signal</span></div><button type="button" class="play" data-act="toggle" aria-label="Pause">${icon('pause')}</button></div>
     <div class="volume">${icon('speaker')}<input type="range" min="0" max="100" value="40" aria-label="Volume" data-act="volume"><output>40%</output></div>
     <div class="bottom"><button type="button" data-act="sound">Play sound</button><span>Made in your browser</span></div>
   </div>
   <div class="details menu">
-    <header><a class="wordmark" href="${home}">WinMore</a><span class="status">${page==='docs'?'Docs':'Home'}</span><button type="button" data-act="collapse" aria-label="Collapse">${icon('collapse')}</button></header>
+    <header><a class="wordmark" href="${home}">onbun</a><span class="status">${page==='docs'?'The guide':page==='apps'?'The apps':'Hello there'}</span><button type="button" data-act="collapse" aria-label="Collapse">${icon('collapse')}</button></header>
     <div class="links">
-      <a href="${home}#apps">${icon('grid')}<span><strong>App library</strong><small>What you can install</small></span></a>
+      <a href="apps.html"${page==='apps'?' aria-current="page"':''}>${icon('grid')}<span><strong>App store</strong><small>Find your next app</small></span></a>
       <a href="docs.html"${page==='docs'?' aria-current="page"':''}>${icon('doc')}<span><strong>Documentation</strong><small>How it works</small></span></a>
       <a href="docs.html#explorer">${icon('sliders')}<span><strong>Components</strong><small>Kit explorer</small></span></a>
       <a href="${RELEASES}">${icon('download')}<span><strong>Download the client</strong><small>Windows, macOS and Linux</small></span></a>
@@ -44,19 +44,32 @@ island.innerHTML=`
   </div>`;
 document.body.prepend(island);
 const $=s=>island.querySelector(s);
+const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
+let stage,grips;
+if(page==='home'){
+  stage=document.createElement('div');stage.className='lift-stage';stage.setAttribute('aria-hidden','true');
+  const hand=side=>`<g class="${side}-hand"><path class="grasp-shape"/><path d="M-20-44H16V-56H-20Z" fill="#f0f0ee" stroke="#111114" stroke-width="2.4"/><path d="M-14-19q14-9 27-1" fill="none" stroke="#111114" stroke-width="1.8" stroke-linecap="round"/></g>`;
+  const leg=side=>`<path class="limb-outline ${side}-leg-outline"/><path class="island-leg ${side}-leg"/>`;
+  stage.innerHTML=`<svg><defs><clipPath id="leg-retraction-clip"><rect/></clipPath></defs><g class="island-leg-group" clip-path="url(#leg-retraction-clip)">${leg('left')}${leg('right')}<g class="left-shoe">${window.OnbunArt.shoe(0,0)}</g><g class="right-shoe">${window.OnbunArt.shoe(0,0)}</g></g><g class="island-arms"><path class="limb-outline left-arm-outline"/><path class="lift-arm left-arm"/><path class="limb-outline right-arm-outline"/><path class="lift-arm right-arm"/></g></svg>`;
+  grips=document.createElement('div');grips.className='lift-grips';grips.setAttribute('aria-hidden','true');
+  grips.innerHTML=`<svg>${hand('left')}${hand('right')}</svg>`;
+  document.body.prepend(grips);document.body.prepend(stage);
+
+}
 
 // ── layout ───────────────────────────────────────────
 const lerp=(a,b,t)=>a+(b-a)*t;
 const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
-const ease=t=>1-Math.pow(1-t,3);
+const smooth=t=>t*t*(3-2*t);
 let progress=page==='home'?0:1,mode='rest';
-const inHero=()=>progress<.02,docked=()=>progress>.999;
+const inHero=()=>progress<.02,docked=()=>progress>=.9;
 
 function layout(){
-  const vw=innerWidth,vh=innerHeight,t=ease(progress);
+  const vw=innerWidth,vh=innerHeight,t=smooth(clamp(progress/.9));
   const dock=vw<640?1:1.12;
-  const heroRest=Math.min(2.2,(vw-32)/232);
-  const heroTop=Math.max(72,vh*.34-24*heroRest);
+  const compact=vh<600;
+  const heroRest=Math.min(compact?1.5:1.95,(vw-78)/232);
+  const heroTop=compact?Math.max(170,vh*.46):Math.max(vw<640?270:260,vh*.43);
   const heroOpen=Math.min(heroRest,(vw-32)/348,(vh-24-heroTop)/194);
   let k=lerp(heroRest,dock,t);
   if(mode==='player')k=heroOpen;
@@ -64,8 +77,61 @@ function layout(){
   const [w,baseHeight,r]=SIZES[mode];
   const h=mode==='menu'?Math.max(baseHeight,$('.menu').scrollHeight+30):baseHeight;
   island.style.width=w+'px';island.style.height=h+'px';island.style.borderRadius=r+'px';
-  island.style.top=lerp(heroTop,12,t)+'px';
+  const top=lerp(heroTop,16,t);
+  island.style.top=top+'px';
   island.style.transform=`translateX(-50%) scale(${k})`;
+  if(stage){
+    const mobile=vw<640,handScale=mobile?.65:.9;
+    const bottom=top+h*k;
+    const retract=smooth(clamp((progress-.08)/.48));
+    const release=smooth(clamp((progress-.65)/.14));
+    const retreat=smooth(clamp((progress-.79)/.21));
+    const legLength=compact?64:mobile?102:138;
+    const shoeScale=mobile?.62:.82;
+    const travel=retract*(legLength+35*shoeScale+18);
+    const spread=w*k*.15,rootY=bottom-16-travel,footY=bottom+legLength-travel;
+    const clip=stage.querySelector('#leg-retraction-clip rect');
+    clip.setAttribute('x',0);clip.setAttribute('y',bottom);clip.setAttribute('width',vw);clip.setAttribute('height',vh);
+    const setLimb=(name,d,width)=>{
+      const inner=stage.querySelector('.'+name),outline=stage.querySelector('.'+name+'-outline');
+      inner.setAttribute('d',d);outline.setAttribute('d',d);
+      inner.setAttribute('stroke-width',width);outline.setAttribute('stroke-width',width+2);
+    };
+    setLimb('left-leg',`M${vw/2-spread} ${rootY}C${vw/2-spread-32} ${rootY+47} ${vw/2-spread+18} ${footY-35} ${vw/2-spread-10} ${footY}`,mobile?12:16);
+    setLimb('right-leg',`M${vw/2+spread} ${rootY}C${vw/2+spread+32} ${rootY+47} ${vw/2+spread-18} ${footY-35} ${vw/2+spread+10} ${footY}`,mobile?12:16);
+    stage.querySelector('.left-shoe').setAttribute('transform',`translate(${vw/2-spread-10} ${footY}) scale(${-shoeScale} ${shoeScale})`);
+    stage.querySelector('.right-shoe').setAttribute('transform',`translate(${vw/2+spread+10} ${footY}) scale(${shoeScale})`);
+    stage.dataset.legs=retract===1?'retracted':retract>0?'retracting':'extended';
+    stage.dataset.retraction=String(retract);
+    // Arm control points use the remaining vertical length. Their y coordinates
+    // stay monotonic, so pulling cannot fold an elbow back into a pointed loop.
+    const gripY=top+2-release*25*handScale-retreat*(vh*.3+180);
+    const left=vw/2-w*k*.28,right=vw-left,wristY=gripY-48*handScale;
+    function armPath(end,mirror=false){
+      const origin=vw*(mirror?.72:.28),length=wristY+90;
+      const amplitude=Math.max(0,Math.min(vw*.075,Math.abs(length)*.2,95));
+      const points=Array.from({length:9},(_,i)=>{
+        const u=i/8,blend=smooth(u),wave=Math.sin(u*Math.PI*2)*Math.sin(u*Math.PI)*amplitude;
+        return {x:lerp(origin,end,blend)+(mirror?-wave:wave),y:-90+length*u};
+      });
+      let d=`M${points[0].x} ${points[0].y}`;
+      for(let i=0;i<points.length-1;i++){
+        const p0=points[Math.max(0,i-1)],p1=points[i],p2=points[i+1],p3=points[Math.min(points.length-1,i+2)];
+        d+=`C${p1.x+(p2.x-p0.x)/6} ${p1.y+(p2.y-p0.y)/6} ${p2.x-(p3.x-p1.x)/6} ${p2.y-(p3.y-p1.y)/6} ${p2.x} ${p2.y}`;
+      }
+      return d;
+    }
+    setLimb('left-arm',armPath(left),mobile?13:18);
+    setLimb('right-arm',armPath(right,true),mobile?13:18);
+    const finger=lerp(17,-14,release),tip=lerp(12,-19,release),base=lerp(2,-23,release);
+    const grasp=`M-23-21C-26-39-10-46 7-42C17-40 22-32 22-20L22 ${tip}C22 ${tip+10} 12 ${tip+10} 12 ${tip}L11 ${base}L8 ${finger}C7 ${finger+10}-3 ${finger+10}-4 ${finger-1}L-5 ${base}L-8 ${finger}C-10 ${finger+9}-20 ${finger+6}-19 ${finger-3}L-19 ${lerp(-1,-20,release)}C-26 ${lerp(5,-12,release)}-34 ${lerp(1,-16,release)}-33 ${lerp(-6,-24,release)}C-32-12-26-18-23-21Z`;
+    grips.querySelectorAll('.grasp-shape').forEach(path=>path.setAttribute('d',grasp));
+    grips.querySelector('.left-hand').setAttribute('transform',`translate(${left} ${gripY}) scale(${handScale})`);
+    grips.querySelector('.right-hand').setAttribute('transform',`translate(${right} ${gripY}) scale(${-handScale} ${handScale})`);
+    stage.dataset.arms=progress<.65?'gripping':progress<.79?'releasing':progress<1?'withdrawing':'withdrawn';
+    stage.style.visibility=reducedMotion.matches?'hidden':'visible';
+    grips.style.visibility=stage.style.visibility;
+  }
   document.dispatchEvent(new CustomEvent('island',{detail:{progress,mode,heroBottom:heroTop+48*heroRest}}));
 }
 let morphTimer;
@@ -74,6 +140,7 @@ function setMode(next){
   if(next==='menu'&&!docked())next='rest';
   if(next===mode)return;
   mode=next;island.dataset.mode=next;
+  $('.rest-open').setAttribute('aria-expanded',String(next!=='rest'));
   island.classList.add('morph');clearTimeout(morphTimer);morphTimer=setTimeout(()=>island.classList.remove('morph'),460);
   layout();
 }
@@ -85,11 +152,14 @@ if(page==='home'){
     if(p===progress)return;
     progress=p;
     if(mode!=='rest'&&!(mode==='player'&&inHero())&&!(mode==='menu'&&docked()))setMode('rest');
-    layout();
+    requestLayout();
   },{passive:true});
   progress=clamp(scrollY/Math.max(1,innerHeight*.8));
 }
-addEventListener('resize',layout);
+let layoutFrame=0;
+function requestLayout(){if(!layoutFrame)layoutFrame=requestAnimationFrame(()=>{layoutFrame=0;layout();});}
+addEventListener('resize',requestLayout);
+reducedMotion.addEventListener('change',requestLayout);
 layout();
 // Again once the page's own scripts are listening for 'island' events.
 addEventListener('DOMContentLoaded',layout);
@@ -98,12 +168,12 @@ addEventListener('DOMContentLoaded',layout);
 let hoverTimer,closeTimer;
 island.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse')return;clearTimeout(closeTimer);hoverTimer=setTimeout(expand,mode==='rest'?200:0);});
 island.addEventListener('pointerleave',e=>{if(e.pointerType!=='mouse')return;clearTimeout(hoverTimer);closeTimer=setTimeout(()=>setMode('rest'),400);});
-island.addEventListener('focusin',()=>{clearTimeout(closeTimer);expand();});
+island.addEventListener('focusin',()=>{clearTimeout(closeTimer);});
 island.addEventListener('focusout',e=>{if(!island.contains(e.relatedTarget))setMode('rest');});
 // Touch: tapping the pill expands it instead of following the link.
-$('.rest-open').addEventListener('click',e=>{if(mode==='rest'){e.preventDefault();expand();}});
+$('.rest-open').addEventListener('click',e=>{e.preventDefault();expand();if(e.detail===0)$(mode==='player'?'.player .play':'.menu .wordmark').focus({preventScroll:true});});
 document.addEventListener('pointerdown',e=>{if(mode!=='rest'&&!island.contains(e.target))setMode('rest');});
-addEventListener('keydown',e=>{if(e.key==='Escape')setMode('rest');});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&mode!=='rest'){setMode('rest');$('.rest-open').focus({preventScroll:true});}});
 
 // ── the example player ───────────────────────────────
 let playing=true;

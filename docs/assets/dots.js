@@ -81,6 +81,8 @@ function paint(item,t){
 }
 
 const drawAll=()=>items.forEach(item=>paint(item,0));
+// Store collections are loaded after the initial page artwork.
+window.WinMoreDots={draw(canvas){const art=ARTS[canvas.dataset.dots];if(art)paint({canvas,art,grid:document.createElement('canvas')},0);}};
 drawAll();
 addEventListener('resize',drawAll);
 if('IntersectionObserver' in window){
