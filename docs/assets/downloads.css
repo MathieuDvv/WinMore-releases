@@ -15,6 +15,9 @@
 .download-body .download-button{width:100%;display:flex;justify-content:space-between;min-height:44px;padding:10px 16px;border-radius:0;background:#eeeeef;border-color:#eeeeef;color:#101014;font-size:12px}
 .download-body .download-button:hover{background:#fff;color:#101014}
 .download-body .download-button:disabled{background:#1b1b22;color:#8b8b98;border-color:#ffffff20}
+.download-actions{display:grid;gap:8px}
+.download-body .download-button.secondary{background:transparent;color:#eeeeef;border-color:#ffffff55}
+.download-body .download-button.secondary:hover{background:#ffffff14;color:#fff;border-color:#eeeeef}
 .download-help{font-size:10px;margin:0;color:#a2a2af;justify-self:start;text-underline-offset:4px}
 .download-card[data-os=android] .download-art>img,.download-card[data-os=ios] .download-art>img{object-position:bottom}
 .get .download-status{font-size:11px;color:#92929f;margin:18px 0 0;max-width:none}.download-status button{text-decoration:underline;text-underline-offset:3px;color:#eee;padding:4px}

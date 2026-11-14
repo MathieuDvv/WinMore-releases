@@ -23,12 +23,12 @@
 <meta name="twitter:image:alt" content="Onbun island. Your desktop does the heavy lifting. Your phone calls the shots.">
 <meta name="theme-color" content="#060608">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/site.css?v=onbun-explainer-20261114">
-<link rel="stylesheet" href="assets/docs.css?v=onbun-explainer-20261114">
+<link rel="stylesheet" href="assets/site.css?v=mwgrwz6m">
+<link rel="stylesheet" href="assets/docs.css?v=mwgrwz6m">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300..800&display=swap">
-<link rel="stylesheet" href="assets/night.css?v=onbun-explainer-20261114">
+<link rel="stylesheet" href="assets/night.css?v=mwgrwz6m">
 </head>
 <body data-page="docs">
 <a class="skip-link" href="#how">Skip to content</a>
@@ -148,6 +148,7 @@
         <li><strong>Apps</strong> update themselves (Settings → Apps → <em>Update apps automatically</em>), or with <em>Update</em>, <em>Update all</em> and <em>Check now</em>. Catalog apps update from the catalog. Apps installed from GitHub or a link update from where they came from, and say so under their name.</li>
         <li><strong>The Android app</strong> shows <em>Update to &lt;version&gt;</em> in Settings when a new build exists; it downloads the APK and Android installs it over the current one.</li>
         <li><strong>The iPhone app</strong> shows a blue dot on Settings when a new build exists. Ad Hoc builds install in place; builds from Xcode are reinstalled from Xcode.</li>
+        <li><strong>Updating to 0.9.1</strong> means updating every copy of Onbun, the PC and each phone, because of the <a href="#privacy">encrypted connection</a>. Apps don't need an update, and paired phones stay paired.</li>
       </ul>
     </section>
 
@@ -155,6 +156,10 @@
       <h2>Network and privacy</h2>
       <ul>
         <li>Everything stays on your network. The PC listens on port <code>4317</code> and announces itself over Bonjour as <code>_winmore._tcp</code>.</li>
+        <li><strong>The connection is encrypted</strong> (since 0.9.1). Everything between your phone and your PC is encrypted and authenticated: app data, commands, what you type, clipboard and photos, package files and videos. Someone else on the same Wi-Fi can't read or change it, and a device pretending to be your PC can't answer as it.</li>
+        <li><strong>Pairing never sends the code.</strong> The six-digit code on the PC stays on your two screens: your phone uses it to derive a key, and only a phone that knows the code can open the PC's answer. Each code allows five tries and expires after two minutes.</li>
+        <li>Every connection uses fresh keys mixed with the pairing key, so recorded traffic stays unreadable even if that key leaks later. The PC refuses unencrypted requests from other devices, so phones and PCs older than 0.9.1 can't connect to newer ones: update both.</li>
+        <li><em>Forget phones</em> (Settings → General on the island) replaces the PC's key: every phone has to pair again. Anyone holding the pairing link can still control the PC, so keep it to yourself.</li>
         <li>The pairing key is random and stored encrypted with your account (Windows' data protection, the macOS Keychain, or the Linux keyring). Logins (YouTube Music, Reddit) live in Onbun's own browser profile on the PC; secrets like Discord's never reach the phone.</li>
         <li>Apps run inside Onbun with its access to your PC. The catalog is published only by its owner; for anything from elsewhere, Onbun asks before installing.</li>
         <li><em>Add to Onbun</em> buttons only reach Onbun on the same computer: the website sends the link to <code>127.0.0.1</code>, or opens an <code>onbun://</code> link, and the island always asks first.</li>
@@ -547,11 +552,11 @@ onbun.open('https://example.com');                                  // the phone
 
 <div class="hose-separator" data-hose="arm" aria-hidden="true"></div><footer class="site-foot"><a class="brand" href="index.html">onbun</a><nav aria-label="Footer"><a href="index.html">Home</a><a href="apps.html">The apps</a><a href="docs.html" aria-current="page">The guide</a><a href="https://github.com/MathieuDvv/WinMore-releases">GitHub ↗</a></nav></footer>
 
-<script src="assets/hose.js?v=onbun-explainer-20261114"></script>
-<script src="assets/yokai-background.js?v=onbun-explainer-20261114"></script>
-<script src="assets/island.js?v=onbun-explainer-20261114"></script>
+<script src="assets/hose.js?v=mwgrwz6m"></script>
+<script src="assets/yokai-background.js?v=mwgrwz6m"></script>
+<script src="assets/island.js?v=mwgrwz6m"></script>
 
-<script src="assets/kit-render.js?v=onbun-explainer-20261114"></script>
-<script src="assets/docs.js?v=onbun-explainer-20261114"></script>
+<script src="assets/kit-render.js?v=mwgrwz6m"></script>
+<script src="assets/docs.js?v=mwgrwz6m"></script>
 </body>
 </html>

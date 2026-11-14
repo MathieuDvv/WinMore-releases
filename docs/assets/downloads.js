@@ -59,20 +59,31 @@ const osIcons={
 };
 osIcons.ios=osIcons.macos;
 const arrow='<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/></svg>';
+// The Microsoft Store listing, once Onbun is published there (Partner Center → Product identity → Store ID).
+// Store copies are signed by Microsoft and update through the Store; the .exe below is the direct download.
+const STORE_ID='';
+const store='<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16l-1 12H5Zm4 0V6a4 4 0 0 1 8 0v2"/></svg>';
+function actions(os,choice,data){
+ const direct=choice?`<a class="btn download-button" data-direct href="${esc(choice.url)}" download="${esc(choice.name)}" aria-label="Download Onbun for ${os.name}, ${esc(choice.label)}, ${esc(choice.version)}">${os.id==='windows'?'Download .exe':'Download'} ${arrow}</a>`:`<button class="btn download-button" type="button" disabled>${data?'Not available yet':'Loading…'}</button>`;
+ if(os.id!=='windows')return direct;
+ // Windows: the Store first when it is there, then the installer from GitHub.
+ const listing=STORE_ID?`<a class="btn download-button" href="https://apps.microsoft.com/detail/${esc(STORE_ID)}" target="_blank" rel="noopener" aria-label="Get Onbun from the Microsoft Store">Microsoft Store ${store}</a>`:`<button class="btn download-button" type="button" disabled>Microsoft Store · soon</button>`;
+ return `<div class="download-actions">${STORE_ID?listing+direct.replace('class="btn download-button"','class="btn download-button secondary"'):direct+listing}</div>`;
+}
 let downloads=null;
 const selections=new Map();
 function render(data){
  downloads=data;
  host.innerHTML=systems.map(os=>{
   const entries=data?.[os.id]||[],choice=entries.find(entry=>entry.key===selections.get(os.id))||entries[0];
-  return `<article class="download-card" data-os="${os.id}" style="--os-color:${os.color}"><div class="download-art"><img src="assets/art/onbun-${os.art}.svg" alt="" width="240" height="200"></div><div class="download-body"><h3>${os.name}</h3><span class="os-mark"><svg viewBox="0 0 24 24" aria-hidden="true">${osIcons[os.id]}</svg></span>${entries.length>1?`<label class="sr-only" for="variant-${os.id}">${os.name} installer</label><select id="variant-${os.id}" data-download-variant="${os.id}">${entries.map(entry=>`<option value="${esc(entry.key)}"${choice.key===entry.key?' selected':''}>${esc(entry.label)}</option>`).join('')}</select>`:`${os.id==='ios'&&!choice?'<span class="download-format">Test Flight compliance in preparation</span>':`<span class="download-format">${esc(choice?.label||(data?'No public build yet':'Checking releases…'))}</span>`}`}<span class="download-version"${os.id==='ios'&&!choice?' aria-hidden="true"':''}>${choice?`${esc(choice.version)} · ${(choice.size/1048576).toFixed(1)} MB`:os.id==='ios'?'&nbsp;':data?'No installer yet':'Latest version'}</span>${choice?`<a class="btn download-button" href="${esc(choice.url)}" download="${esc(choice.name)}" aria-label="Download Onbun for ${os.name}, ${esc(choice.label)}, ${esc(choice.version)}">Download ${arrow}</a>`:`<button class="btn download-button" type="button" disabled>${data?'Not available yet':'Loading…'}</button>`}</div></article>`;
+  return `<article class="download-card" data-os="${os.id}" style="--os-color:${os.color}"><div class="download-art"><img src="assets/art/onbun-${os.art}.svg" alt="" width="240" height="200"></div><div class="download-body"><h3>${os.name}</h3><span class="os-mark"><svg viewBox="0 0 24 24" aria-hidden="true">${osIcons[os.id]}</svg></span>${entries.length>1?`<label class="sr-only" for="variant-${os.id}">${os.name} installer</label><select id="variant-${os.id}" data-download-variant="${os.id}">${entries.map(entry=>`<option value="${esc(entry.key)}"${choice.key===entry.key?' selected':''}>${esc(entry.label)}</option>`).join('')}</select>`:`${os.id==='ios'&&!choice?'<span class="download-format">Test Flight compliance in preparation</span>':`<span class="download-format">${esc(choice?.label||(data?'No public build yet':'Checking releases…'))}</span>`}`}<span class="download-version"${os.id==='ios'&&!choice?' aria-hidden="true"':''}>${choice?`${esc(choice.version)} · ${(choice.size/1048576).toFixed(1)} MB`:os.id==='ios'?'&nbsp;':data?'No installer yet':'Latest version'}</span>${actions(os,choice,data)}</div></article>`;
  }).join('');
 }
 host.addEventListener('change',event=>{
  const os=event.target.dataset.downloadVariant;if(!os)return;
  selections.set(os,event.target.value);
  // Preserve the native select and its keyboard focus when choosing an installer.
- const entry=downloads[os].find(item=>item.key===event.target.value),card=event.target.closest('.download-card'),link=card.querySelector('.download-button');
+ const entry=downloads[os].find(item=>item.key===event.target.value),card=event.target.closest('.download-card'),link=card.querySelector('[data-direct]');
  card.querySelector('.download-version').textContent=`${entry.version} · ${(entry.size/1048576).toFixed(1)} MB`;
  link.href=entry.url;link.download=entry.name;link.setAttribute('aria-label',`Download Onbun for ${systems.find(s=>s.id===os).name}, ${entry.label}, ${entry.version}`);
 });
