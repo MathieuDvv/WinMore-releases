@@ -13,7 +13,8 @@
     const paused=demo.dataset.motion!=='paused';
     demo.dataset.motion=paused?'paused':'running';
     motion.setAttribute('aria-pressed',String(paused));
-    motion.innerHTML=`${paused?'Play':'Pause'} animation <span aria-hidden="true">${paused?'▷':'Ⅱ'}</span>`;
+    motion.setAttribute('aria-label',`${paused?'Play':'Pause'} animation`);
+    motion.querySelector('.demo-motion-label').textContent=paused?'Play':'Pause';
   });
   // Animate only while the example is visible. Reduced motion is handled in CSS.
   new IntersectionObserver(entries=>{

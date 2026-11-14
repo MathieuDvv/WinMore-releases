@@ -6,8 +6,9 @@
 .how-onbun-copy>p{font-size:14px;line-height:1.8;margin:0;max-width:440px}
 .control-demo{border:1px solid var(--line);background:#0c0c10;padding:18px 28px 15px;overflow:hidden}
 .control-demo-top{display:flex;justify-content:space-between;align-items:center;gap:12px;color:#a3a3ac;font:11px var(--font)}
-.demo-motion{display:flex;align-items:center;gap:10px;min-height:32px;padding:0 5px;color:#a3a3ac;font:11px var(--font)}
-.demo-motion:hover{color:#eeeeef}.demo-motion span{font-size:12px;width:12px;text-align:center}
+.demo-motion{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;min-width:84px;padding:8px 12px;border:1px solid #ffffff30;border-radius:7px;background:#1c1c23;color:#eeeef3;font:500 11px/1 var(--font);white-space:nowrap;flex-shrink:0;transition:background .15s,border-color .15s,transform .15s}
+.demo-motion:hover{background:#2a2a33;border-color:#ffffff65}.demo-motion:active{transform:scale(.97)}.demo-motion:focus-visible{outline:2px solid #eeeeef;outline-offset:3px}
+.demo-motion svg{display:block;width:15px;height:15px;flex-shrink:0;fill:currentColor;stroke:currentColor;stroke-width:.6;stroke-linejoin:round}.demo-motion-play{display:none}.demo-motion[aria-pressed=true] .demo-motion-pause{display:none}.demo-motion[aria-pressed=true] .demo-motion-play{display:block}
 .control-demo-devices{display:grid;grid-template-columns:minmax(0,1.15fr) 100px minmax(0,1fr);align-items:center;gap:22px;max-width:900px;margin:24px auto 0}
 .demo-desktop,.demo-phone{min-width:0}
 .demo-monitor{height:166px;border:1px solid #ffffff40;border-radius:8px;background:#121218;padding:10px 15px}
