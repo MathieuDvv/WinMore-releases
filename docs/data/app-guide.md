@@ -234,6 +234,23 @@ The catalog is plain app folders (`apps/<id>/…`) plus an `index.json` listing 
 Onbun downloads each file, checks its hash, and installs the folder. Installed copies **update themselves**
 from the catalog (PC settings → Apps → *Update apps automatically*). Bump `version` for every release.
 
+### Making a .wmapp file
+
+A `.wmapp` is the whole app folder in one file. Packing one runs the checks Onbun makes before installing
+(manifest, entry module, paths and sizes, every Kit screen). Three ways, all using the same packer:
+
+- **The island:** Settings → Library → *For developers* → *Export file…*, then pick the app folder.
+- **A terminal** (Node 18+, no install): download [onbun-pack.cjs](https://onbun.app/tools/onbun-pack.cjs) and
+  run `node onbun-pack.cjs path/to/your-app [--out dist]`. It writes `<id>-<version>.wmapp`. In this
+  repository, `node scripts/onbun-pack.cjs` is the same tool (the download is generated from it).
+- **GitHub Actions:** save [onbun-release.yml](onbun-release.yml) as `.github/workflows/onbun-release.yml`
+  in the app's repository. Pushing a tag that matches `version` (`git tag v1.2.0 && git push origin v1.2.0`)
+  packs the app and attaches the file to a GitHub release. It finds the app at the top of the repository or
+  in its one subfolder with a `manifest.json`.
+
+Community apps reach the store through a submission on [onbun.app/apps](https://onbun.app/apps) once they
+have a release; the store installs and updates them from it.
+
 Apps from outside the catalog install from a link. Put an **Add to Onbun** button on your page that opens
 one of these; the PC's island shows the app and where it comes from, and installs only after a yes:
 

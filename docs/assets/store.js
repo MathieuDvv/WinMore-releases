@@ -212,7 +212,7 @@ $('#publish-form').addEventListener('submit',event=>{
   event.preventDefault();if(!validateRepository()||!event.target.reportValidity()){repository.reportValidity();return;}
   const name=$('#publish-name').value.trim(),description=$('#publish-description').value.trim();
   if(!name||!description){$('#publish-status').textContent='Add an app name and a short description.';return;}
-  const body=`## Community app submission\n\nApp name: ${name}\nRepository: ${repository.value.trim()}\n\n### Description\n${description}\n\n### Before listing\n- [ ] The repository is public and includes a README and installation instructions.\n- [ ] The app includes a Onbun manifest and works with the current client.\n`;
+  const body=`## Community app submission\n\nApp name: ${name}\nRepository: ${repository.value.trim()}\n\n### Description\n${description}\n\n### Before listing\n- [ ] The repository is public and includes a README and installation instructions.\n- [ ] The app includes an Onbun manifest and works with the current client.\n- [ ] A GitHub release has the app’s .wmapp file (https://onbun.app/docs#publish).\n`;
   const url=new URL('https://github.com/MathieuDvv/WinMore-releases/issues/new');url.searchParams.set('title',`[App submission] ${name}`);url.searchParams.set('body',body);
   // Leave the final submission to the creator in GitHub; the static site stores no personal data.
   $('#publish-status').innerHTML=`Your submission draft is ready. <a href="${esc(url.href)}" target="_blank" rel="noopener noreferrer">Open it on GitHub to submit <i class="ic ic-out" aria-hidden="true"></i></a>`;

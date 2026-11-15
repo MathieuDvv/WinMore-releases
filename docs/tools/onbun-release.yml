@@ -1,0 +1,37 @@
+# Onbun app release: save as .github/workflows/onbun-release.yml in your app's repository.
+# Push a tag that matches "version" in manifest.json (git tag v1.2.0 && git push origin v1.2.0) and this
+# packs the app into a .wmapp file, checks it like Onbun does, and attaches it to a GitHub release.
+# Onbun installs from the newest release and updates everyone who has the app.
+name: Onbun release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pack the app
+        id: pack
+        # "." finds the app folder, or the one subfolder with a manifest.json. Name it if you have several.
+        run: |
+          curl -fsSL https://onbun.app/tools/onbun-pack.cjs -o "$RUNNER_TEMP/onbun-pack.cjs"
+          node "$RUNNER_TEMP/onbun-pack.cjs" . --out "$RUNNER_TEMP/dist" --tag "$GITHUB_REF_NAME"
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FILE: ${{ steps.pack.outputs.file }}
+          TITLE: ${{ steps.pack.outputs.name }} ${{ steps.pack.outputs.version }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" "$FILE" --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" "$FILE" --title "$TITLE" --generate-notes
+          fi

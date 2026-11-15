@@ -23,12 +23,12 @@
 <meta name="twitter:image:alt" content="Onbun island. Your desktop does the heavy lifting. Your phone calls the shots.">
 <meta name="theme-color" content="#060608">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/site.css?v=mwi9g172">
-<link rel="stylesheet" href="assets/docs.css?v=mwi9g172">
+<link rel="stylesheet" href="assets/site.css?v=mwia85eu">
+<link rel="stylesheet" href="assets/docs.css?v=mwia85eu">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300..800&display=swap">
-<link rel="stylesheet" href="assets/night.css?v=mwi9g172">
+<link rel="stylesheet" href="assets/night.css?v=mwia85eu">
 </head>
 <body data-page="docs">
 <a class="skip-link" href="#how">Skip to content</a>
@@ -505,10 +505,20 @@ onbun.open('https://example.com');                                  // the phone
         <li>Open your apps folder from the island: Settings → Apps → <em>Open folder</em> (<code>%APPDATA%\WinMore\apps</code>) and drop your folder in. Onbun loads it right away and the phone adds it to its rail.</li>
         <li>Edit any file. Onbun reloads the app within a second and the phone reloads its screen. No restart.</li>
         <li>If the screen has a mistake, the phone says exactly what to fix. Add <code>"$schema"</code> pointing to <code>screen.schema.json</code> for autocomplete in your editor.</li>
-        <li>Share it as a folder or a <code>.wmapp</code> file (Settings → Library → <em>For developers</em>). Bump <code>version</code> on every release so installed copies update.</li>
+        <li>Share it as a folder or as a single <code>.wmapp</code> file. Bump <code>version</code> on every release so installed copies update.</li>
       </ol>
+      <h3 id="publish">Make a .wmapp file</h3>
+      <p>A <code>.wmapp</code> is your whole app folder in one file. Packing it checks it the way Onbun does before installing: the manifest, the entry module, file paths and sizes, and every Kit screen. Use whichever fits:</p>
+      <ul>
+        <li><strong>From the island:</strong> Settings → Library → <em>For developers</em> → <em>Export file…</em>, then pick your app folder.</li>
+        <li><strong>From a terminal</strong> (Node 18 or later, nothing to install): download <a href="/tools/onbun-pack.cjs" download>onbun-pack.cjs</a> and run <code>node onbun-pack.cjs path/to/your-app</code>. It writes <code>&lt;id&gt;-&lt;version&gt;.wmapp</code> and explains any problem it finds.</li>
+        <li><strong>Automatically on GitHub:</strong> save <a href="/tools/onbun-release.yml" download>onbun-release.yml</a> as <code>.github/workflows/onbun-release.yml</code> in your repository. Each time you push a version tag, it packs the app and attaches the file to a release:</li>
+      </ul>
+      <pre><code>git tag v1.2.0
+git push origin v1.2.0</code></pre>
+      <p>The tag has to match <code>version</code> in <code>manifest.json</code>. The workflow finds your app at the top of the repository or in its one subfolder that has a <code>manifest.json</code>.</p>
       <h3>Publish on GitHub</h3>
-      <p>Attach the app's <code>.wmapp</code> to each GitHub release and tag it with the version (<code>v1.2.0</code>). Installed copies pick up the newest release like a catalog update. Then put an <strong>Add to Onbun</strong> button on your page that opens one of these links:</p>
+      <p>Attach the app's <code>.wmapp</code> to each GitHub release and tag it with the version (<code>v1.2.0</code>); the workflow above does both. Installed copies pick up the newest release like a catalog update. To be listed in the store, <a href="/apps">submit your app</a> once it has a release. Then put an <strong>Add to Onbun</strong> button on your page that opens one of these links:</p>
       <ul>
         <li><code>onbun://install?github=your-name/hello</code>: the newest GitHub release (the app then updates from there)</li>
         <li><code>onbun://install?url=https://example.com/hello.wmapp</code>: a package file over HTTPS</li>
@@ -552,11 +562,11 @@ onbun.open('https://example.com');                                  // the phone
 
 <div class="hose-separator" data-hose="arm" aria-hidden="true"></div><footer class="site-foot"><a class="brand" href="/">onbun</a><nav aria-label="Footer"><a href="/">Home</a><a href="/apps">The apps</a><a href="/docs" aria-current="page">The guide</a><a href="/privacy">Privacy</a><a href="mailto:mathieu.davinha@icloud.com">Support</a><a href="https://github.com/MathieuDvv/WinMore-releases">GitHub <i class="ic ic-out" aria-hidden="true"></i></a></nav></footer>
 
-<script src="assets/hose.js?v=mwi9g172"></script>
-<script src="assets/yokai-background.js?v=mwi9g172"></script>
-<script src="assets/island.js?v=mwi9g172"></script>
+<script src="assets/hose.js?v=mwia85eu"></script>
+<script src="assets/yokai-background.js?v=mwia85eu"></script>
+<script src="assets/island.js?v=mwia85eu"></script>
 
-<script src="assets/kit-render.js?v=mwi9g172"></script>
-<script src="assets/docs.js?v=mwi9g172"></script>
+<script src="assets/kit-render.js?v=mwia85eu"></script>
+<script src="assets/docs.js?v=mwia85eu"></script>
 </body>
 </html>
