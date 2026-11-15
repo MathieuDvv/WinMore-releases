@@ -198,6 +198,22 @@
    "collection": "developer",
    "author": "MathieuDvv",
    "download": "packages/weather.wmapp"
+  },
+  {
+   "id": "vitals",
+   "name": "Vitals",
+   "description": "A native system-monitoring dashboard for Onbun, with configurable widgets on your iPhone or Android phone. The monitoring backend runs on your Windows, macOS or Linux computer.",
+   "version": "1.6.2",
+   "author": "pintorus",
+   "repository": "https://github.com/pintorus/OnBunVitals",
+   "platforms": [
+    "win32",
+    "darwin",
+    "linux"
+   ],
+   "icon": null,
+   "download": null,
+   "collection": "community"
   }
  ],
  "bundles": [
