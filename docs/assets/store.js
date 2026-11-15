@@ -220,13 +220,14 @@ $('#publish-form').addEventListener('submit',event=>{
 });
 
 // Community listings live in community.json at the root of the public repository, so a listing shows
-// up as soon as it's committed. A unique query skips GitHub's five-minute cache; the copy published
-// with the site is the fallback.
+// up as soon as it's committed. Raw GitHub and the copy published with the site are the fallbacks.
 const COMMUNITY='https://raw.githubusercontent.com/MathieuDvv/WinMore-releases/main/community.json';
+const COMMUNITY_API='https://api.github.com/repos/MathieuDvv/WinMore-releases/contents/community.json';
 async function community(taken){
   let data=null;
-  for(const url of [COMMUNITY+'?t='+Date.now(),'data/community.json']){
-    try{const response=await fetch(url,{cache:'no-store'});if(response.ok){data=await response.json();break;}}catch{}
+  // The API is always current (60 requests an hour per visitor); raw.githubusercontent.com can lag a few minutes.
+  for(const [url,headers] of [[COMMUNITY_API,{Accept:'application/vnd.github.raw+json'}],[COMMUNITY+'?t='+Date.now(),{}],['data/community.json',{}]]){
+    try{const response=await fetch(url,{cache:'no-store',headers});if(response.ok){data=await response.json();break;}}catch{}
   }
   const seen=new Set(taken);
   return (Array.isArray(data?.apps)?data.apps:[]).filter(app=>{
@@ -234,7 +235,9 @@ async function community(taken){
     try{const repo=new URL(app.repository);if(repo.protocol!=='https:'||repo.hostname!=='github.com'||!/^\/[\w.-]+\/[\w.-]+\/?$/.test(repo.pathname)||repo.username||repo.password||repo.port||repo.search||repo.hash)return false;}catch{return false;}
     seen.add(app.id);return true;
   }).map(app=>({id:app.id,name:app.name.slice(0,40),description:String(app.description||'').slice(0,240),version:app.version.slice(0,20),author:String(app.author||'').slice(0,40),
-    repository:new URL(app.repository).href,platforms:Array.isArray(app.platforms)?app.platforms.filter(p=>typeof p==='string'):null,icon:null,download:null,collection:'community'}));
+    repository:new URL(app.repository).href,platforms:Array.isArray(app.platforms)?app.platforms.filter(p=>typeof p==='string'):null,
+    // Icons are copies from the reviewed release, kept next to community.json in the public repository.
+    icon:/^community\/icons\/[a-z][a-z0-9-]{0,39}\.svg$/.test(app.icon||'')?new URL(app.icon,COMMUNITY).href:null,download:null,collection:'community'}));
 }
 
 async function load(){
