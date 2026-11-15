@@ -251,8 +251,9 @@ A `.wmapp` is the whole app folder in one file. Packing one runs the checks Onbu
 Community apps reach the store through a submission on [onbun.app/apps](https://onbun.app/apps) once they
 have a release; the store installs and updates them from it.
 
-Apps from outside the catalog install from a link. Put an **Add to Onbun** button on your page that opens
-one of these; the PC's island shows the app and where it comes from, and installs only after a yes:
+Store listings get an **Add to Onbun** button automatically. Optionally, put your own on your website or
+README: link it to one of these, and the PC's island shows the app and where it comes from, and installs
+only after a yes:
 
 - `onbun://install?github=your-name/hello`: the newest GitHub release's `.wmapp` (it then updates from there)
 - `onbun://install?url=https://example.com/hello.wmapp`: a package file over HTTPS
