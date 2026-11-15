@@ -19,8 +19,8 @@ const icon=name=>`<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">${I[n
 window.OnbunIcons={icon,GHOST};
 
 const page=document.body.dataset.page;
-const home=page==='home'?'./':'index.html';
-const RELEASES='index.html#download';
+const home=page==='home'?'./':'/';
+const RELEASES='/#download';
 const SIZES={rest:[232,48,25],player:[348,194,26],menu:[348,174,26]};
 
 const island=document.createElement('nav');
@@ -36,9 +36,9 @@ island.innerHTML=`
   <div class="details menu">
     <header><a class="wordmark" href="${home}">onbun</a><span class="status">${page==='docs'?'The guide':page==='apps'?'The apps':'Hello there'}</span><button type="button" data-act="collapse" aria-label="Collapse">${icon('collapse')}</button></header>
     <div class="links">
-      <a href="apps.html"${page==='apps'?' aria-current="page"':''}>${icon('grid')}<span><strong>App store</strong><small>Find your next app</small></span></a>
-      <a href="docs.html"${page==='docs'?' aria-current="page"':''}>${icon('doc')}<span><strong>Documentation</strong><small>How it works</small></span></a>
-      <a href="docs.html#explorer">${icon('sliders')}<span><strong>Components</strong><small>Kit explorer</small></span></a>
+      <a href="/apps"${page==='apps'?' aria-current="page"':''}>${icon('grid')}<span><strong>App store</strong><small>Find your next app</small></span></a>
+      <a href="/docs"${page==='docs'?' aria-current="page"':''}>${icon('doc')}<span><strong>Documentation</strong><small>How it works</small></span></a>
+      <a href="/docs#explorer">${icon('sliders')}<span><strong>Components</strong><small>Kit explorer</small></span></a>
       <a href="${RELEASES}">${icon('download')}<span><strong>Download the client</strong><small>Windows, macOS and Linux</small></span></a>
     </div>
   </div>`;

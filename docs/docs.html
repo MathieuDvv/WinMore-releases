@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Onbun Docs</title>
 <meta name="description" content="How Onbun works, how each app works, how to build your own, and an explorer for every Kit component.">
-<link rel="canonical" href="https://onbun.app/docs.html">
+<link rel="canonical" href="https://onbun.app/docs">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Onbun">
 <meta property="og:title" content="Onbun Docs">
 <meta property="og:description" content="How Onbun works, how each app works, how to build your own, and an explorer for every Kit component.">
-<meta property="og:url" content="https://onbun.app/docs.html">
+<meta property="og:url" content="https://onbun.app/docs">
 <meta property="og:image" content="https://onbun.app/assets/onbun-social.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1731">
@@ -23,12 +23,12 @@
 <meta name="twitter:image:alt" content="Onbun island. Your desktop does the heavy lifting. Your phone calls the shots.">
 <meta name="theme-color" content="#060608">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/site.css?v=mwgw9iq5">
-<link rel="stylesheet" href="assets/docs.css?v=mwgw9iq5">
+<link rel="stylesheet" href="assets/site.css?v=mwi9g172">
+<link rel="stylesheet" href="assets/docs.css?v=mwi9g172">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,300..800&display=swap">
-<link rel="stylesheet" href="assets/night.css?v=mwgw9iq5">
+<link rel="stylesheet" href="assets/night.css?v=mwi9g172">
 </head>
 <body data-page="docs">
 <a class="skip-link" href="#how">Skip to content</a>
@@ -76,7 +76,7 @@
     </section>
 
     <section id="install">
-      <h2>Install</h2><p>Onbun runs on Windows, macOS, and Linux. Choose your desktop download from the <a href="index.html#download">download section</a>. Onbun was called WinMore before 0.9.0; connection identifiers and the <code>.wmapp</code> package format keep that name so older installs keep working.</p>
+      <h2>Install</h2><p>Onbun runs on Windows, macOS, and Linux. Choose your desktop download from the <a href="/#download">download section</a>. Onbun was called WinMore before 0.9.0; connection identifiers and the <code>.wmapp</code> package format keep that name so older installs keep working.</p>
       <ul>
         <li><strong>Windows:</strong> run <code>Onbun-Setup-&lt;version&gt;.exe</code>. It installs for your user (no admin needed), adds desktop and Start menu shortcuts, and starts. The installer is not signed yet, so SmartScreen may ask you to confirm. Allow Onbun through the firewall on <strong>private</strong> networks when Windows asks: the phone reaches it over your network.</li>
         <li><strong>macOS:</strong> open the <code>.dmg</code> (<code>arm64</code> for Apple silicon, <code>x64</code> for Intel) and drag Onbun to Applications. It isn't notarized yet: the first time, right-click it and choose <em>Open</em>. Onbun lives in the menu bar, with no Dock icon.</li>
@@ -89,7 +89,7 @@
     <section id="pair">
       <h2>Pair your phone</h2>
       <ol>
-        <li>Install the phone app: on Android, download <code>Onbun-Android-&lt;version&gt;.apk</code> from the <a href="index.html#download">download section</a> on the phone and open it (Android asks once to allow installing from your browser). On iPhone, install the IPA when a release has one (it's an Ad Hoc build, so your iPhone has to be registered for it), or build the app from source with Xcode.</li>
+        <li>Install the phone app: on Android, download <code>Onbun-Android-&lt;version&gt;.apk</code> from the <a href="/#download">download section</a> on the phone and open it (Android asks once to allow installing from your browser). On iPhone, install the IPA when a release has one (it's an Ad Hoc build, so your iPhone has to be registered for it), or build the app from source with Xcode.</li>
         <li>Put the phone and the PC on the same trusted Wi-Fi or LAN, and open Onbun on the phone.</li>
         <li>The first launch plays a short welcome on a black screen: turn the phone sideways, with its top on the left, and cartoon arms set out the app's navigation while Settings walks in on its own legs.</li>
         <li><strong>Connect to your PC</strong> then lists the PCs running Onbun nearby. Allow local network access when the phone asks, and choose yours.</li>
@@ -134,7 +134,7 @@
       <h2>Get apps</h2>
       <p>Everything Onbun does comes from apps. Find them in the island's <strong>Settings → Library</strong>:</p>
       <ul>
-        <li><strong>Onbun app store:</strong> <em>Open store</em> shows every app on <a href="apps.html">this site</a>. Each app's page has an <strong>Add to Onbun</strong> button; it hands the app to Onbun on your computer, and the island asks before installing.</li>
+        <li><strong>Onbun app store:</strong> <em>Open store</em> shows every app on <a href="/apps">this site</a>. Each app's page has an <strong>Add to Onbun</strong> button; it hands the app to Onbun on your computer, and the island asks before installing.</li>
         <li><strong>Quick install:</strong> bundles add several apps at once: <em>Audio essentials</em> (Music, Mixer, Deezer), <em>Desktop control</em> (PC, Clipboard, Browser) and <em>Stay connected</em> (Discord, Reddit, Twitch). <em>More apps</em> lists the rest.</li>
         <li><strong>For developers:</strong> install an app folder, a <code>.wmapp</code> file, or the newest release from a GitHub repository (<code>owner/app</code>). An app from GitHub keeps updating from that repository.</li>
       </ul>
@@ -187,7 +187,7 @@ components. Taps come back to the computer as commands. Make the app complete an
 the Onbun catalog.
 
 READ FIRST. These are the source of truth. Never guess a component, prop, action or operator.
-- Guide: https://onbun.app/docs.html
+- Guide: https://onbun.app/docs
 - Full app guide: https://onbun.app/data/app-guide.md
 - Every component, prop, action, operator and filter: https://onbun.app/data/components.md
 - JSON Schema for ui/screen.json: https://onbun.app/data/screen.schema.json
@@ -550,13 +550,13 @@ onbun.open('https://example.com');                                  // the phone
   </article>
 </div>
 
-<div class="hose-separator" data-hose="arm" aria-hidden="true"></div><footer class="site-foot"><a class="brand" href="index.html">onbun</a><nav aria-label="Footer"><a href="index.html">Home</a><a href="apps.html">The apps</a><a href="docs.html" aria-current="page">The guide</a><a href="https://github.com/MathieuDvv/WinMore-releases">GitHub ↗</a></nav></footer>
+<div class="hose-separator" data-hose="arm" aria-hidden="true"></div><footer class="site-foot"><a class="brand" href="/">onbun</a><nav aria-label="Footer"><a href="/">Home</a><a href="/apps">The apps</a><a href="/docs" aria-current="page">The guide</a><a href="/privacy">Privacy</a><a href="mailto:mathieu.davinha@icloud.com">Support</a><a href="https://github.com/MathieuDvv/WinMore-releases">GitHub <i class="ic ic-out" aria-hidden="true"></i></a></nav></footer>
 
-<script src="assets/hose.js?v=mwgw9iq5"></script>
-<script src="assets/yokai-background.js?v=mwgw9iq5"></script>
-<script src="assets/island.js?v=mwgw9iq5"></script>
+<script src="assets/hose.js?v=mwi9g172"></script>
+<script src="assets/yokai-background.js?v=mwi9g172"></script>
+<script src="assets/island.js?v=mwi9g172"></script>
 
-<script src="assets/kit-render.js?v=mwgw9iq5"></script>
-<script src="assets/docs.js?v=mwgw9iq5"></script>
+<script src="assets/kit-render.js?v=mwi9g172"></script>
+<script src="assets/docs.js?v=mwi9g172"></script>
 </body>
 </html>
