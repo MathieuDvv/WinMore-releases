@@ -1,8 +1,5 @@
 {
   "developerApps": ["weather", "deezer"],
-  "communityApps": [
-    {"id":"vitals","name":"Vitals","description":"A native system-monitoring dashboard for Onbun, with configurable widgets on your iPhone or Android phone. The monitoring backend runs on your Windows, macOS or Linux computer.","version":"1.6.2","author":"pintorus","repository":"https://github.com/pintorus/OnBunVitals","platforms":["win32","darwin","linux"]}
-  ],
   "bundles": [
     {"id":"listening","label":"Audio / 01","title":"Audio essentials","description":"YouTube Music. Deezer. Total volume control.","art":"audio","apps":["music","mixer","deezer"]},
     {"id":"desktop","label":"Desktop / 02","title":"Desktop control","description":"Your browser, clipboard, and PC stats. All within reach.","art":"desktop","apps":["pc","clipboard","browser"]},

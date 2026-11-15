@@ -65,8 +65,11 @@ Edit `store.json` to curate the store:
 - Every listing gets an **Add to Onbun** button: an `onbun://install?…` link
   (`app=<id>` for catalog apps, `url=` for developer packages, `github=owner/repo`
   for community apps) that the desktop app opens and confirms.
-- `communityApps` starts empty. To publish an accepted submission, add a listing
-  here and rebuild/publish the site. For example:
+- Community apps aren't in this file. They live in `community.json` at the root of
+  the public repository, which the store page reads live from raw.githubusercontent.com
+  (with `data/community.json`, copied on each site publish, as the fallback).
+  `npm run submissions` writes it when you click **Add to store**, so no site publish
+  is needed. It holds `{"apps":[…]}` with listings like:
 
 ```json
 {
@@ -83,7 +86,7 @@ Edit `store.json` to curate the store:
 The publishing form validates a creator's GitHub repository and prepares a
 prefilled issue in `MathieuDvv/WinMore-releases`. Creators continue to GitHub
 and submit the issue themselves. This requires Issues to be enabled on the
-public repository. Listings are curated in `communityApps`; the static site
+public repository. Listings are curated in `community.json`; the static site
 does not automatically publish submissions or store account data.
 
 Run `npx electron tests/site-live.cjs` for browser behavior, package validation,

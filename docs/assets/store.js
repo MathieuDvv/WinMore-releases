@@ -219,11 +219,30 @@ $('#publish-form').addEventListener('submit',event=>{
   window.open(url.href,'_blank','noopener,noreferrer');
 });
 
+// Community listings live in community.json at the root of the public repository, so a listing shows
+// up as soon as it's committed. A unique query skips GitHub's five-minute cache; the copy published
+// with the site is the fallback.
+const COMMUNITY='https://raw.githubusercontent.com/MathieuDvv/WinMore-releases/main/community.json';
+async function community(taken){
+  let data=null;
+  for(const url of [COMMUNITY+'?t='+Date.now(),'data/community.json']){
+    try{const response=await fetch(url,{cache:'no-store'});if(response.ok){data=await response.json();break;}}catch{}
+  }
+  const seen=new Set(taken);
+  return (Array.isArray(data?.apps)?data.apps:[]).filter(app=>{
+    if(!/^[a-z][a-z0-9-]{0,39}$/.test(app?.id)||seen.has(app.id)||typeof app.name!=='string'||typeof app.version!=='string')return false;
+    try{const repo=new URL(app.repository);if(repo.protocol!=='https:'||repo.hostname!=='github.com'||!/^\/[\w.-]+\/[\w.-]+\/?$/.test(repo.pathname)||repo.username||repo.password||repo.port||repo.search||repo.hash)return false;}catch{return false;}
+    seen.add(app.id);return true;
+  }).map(app=>({id:app.id,name:app.name.slice(0,40),description:String(app.description||'').slice(0,240),version:app.version.slice(0,20),author:String(app.author||'').slice(0,40),
+    repository:new URL(app.repository).href,platforms:Array.isArray(app.platforms)?app.platforms.filter(p=>typeof p==='string'):null,icon:null,download:null,collection:'community'}));
+}
+
 async function load(){
   try{
     const response=await fetch('data/apps.json');if(!response.ok)throw Error('Catalog unavailable');
     const data=await response.json();if(!Array.isArray(data.apps))throw Error('Invalid catalog');
-    apps=data.apps.map(app=>({...app,collection:app.collection||'default'}));bundles=data.bundles||[];renderCategories();render();renderBundle();
+    const own=data.apps.filter(app=>app.collection!=='community').map(app=>({...app,collection:app.collection||'default'}));
+    apps=[...own,...await community(own.map(app=>app.id))];bundles=data.bundles||[];renderCategories();render();renderBundle();
   }catch{
     $('#result-count').textContent='Unavailable';$('.featured').hidden=true;$('#catalog-status').hidden=false;
     $('#catalog-status').innerHTML='The app store couldn’t be loaded. <button type="button" id="retry-catalog">Try again <i class="ic ic-out" aria-hidden="true"></i></button>';
