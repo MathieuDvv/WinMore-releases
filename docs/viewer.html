@@ -6,7 +6,7 @@
 <meta name="description" content="A free browser playground for Onbun developers. Open a .wmapp, an app folder or screen JSON to inspect and test your layout. Files stay on your device.">
 <link rel="canonical" href="https://onbun.app/viewer">
 <meta name="theme-color" content="#060608"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="assets/site.css?v=viewer-mwjyafo6"><link rel="stylesheet" href="assets/night.css?v=viewer-mwjyafo6"><link rel="stylesheet" href="assets/viewer.css?v=viewer-mwjyafo6">
+<link rel="stylesheet" href="assets/site.css?v=mwks2rrb"><link rel="stylesheet" href="assets/night.css?v=mwks2rrb"><link rel="stylesheet" href="assets/viewer.css?v=mwks2rrb">
 </head>
 <body data-page="viewer">
 <a class="skip-link" href="#workspace">Skip to viewer</a>
@@ -25,7 +25,7 @@
       <div class="viewer-stage">
         <div class="viewer-device-controls"><label>Viewport<select id="viewport"><option value="844,390">Phone · 844 × 390</option><option value="932,430">Large phone · 932 × 430</option><option value="1024,768">Tablet · 1024 × 768</option><option value="custom">Custom</option></select></label><button id="rotate" type="button" aria-label="Rotate viewport">Rotate ↻</button><label>W<input id="viewport-width" type="number" min="240" max="1600" value="844"></label><span>×</span><label>H<input id="viewport-height" type="number" min="240" max="1600" value="390"></label></div>
         <div class="viewer-preview-controls"><label>Page<select id="preview-page"><option value="screen">Main screen</option></select></label><label><input type="checkbox" id="show-outlines"> Layout outlines</label><label><input type="checkbox" id="inspect-mode"> Inspect</label><span id="preview-scale"></span></div>
-        <div class="viewer-preview-area" id="preview-area"><div id="preview-size"><iframe id="preview-frame" title="Interactive app layout preview" src="viewer-preview.html?v=viewer-mwjyafo6" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe></div></div>
+        <div class="viewer-preview-area" id="preview-area"><div id="preview-size"><iframe id="preview-frame" title="Interactive app layout preview" src="viewer-preview.html" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe></div></div>
         <div class="viewer-preview-foot"><span>ONBUN / WEB INTERPRETATION</span><span id="viewport-label">844 × 390</span></div>
         <div class="viewer-editor-tabs" role="tablist" aria-label="Editor"><button type="button" role="tab" aria-selected="true" aria-controls="screen-panel" id="screen-tab" data-tab="screen">Screen JSON</button><button type="button" role="tab" aria-selected="false" aria-controls="data-panel" id="data-tab" data-tab="data" tabindex="-1">Mock data</button><button type="button" role="tab" aria-selected="false" aria-controls="activity-panel" id="activity-tab" data-tab="activity" tabindex="-1">Activity <span id="activity-count">0</span></button></div>
         <div id="screen-panel" role="tabpanel" aria-labelledby="screen-tab" class="viewer-editor"><label for="screen-json">Edit your full screen. The preview updates as you type.</label><textarea id="screen-json" spellcheck="false" aria-label="Screen JSON editor"></textarea></div>
@@ -38,6 +38,6 @@
   </section>
   <section class="viewer-about"><div><span class="label">A place to experiment</span><h2>Find your layout.<br>Then make it native.</h2></div><div><p>This viewer interprets Kit with its own quiet, monochrome style. Test spacing, arrangement, bindings, conditional content and local interactions across screen sizes.</p><p>For lists and data-driven screens, add representative values in <strong>Mock data</strong>. The viewer never runs your app's JavaScript. Web blocks, video and native-only actions have placeholders or activity entries. Remote images stay blocked; packaged images are available from folders and wmapp files.</p><p>It is a layout playground, not an exact iPhone or Android simulation. Check your final app on both phones.</p><a href="/docs#build">Read the app-building guide ↗</a></div></section>
 </main>
-<footer class="site-foot"><a class="brand" href="/">onbun</a><nav aria-label="Footer"><a href="/apps">The apps</a><a href="/docs">The guide</a><a href="/viewer" aria-current="page">Viewer</a><a href="/privacy">Privacy</a></nav></footer>
-<script src="assets/hose.js?v=viewer-mwjyafo6"></script><script src="assets/island.js?v=viewer-mwjyafo6"></script><script src="data/kit-validator.js?v=viewer-mwjyafo6"></script><script src="assets/viewer-core.js?v=viewer-mwjyafo6"></script><script src="assets/viewer.js?v=viewer-mwjyafo6"></script>
+<footer class="site-foot"><a class="brand" href="/">onbun</a><nav aria-label="Footer"><a href="/apps">The apps</a><a href="/docs">The guide</a><a href="/viewer" aria-current="page">Viewer</a><a href="/privacy">Privacy</a><a class="foot-donate" href="https://ko-fi.com/dotslimy" target="_blank" rel="noopener"><i class="ic ic-heart" aria-hidden="true"></i>Donate</a></nav></footer>
+<script src="assets/hose.js?v=mwks2rrb"></script><script src="assets/island.js?v=mwks2rrb"></script><script src="data/kit-validator.js?v=mwks2rrb"></script><script src="assets/viewer-core.js?v=mwks2rrb"></script><script src="assets/viewer.js?v=mwks2rrb"></script>
 </body></html>

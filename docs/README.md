@@ -2,6 +2,17 @@
 
 Run `npm run site` from the repository root and open `http://localhost:4400/`.
 
+The free developer playground at `/viewer` opens Kit `.wmapp` packages, app
+folders, or standalone screen JSON. `assets/viewer-core.js` reads the documented
+JSON/base64 package format without running app code. An opaque-origin sandbox
+(`viewer-preview.html`) interprets the screen with the shared Kit renderer and
+its own monochrome style. Its CSP blocks network access and executable app
+content. Images are read from the selected package; remote images are blocked.
+The viewer includes editable mock data, component inspection, viewport sizing,
+local screen state, sheets/covers, action logging, and screen JSON export.
+Run `node --test tests/viewer.test.cjs` and `npx electron tests/viewer-live.cjs`
+to check package parsing, interactions, isolation, and responsive layouts.
+
 All three pages use the shared dark, monochrome treatment in `assets/night.css`.
 The island is the only header navigation. The home hero contains only the island,
 its animated limbs and a scroll icon. The historical ASCII backgrounds are hidden

@@ -142,3 +142,32 @@ body[data-page=home] .yokai-backdrop{opacity:0}
 .bundle-track .bundle-copy{max-width:65%}.bundle-track .bundle-art{width:42%;right:-1%;bottom:2%;height:85%}
 @media(max-width:640px){.featured .feature-head{gap:10px;flex-wrap:wrap}.featured .feature-head h2{font-size:27px}.carousel-controls{gap:5px}.carousel-controls>span{font-size:8px}.carousel-controls button{width:30px;height:30px}.bundle-track .bundle{padding:25px 18px;min-height:405px}.bundle-track .bundle-copy{max-width:100%}.bundle-track .bundle h3{font-size:29px;max-width:200px;margin:22px 0 14px}.bundle-track .bundle p{font-size:11px;max-width:200px}.bundle-track .bundle-art{width:82%;height:50%;bottom:-2%;right:-8%;opacity:.28}.bundle-track .bundle-apps{gap:5px}.bundle-track .bundle-apps .glyph{width:27px;height:27px}.bundle-track .bundle-apps>span:last-child{margin-left:2px}.bundle-track .bundle-open{gap:25px}}
 @media(prefers-reduced-motion:reduce){.bundle-track.is-moving,.bundle-track .bundle{transition:none}}
+
+/* Donate: a heart icon and the footer's Ko-fi pill */
+.ic-heart{--ic:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 20.5s-7.5-4.6-9.3-9.4C1.5 7.8 3.6 4.5 7 4.5c2.1 0 3.6 1.1 5 3 1.4-1.9 2.9-3 5-3 3.4 0 5.5 3.3 4.3 6.6-1.8 4.8-9.3 9.4-9.3 9.4Z'/%3E%3C/svg%3E")}
+.site-foot nav a.foot-donate{display:inline-flex;align-items:center;gap:7px;margin:-7px 0;padding:6px 13px;border:1px solid #ffffff40;border-radius:25px;font-weight:700;transition:background .15s,color .15s}
+.site-foot nav a.foot-donate:hover{background:#eeeeef;color:#0b0b0e;text-decoration:none}
+.site-foot nav a.foot-donate .ic{color:#ff8d86}
+
+/* After Add to Onbun: arms throwing confetti, and a thank-you card */
+.celebrate{position:fixed;inset:0;width:100%;height:100%;max-width:none;max-height:none;margin:0;padding:16px;border:0;background:#060608e8;color:var(--text);overflow:hidden;display:grid;place-items:center;animation:celebrate-in .25s ease}
+.celebrate:not([open]){display:none}
+.celebrate::backdrop{background:transparent}
+.celebrate[data-leaving]{animation:celebrate-out .36s ease forwards}
+.celebrate-confetti,.celebrate-arms{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.celebrate-confetti{z-index:2}
+.celebrate-card{position:relative;z-index:1;width:min(460px,100%);padding:34px 32px 30px;background:var(--paper);border:1px solid #ffffff38;text-align:center;animation:celebrate-card .5s .35s cubic-bezier(.2,.85,.2,1) backwards}
+.celebrate-card .label{display:block;font:700 10px/1.5 var(--font);letter-spacing:.1em;text-transform:uppercase;color:#92929e}
+.celebrate-card h2{font:500 clamp(34px,6vw,48px)/1.05 var(--display);letter-spacing:-.045em;margin:12px 0 0}
+.celebrate-card h2 em{font-style:italic}
+.celebrate-status{font-size:12px;color:var(--secondary);margin:14px 0 0}.celebrate-status:empty{display:none}
+.celebrate-kofi{font-size:14px;line-height:1.65;color:var(--secondary);margin:18px auto 0;max-width:330px}
+.celebrate-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:24px}
+.celebrate-actions .btn{flex:1 1 170px;gap:9px}
+.celebrate-actions .ic{color:#ff8d86}
+.celebrate-actions .btn.primary .ic{color:#e2463c}
+@keyframes celebrate-in{from{opacity:0}}
+@keyframes celebrate-out{to{opacity:0}}
+@keyframes celebrate-card{from{opacity:0;transform:translateY(18px) scale(.97)}}
+@media(max-width:640px){.celebrate-card{padding:28px 20px 22px}.celebrate-kofi{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.celebrate,.celebrate-card,.celebrate[data-leaving]{animation:none}}
