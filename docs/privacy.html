@@ -2,27 +2,68 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Onbun iOS privacy policy</title>
-<meta name="description" content="How the Onbun iPhone and iPad app handles pairing, local data, permissions and third-party content.">
+<title>Onbun privacy policy</title>
+<meta name="description" content="How Onbun for iPhone, iPad, Android, Windows, macOS and Linux handles pairing, local data, permissions and third-party content.">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <style>
-body{margin:0;background:#060608;color:#eee;font:17px/1.65 system-ui,sans-serif}main{max-width:760px;margin:auto;padding:48px 24px 80px}h1,h2{line-height:1.25}h2{margin-top:36px;font-size:23px}a{color:#b9d8ff}small{color:#aaa}
+body{margin:0;background:#060608;color:#eee;font:17px/1.65 system-ui,sans-serif}main{max-width:760px;margin:auto;padding:48px 24px 80px}h1,h2,h3{line-height:1.25}h2{margin-top:56px;font-size:27px;padding-top:24px;border-top:1px solid #222}h3{margin-top:32px;font-size:21px}a{color:#b9d8ff}small{color:#aaa}nav ul{padding-left:20px}
 </style>
 </head>
 <body><main>
 <a href="/">Onbun</a>
-<h1>iPhone and iPad privacy policy</h1>
-<small>Updated 14 November 2026</small>
-<h2>Your computer and iPhone</h2>
+<h1>Privacy policy</h1>
+<small>Updated 17 November 2026</small>
+<p>Onbun has two parts: an app on your computer (Windows, macOS or Linux) and an app on your phone or tablet (iPhone, iPad or Android). The computer runs your apps; the phone or tablet shows their controls. Neither part includes advertising or analytics, and neither sends your content to a server run by Onbun. This page covers each platform.</p>
+<nav aria-label="Platforms"><ul>
+<li><a href="#ios">iPhone and iPad</a></li>
+<li><a href="#android">Android</a></li>
+<li><a href="#computer">Computer: Windows, macOS and Linux</a></li>
+<li><a href="#help">Help and privacy questions</a></li>
+</ul></nav>
+
+<section id="ios">
+<h2>iPhone and iPad privacy policy</h2>
+<h3>Your computer and iPhone</h3>
 <p>Onbun connects to a computer you own on your local network. The computer runs your apps; your iPhone or iPad displays their controls and sends the actions you choose. From Onbun 0.9.1, traffic between your device and the computer is encrypted, and pairing uses a code shown on the computer that never travels over the network. Earlier versions do not encrypt local traffic: update both apps, and pair only on networks you trust until you do.</p>
 <p>Pairing sends your device name to your computer. The pairing credential is stored in this device’s Keychain and is not synced to iCloud. Navigation choices and screen preferences are stored locally.</p>
-<h2>Content and permissions</h2>
+<h3>Content and permissions</h3>
 <p>Apps on your computer can send screen content, messages, media and controls to this device. They receive commands and text you submit. A paste action uses the system clipboard permission; choosing a photo uses Apple’s photo picker and stores a resized copy in Onbun’s local storage.</p>
 <p>Media and web screens can connect directly to third-party sites. Those providers receive network requests and may process data under their own policies. Package web screens receive their app’s screen data and can issue commands to that app on your paired computer. Install only computer apps you trust. Public HTTPS pages do not receive the Onbun native bridge or its screen data.</p>
-<h2>Developer data collection</h2>
+<h3>Developer data collection</h3>
 <p>The iOS app includes no advertising or analytics SDK and does not send your screen content, pairing credential or commands to an Onbun-operated server. Third-party services you use on your computer or through media and web screens have their own data practices. Apple handles TestFlight diagnostics and feedback under its policies.</p>
-<h2>Retention and removal</h2>
+<h3>Retention and removal</h3>
 <p>Saved settings, selected photos and cached media remain locally until removed. In Settings, Forget this PC removes the local credential. Erase local data also removes saved screen preferences, selected photo copies and cached images. These actions do not delete files, accounts or data on your computer or third-party services. Reset the pairing key on your computer to revoke existing links. Web screens use nonpersistent website storage.</p>
+</section>
+
+<section id="android">
+<h2>Android privacy policy</h2>
+<h3>Your computer and Android device</h3>
+<p>The Android app works like the iPhone app: it connects to a computer you own on your local network, shows the controls of the apps running there and sends the actions you choose. From Onbun 0.9.1, traffic is encrypted and pairing uses a code shown on the computer that never travels over the network. Finding your computer uses the local network and nearby Wi-Fi permissions; Onbun does not use them to determine your location.</p>
+<p>Pairing sends your device name to your computer. The pairing credential, navigation choices and screen preferences are stored in Onbun’s private app storage, which other apps cannot read. Onbun opts out of Android cloud backup and device-to-device transfer, so the credential stays on this device.</p>
+<h3>Content and permissions</h3>
+<p>Apps on your computer can send screen content, messages, media and controls to this device. They receive commands and text you submit. Paste and copy actions use the system clipboard; choosing a photo uses the Android photo picker, which shares only the image you select.</p>
+<p>Media and web screens can connect directly to third-party sites, as described for iPhone above. Those providers may process data under their own policies. Install only computer apps you trust.</p>
+<h3>Developer data collection</h3>
+<p>The Android app includes no advertising, analytics or crash-reporting SDK and does not send your screen content, pairing credential or commands to an Onbun-operated server. To offer updates, it asks GitHub for the latest Onbun release; GitHub receives that request under its own policies. If you install Onbun from a store, that store handles its own diagnostics.</p>
+<h3>Retention and removal</h3>
+<p>Saved settings and cached media remain on this device until removed. Pairing with another computer replaces the saved credential and clears the previous computer’s screens. To remove everything, clear Onbun’s storage in Android Settings → Apps → Onbun → Storage, or uninstall the app. This does not delete files, accounts or data on your computer or third-party services. Reset the pairing key on your computer to revoke existing links.</p>
+</section>
+
+<section id="computer">
+<h2>Computer privacy policy: Windows, macOS and Linux</h2>
+<h3>Pairing and the local network</h3>
+<p>The computer app announces itself on your local network so your phone can find it, using the computer’s name, and accepts connections from paired devices on port 4317. Since 0.9.1 those connections are encrypted and authenticated. The pairing key is encrypted with your system’s credential store: Windows Data Protection, the macOS Keychain, or the Linux Secret Service or KWallet (a file readable only by your user account when neither is available). Anyone holding your pairing link can control Onbun, so keep it private, and do not forward port 4317 to the internet.</p>
+<h3>Your apps and accounts</h3>
+<p>Onbun apps run on your computer and connect to the services they are built for. For example, YouTube Music, Deezer, Discord and Reddit use your signed-in sessions in Onbun’s windows on the computer, Twitch reads public chat, song lyrics come from LRCLIB, and Weather requests forecasts from Open-Meteo for the place you choose. Each service receives those requests and processes data under its own policy. Sign-in sessions, app settings and saved state are stored in your user profile on the computer and are not sent to Onbun.</p>
+<p>Apps from the “Made by users” collection come from their creators’ GitHub releases and are not reviewed by Onbun. Install only apps you trust: an app can read what it is given access to on your computer.</p>
+<h3>Developer data collection</h3>
+<p>The computer app includes no advertising or analytics. To check for Onbun and app updates and to list apps in the Library, it downloads release and catalog files from GitHub and onbun.app; those requests reveal your IP address to the host, as any download does. If you install Onbun from the Microsoft Store, Microsoft handles store diagnostics under its policies.</p>
+<h3>Retention and removal</h3>
+<p>Settings → General → Forget phones gives the computer a new key, so every paired phone or tablet must pair again. Removing an app you added in Settings → Apps deletes its files; apps that come with Onbun stay on disk, turned off. Uninstalling Onbun removes the program; your profile folder (<code>%APPDATA%\WinMore</code> on Windows, <code>~/Library/Application Support/WinMore</code> on macOS, <code>~/.config/WinMore</code> on Linux) keeps your settings and sign-ins until you delete it.</p>
+</section>
+
+<section id="help">
 <h2>Help and privacy questions</h2>
 <p>Contact the project through <a href="https://github.com/MathieuDvv/WinMore-releases/issues">GitHub issues</a>. Do not include pairing links, private messages or other personal data in public reports. Information you voluntarily submit there is handled by GitHub and the project maintainers to respond to your request.</p>
+</section>
 </main></body></html>

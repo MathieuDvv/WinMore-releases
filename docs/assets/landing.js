@@ -10,7 +10,7 @@ document.addEventListener('island',({detail})=>{
 fetch('data/apps.json').then(r=>r.json()).then(({apps})=>{
   document.getElementById('all-apps-label').textContent=`Explore all ${apps.length} apps`;
   const available=apps.filter(app=>app.collection!=='developer'&&app.collection!=='community');
-  const featured=['music','mixer','clipboard'].map(id=>available.find(app=>app.id===id)).filter(Boolean);
+  const featured=['weather','mixer','clipboard'].map(id=>available.find(app=>app.id===id)).filter(Boolean);
   apps=[...featured,...available.filter(app=>!featured.includes(app))].slice(0,3);
   document.getElementById('count').textContent=`${apps.length} featured apps`;
   document.getElementById('library').innerHTML=apps.map(app=>`

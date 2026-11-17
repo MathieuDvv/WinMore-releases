@@ -95,8 +95,9 @@
    ],
    "size": 51279,
    "files": 6,
-   "collection": "default",
-   "author": "MathieuDvv"
+   "collection": "developer",
+   "author": "MathieuDvv",
+   "download": "packages/discord.wmapp"
   },
   {
    "id": "mixer",
@@ -127,8 +128,9 @@
    ],
    "size": 136552,
    "files": 9,
-   "collection": "default",
-   "author": "MathieuDvv"
+   "collection": "developer",
+   "author": "MathieuDvv",
+   "download": "packages/music.wmapp"
   },
   {
    "id": "pc",
@@ -161,8 +163,9 @@
    ],
    "size": 55931,
    "files": 7,
-   "collection": "default",
-   "author": "MathieuDvv"
+   "collection": "developer",
+   "author": "MathieuDvv",
+   "download": "packages/reddit.wmapp"
   },
   {
    "id": "twitch",
@@ -178,8 +181,9 @@
    ],
    "size": 5668,
    "files": 5,
-   "collection": "default",
-   "author": "MathieuDvv"
+   "collection": "developer",
+   "author": "MathieuDvv",
+   "download": "packages/twitch.wmapp"
   },
   {
    "id": "weather",
@@ -195,9 +199,8 @@
    ],
    "size": 1114101,
    "files": 100,
-   "collection": "developer",
-   "author": "MathieuDvv",
-   "download": "packages/weather.wmapp"
+   "collection": "default",
+   "author": "MathieuDvv"
   }
  ],
  "bundles": [
