@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Onbun Viewer — free Kit layout playground</title>
+<meta name="description" content="A free browser playground for Onbun developers. Open a .wmapp, an app folder or screen JSON to inspect and test your layout. Files stay on your device.">
+<link rel="canonical" href="https://onbun.app/viewer">
+<meta name="theme-color" content="#060608"><link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/site.css?v=viewer-mwjyafo6"><link rel="stylesheet" href="assets/night.css?v=viewer-mwjyafo6"><link rel="stylesheet" href="assets/viewer.css?v=viewer-mwjyafo6">
+</head>
+<body data-page="viewer">
+<a class="skip-link" href="#workspace">Skip to viewer</a>
+<main class="viewer-page">
+  <header class="viewer-head"><div><a class="viewer-back" href="/docs">← Documentation</a><div class="viewer-kicker">FREE DEVELOPER TOOL / KIT</div><h1>A little room<br>to try things.</h1><p>Bring your app. See how it fits. Open a package, a folder, or just your screen JSON and explore the whole layout.</p></div><aside><span class="viewer-mark" aria-hidden="true">{<i>↔</i>}</span><strong>Onbun Viewer</strong><p>Runs in your browser.<br>No account. No upload. Always free.</p></aside></header>
+  <section class="viewer-import" id="drop-zone" aria-label="Open your app">
+    <div><strong>Make yourself at home.</strong><p>Drop a <code>.wmapp</code>, a JSON file or an app folder here.</p></div>
+    <div class="viewer-actions"><button class="btn primary" id="open-file" type="button">Open file ↗</button><button class="btn" id="open-folder" type="button">Open folder</button><button class="btn" id="load-example" type="button">Try an example</button></div>
+    <input id="file-input" type="file" accept=".wmapp,.json" hidden><input id="folder-input" type="file" webkitdirectory multiple hidden>
+  </section>
+  <p class="viewer-status" id="import-status" role="status">An example is ready below. Your files are read locally and never sent to a server.</p>
+  <section class="viewer-workspace" id="workspace" aria-label="Layout playground">
+    <div class="viewer-toolbar"><div class="viewer-app"><span class="viewer-dot"></span><strong id="app-name">Layout study</strong><small id="app-source">Example screen</small></div><div class="viewer-actions"><button id="reset-state" type="button">Reset state</button><button id="download-json" type="button">Export JSON ↓</button></div></div>
+    <div class="viewer-grid">
+      <aside class="viewer-tree"><div class="panel-heading"><h2>Structure</h2><span id="node-count"></span></div><label class="viewer-search">Find a component<input id="tree-search" type="search" placeholder="Type or text…"></label><div id="component-tree" aria-label="Screen components"></div></aside>
+      <div class="viewer-stage">
+        <div class="viewer-device-controls"><label>Viewport<select id="viewport"><option value="844,390">Phone · 844 × 390</option><option value="932,430">Large phone · 932 × 430</option><option value="1024,768">Tablet · 1024 × 768</option><option value="custom">Custom</option></select></label><button id="rotate" type="button" aria-label="Rotate viewport">Rotate ↻</button><label>W<input id="viewport-width" type="number" min="240" max="1600" value="844"></label><span>×</span><label>H<input id="viewport-height" type="number" min="240" max="1600" value="390"></label></div>
+        <div class="viewer-preview-controls"><label>Page<select id="preview-page"><option value="screen">Main screen</option></select></label><label><input type="checkbox" id="show-outlines"> Layout outlines</label><label><input type="checkbox" id="inspect-mode"> Inspect</label><span id="preview-scale"></span></div>
+        <div class="viewer-preview-area" id="preview-area"><div id="preview-size"><iframe id="preview-frame" title="Interactive app layout preview" src="viewer-preview.html?v=viewer-mwjyafo6" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe></div></div>
+        <div class="viewer-preview-foot"><span>ONBUN / WEB INTERPRETATION</span><span id="viewport-label">844 × 390</span></div>
+        <div class="viewer-editor-tabs" role="tablist" aria-label="Editor"><button type="button" role="tab" aria-selected="true" aria-controls="screen-panel" id="screen-tab" data-tab="screen">Screen JSON</button><button type="button" role="tab" aria-selected="false" aria-controls="data-panel" id="data-tab" data-tab="data" tabindex="-1">Mock data</button><button type="button" role="tab" aria-selected="false" aria-controls="activity-panel" id="activity-tab" data-tab="activity" tabindex="-1">Activity <span id="activity-count">0</span></button></div>
+        <div id="screen-panel" role="tabpanel" aria-labelledby="screen-tab" class="viewer-editor"><label for="screen-json">Edit your full screen. The preview updates as you type.</label><textarea id="screen-json" spellcheck="false" aria-label="Screen JSON editor"></textarea></div>
+        <div id="data-panel" role="tabpanel" aria-labelledby="data-tab" class="viewer-editor" hidden><div class="viewer-data-head"><label for="mock-data">The object your backend's data() would return.</label><button type="button" id="open-data">Load data JSON</button><input id="data-input" type="file" accept=".json" hidden></div><textarea id="mock-data" spellcheck="false" aria-label="Mock data JSON editor"></textarea></div>
+        <div id="activity-panel" role="tabpanel" aria-labelledby="activity-tab" hidden><div class="viewer-data-head"><p>Commands are logged locally. No backend is running.</p><button type="button" id="clear-log">Clear</button></div><ol id="activity-log"><li class="activity-empty">Try a button or change a control to see its action.</li></ol></div>
+        <p id="editor-status" class="viewer-editor-status" role="status">Ready</p>
+      </div>
+      <aside class="viewer-inspector"><div class="panel-heading"><h2>Inspector</h2><a href="/docs#explorer">Kit reference ↗</a></div><div id="node-inspector"></div><details open><summary>Preview notes <span id="warning-count"></span></summary><ul id="preview-notes"></ul></details><details><summary>Live screen state</summary><pre id="live-state">{}</pre></details></aside>
+    </div>
+  </section>
+  <section class="viewer-about"><div><span class="label">A place to experiment</span><h2>Find your layout.<br>Then make it native.</h2></div><div><p>This viewer interprets Kit with its own quiet, monochrome style. Test spacing, arrangement, bindings, conditional content and local interactions across screen sizes.</p><p>For lists and data-driven screens, add representative values in <strong>Mock data</strong>. The viewer never runs your app's JavaScript. Web blocks, video and native-only actions have placeholders or activity entries. Remote images stay blocked; packaged images are available from folders and wmapp files.</p><p>It is a layout playground, not an exact iPhone or Android simulation. Check your final app on both phones.</p><a href="/docs#build">Read the app-building guide ↗</a></div></section>
+</main>
+<footer class="site-foot"><a class="brand" href="/">onbun</a><nav aria-label="Footer"><a href="/apps">The apps</a><a href="/docs">The guide</a><a href="/viewer" aria-current="page">Viewer</a><a href="/privacy">Privacy</a></nav></footer>
+<script src="assets/hose.js?v=viewer-mwjyafo6"></script><script src="assets/island.js?v=viewer-mwjyafo6"></script><script src="data/kit-validator.js?v=viewer-mwjyafo6"></script><script src="assets/viewer-core.js?v=viewer-mwjyafo6"></script><script src="assets/viewer.js?v=viewer-mwjyafo6"></script>
+</body></html>

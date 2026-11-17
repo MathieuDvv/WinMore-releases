@@ -38,7 +38,7 @@ island.innerHTML=`
     <div class="links">
       <a href="/apps"${page==='apps'?' aria-current="page"':''}>${icon('grid')}<span><strong>App store</strong><small>Find your next app</small></span></a>
       <a href="/docs"${page==='docs'?' aria-current="page"':''}>${icon('doc')}<span><strong>Documentation</strong><small>How it works</small></span></a>
-      <a href="/docs#explorer">${icon('sliders')}<span><strong>Components</strong><small>Kit explorer</small></span></a>
+      <a href="/viewer"${page==='viewer'?' aria-current="page"':''}>${icon('sliders')}<span><strong>Layout viewer</strong><small>Free developer tool</small></span></a>
       <a href="${RELEASES}">${icon('download')}<span><strong>Download the client</strong><small>Windows, macOS and Linux</small></span></a>
     </div>
   </div>`;

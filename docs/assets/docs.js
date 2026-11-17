@@ -14,7 +14,7 @@ for(const pre of document.querySelectorAll('pre[data-lang]')){
 }
 
 // ── table of contents follows the reading position ──
-const links=[...document.querySelectorAll('.toc a')];
+const links=[...document.querySelectorAll('.toc a[href^="#"]')];
 const spy=new IntersectionObserver(entries=>{
   for(const entry of entries)if(entry.isIntersecting){links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+entry.target.id));}
 },{rootMargin:'-20% 0px -70% 0px'});

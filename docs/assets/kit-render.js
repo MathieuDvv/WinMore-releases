@@ -75,11 +75,14 @@ function resolve(value,scope){
 // ── rendering ────────────────────────────────────────
 let actionId=0;
 function render(node,scope,ctx){
+  const evaluate=ctx.resolve||resolve;
   if(node==null)return '';
   if(Array.isArray(node))return node.map(c=>render(c,scope,ctx)).join('');
   if(typeof node!=='object'||!node.type)return '';
-  if(node.when!==undefined&&!resolve(node.when,scope))return '';
-  const r=k=>resolve(node[k],scope);
+  if(ctx.prepare)node=ctx.prepare(node,scope);
+  if(node.when!==undefined&&!evaluate(node.when,scope))return '';
+  if(ctx.component){const html=ctx.component(node,scope,ctx);if(html!==undefined)return html;}
+  const r=k=>evaluate(node[k],scope);
   const kids=(list=node.children)=>(list||[]).map(c=>render(c,scope,ctx)).join('');
   const act=a=>{if(a==null)return '';const id=++actionId;ctx.actions[id]={action:a,scope};return ` data-k-act="${id}"`;};
   const st=[],cls=['k',`k-${node.type}`];
@@ -104,7 +107,8 @@ function render(node,scope,ctx){
   if(node.clip)st.push('overflow:hidden');
   const wrapAction=node.type!=='button'&&node.action?act(node.action):'';
   if(wrapAction)cls.push('k-tap');
-  const open=(tag='div',extra='',more='')=>`<${tag} class="${cls.join(' ')}${more?' '+more:''}" style="${st.join(';')}${extra?';'+extra:''}"${wrapAction}>`;
+  const nodePath=node.__viewerPath?` data-viewer-path="${esc(node.__viewerPath)}"${node.__viewerInstance?` data-viewer-instance="${esc(node.__viewerInstance)}"`:''}`:'';
+  const open=(tag='div',extra='',more='')=>`<${tag} class="${cls.join(' ')}${more?' '+more:''}" style="${st.join(';')}${extra?';'+extra:''}"${wrapAction}${nodePath}>`;
   const textStyle=(style,weight,col,size)=>{const [s,w]=TEXT[style]||TEXT.body;return `font-size:${size||s}px;font-weight:${WEIGHT[weight]||w}${col?`;color:${color(col)}`:''}`;};
   const align={leading:'flex-start',center:'center',trailing:'flex-end',top:'flex-start',bottom:'flex-end',fill:'stretch'};
   switch(node.type){
@@ -186,13 +190,13 @@ function render(node,scope,ctx){
     case 'button':{
       const variant=node.variant||'bordered',tint=color(r('tint'));
       const shape=node.buttonShape==='circle'||(!node.label&&node.symbol&&variant==='glass')?'circle':node.buttonShape||'capsule';
-      return `<button type="button" class="${cls.join(' ')} v-${variant} s-${shape}${r('selected')?' on':''}${node.size?' z-'+node.size:''}" style="${st.join(';')}${tint?`;--tint:${tint}`:''}"${act(node.action)}${r('disabled')?' disabled':''}>`
+      return `<button type="button" class="${cls.join(' ')} v-${variant} s-${shape}${r('selected')?' on':''}${node.size?' z-'+node.size:''}" style="${st.join(';')}${tint?`;--tint:${tint}`:''}"${act(node.action)}${nodePath}${r('disabled')?' disabled':''}>`
         +(r('loading')?'<span class="k-spin"></span>':node.symbol?symbol(r('symbol'),node.symbolSize||(node.label?15:18)):'')+(node.label?`<span>${esc(r('label'))}</span>`:'')+'</button>';
     }
     case 'pill':return open('div','','k-glass')+kids()+'</div>';
     case 'menu':{
       const items=(node.items||[]).filter(i=>i.label||i.title);
-      return `<details class="${cls.join(' ')}" style="${st.join(';')}"><summary class="k-button v-${node.variant||'glass'} s-${node.buttonShape||(node.label?'capsule':'circle')}">${node.symbol?symbol(r('symbol'),16):''}${node.label?`<span>${esc(r('label'))}</span>`:''}${node.chevron?symbol('chevron.down',12):''}</summary><div class="k-menu-list">${items.map(i=>`<button type="button"${act(i.action)}>${i.symbol?symbol(i.symbol,15):''}<span>${esc(resolve(i.label||i.title,scope))}</span>${resolve(i.checked,scope)?symbol('checkmark',14):''}</button>`).join('')}</div></details>`;
+      return `<details class="${cls.join(' ')}" style="${st.join(';')}"><summary class="k-button v-${node.variant||'glass'} s-${node.buttonShape||(node.label?'capsule':'circle')}">${node.symbol?symbol(r('symbol'),16):''}${node.label?`<span>${esc(r('label'))}</span>`:''}${node.chevron?symbol('chevron.down',12):''}</summary><div class="k-menu-list">${items.map(i=>`<button type="button"${act(i.action)}>${i.symbol?symbol(i.symbol,15):''}<span>${esc(evaluate(i.label||i.title,scope))}</span>${evaluate(i.checked,scope)?symbol('checkmark',14):''}</button>`).join('')}</div></details>`;
     }
     case 'toggle':return open('label')+(node.symbol?symbol(r('symbol'),17):'')+`<span>${esc(r('label'))}</span><button type="button" role="switch" aria-checked="${!!r('value')}" class="k-switch"${act(node.action?[{set:'__value',value:!r('value')},...[].concat(node.action)]:null)}></button></label>`;
     case 'slider':{
